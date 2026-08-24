@@ -1,0 +1,8 @@
+{
+  "name": "Productivity Today",
+  "description": "A premium, minimalist mobile-first productivity app with daily agenda, weekly workout planner, and custom gym routines & exercise builder.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
