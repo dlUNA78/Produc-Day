@@ -150,7 +150,7 @@ export default function RoutineDayDetail({
                 onClick={() => onSelectRoutine(r.id)}
                 className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 ${
                   isSelected
-                    ? 'bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]   text-[var(--accent-ink)] font-bold shadow-[0_4px_14px_rgba(249,115,22,0.3)]'
+                    ? 'bg-[var(--accent)]   text-[var(--accent-ink)] font-bold shadow-[var(--shadow-soft)]'
                     : isToday
                       ? 'bg-[var(--accent-soft)] border border-[var(--accent-border)] text-[var(--accent)]'
                       : 'bg-[var(--surface)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]'
@@ -167,7 +167,7 @@ export default function RoutineDayDetail({
       </div>
 
       {/* 2. Hero Card: Focus & "Empezar Modo Guiado" Big Button */}
-      <div className="relative overflow-hidden bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]  via-[#111111]  border border-[var(--border)] rounded-3xl p-5 shadow-xl">
+      <div className="relative overflow-hidden bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]  border border-[var(--border)] rounded-3xl p-5 shadow-xl">
         <div className="relative z-10 flex flex-col gap-4">
           <div className="flex items-start justify-between">
             <div>
@@ -213,7 +213,7 @@ export default function RoutineDayDetail({
           <button
             type="button"
             onClick={onOpenGuidedWorkout}
-            className="w-full py-4 bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]    hover: hover: text-[var(--accent-ink)] font-semibold text-sm uppercase tracking-wider rounded-2xl shadow-[0_4px_20px_rgba(249,115,22,0.35)] flex items-center justify-center gap-2 transition-transform active:scale-[0.98]"
+            className="w-full py-4 bg-[var(--accent)] text-[var(--accent-ink)] font-semibold text-sm uppercase tracking-wider rounded-2xl shadow-[var(--shadow-soft)] flex items-center justify-center gap-2 transition-transform active:scale-[0.98]"
           >
             {workoutSeconds > 0 ? (
               <>

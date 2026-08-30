@@ -149,7 +149,7 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
       <div className="flex bg-[var(--canvas)] p-1 rounded-[24px] border-b border border-[var(--border)]">
         <button
           onClick={() => setActiveTab('overload')}
-          className={`flex-1 py-2 text-xs font-bold rounded-sm transition-all flex items-center justify-center gap-1.5 ${
+          className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 ${
             activeTab === 'overload'
               ? 'bg-[var(--accent)] text-[var(--accent-ink)] shadow-md'
               : 'text-[var(--text-faint)] hover:text-[var(--text)]'
@@ -160,7 +160,7 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
         </button>
         <button
           onClick={() => setActiveTab('exercises')}
-          className={`flex-1 py-2 text-xs font-bold rounded-sm transition-all flex items-center justify-center gap-1.5 ${
+          className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 ${
             activeTab === 'exercises'
               ? 'bg-[var(--accent)] text-[var(--accent-ink)] shadow-md'
               : 'text-[var(--text-faint)] hover:text-[var(--text)]'
@@ -171,7 +171,7 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
         </button>
         <button
           onClick={() => setActiveTab('summary')}
-          className={`flex-1 py-2 text-xs font-bold rounded-sm transition-all flex items-center justify-center gap-1.5 ${
+          className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 ${
             activeTab === 'summary'
               ? 'bg-[var(--accent)] text-[var(--accent-ink)] shadow-md'
               : 'text-[var(--text-faint)] hover:text-[var(--text)]'
@@ -198,7 +198,7 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
               <p className="text-xs text-[var(--text-faint)] mb-4">Añade los ejercicios que deseas someter a sobrecarga progresiva.</p>
               <button 
                 onClick={onOpenSettings}
-                className="bg-[var(--accent)] text-[var(--accent-ink)] px-4 py-2 rounded-sm text-xs font-bold hover:bg-[var(--accent-strong)]"
+                className="bg-[var(--accent)] text-[var(--accent-ink)] px-4 py-2 rounded-xl text-xs font-bold hover:bg-[var(--accent-strong)]"
               >
                 Configurar Ejercicios
               </button>
@@ -231,7 +231,7 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
                       
                       <div className="flex flex-col gap-1 flex-1 items-center">
                         <span className="text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-wider">Actual</span>
-                        <div className="flex items-center gap-2 bg-[var(--canvas)] px-2 py-1.5 rounded-sm border border-[var(--border)] w-full justify-between">
+                        <div className="flex items-center gap-2 bg-[var(--canvas)] px-2 py-1.5 rounded-xl border border-[var(--border)] w-full justify-between">
                           <button 
                             onClick={() => handleUpdateWeight(lift.id, current - 2.5)}
                             className="w-8 h-8 flex items-center justify-center rounded-lg bg-[var(--surface-raised)] text-[var(--text-faint)] hover:text-[var(--text)] hover:bg-[var(--surface-muted)] transition-colors font-mono font-bold text-xs"
@@ -302,7 +302,7 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
                   <select
                     value={activeExercise}
                     onChange={(e) => setSelectedExercise(e.target.value)}
-                    className="w-full appearance-none bg-[var(--canvas)] border border-[var(--border)] text-sm font-semibold text-[var(--text)] px-4 py-3 rounded-sm focus:outline-none focus:border-[var(--accent)] capitalize"
+                    className="w-full appearance-none bg-[var(--canvas)] border border-[var(--border)] text-sm font-semibold text-[var(--text)] px-4 py-3 rounded-xl focus:outline-none focus:border-[var(--accent)] capitalize"
                   >
                     {allExercises.map(ex => (
                       <option key={ex} value={ex} className="capitalize">{ex}</option>
@@ -449,7 +449,7 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
 
       {activeTab === 'summary' && (
         <div className="flex flex-col gap-4">
-          <div className="flex bg-[var(--canvas)] border border-[var(--border)] rounded-sm p-1 self-start">
+          <div className="flex bg-[var(--canvas)] border border-[var(--border)] rounded-xl p-1 self-start">
             <button
               onClick={() => setSummaryType('weekly')}
               className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-colors ${

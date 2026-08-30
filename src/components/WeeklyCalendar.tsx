@@ -153,7 +153,7 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
               <button
                 type="button"
                 onClick={handleTodayJump}
-                className="px-2 py-1 text-[10px] font-semibold text-[white] bg-[white]/10 border border-[white]/20 rounded-lg hover:bg-[white]/20 transition-colors"
+                className="px-2 py-1 text-[10px] font-semibold text-[var(--text)] bg-[var(--accent-soft)] border border-[white]/20 rounded-lg hover:bg-[var(--accent)]/20 transition-colors"
               >
                 Hoy
               </button>
@@ -213,7 +213,7 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
                   }`}
                 >
                   <span className={`text-[10px] font-bold mb-1 ${
-                    isSelected ? 'text-[var(--text-muted)]' : 'text-[var(--text-faint)]'
+                    isSelected ? 'text-[var(--accent-ink)] opacity-70' : 'text-[var(--text-faint)]'
                   }`}>
                     {dayNames[index]}
                   </span>
@@ -244,7 +244,7 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="bg-[var(--canvas)] border border-[var(--border)]/80 rounded-md p-3.5 shadow-xl backdrop-blur-sm overflow-hidden"
+            className="bg-[var(--surface)] border border-[var(--border)] rounded-[18px] p-3.5 shadow-[var(--shadow-soft)] overflow-hidden"
           >
             {/* Day name headers */}
             <div className="grid grid-cols-7 gap-1 text-center mb-2 pb-2 border-b border-[var(--border)]/60">
@@ -272,9 +272,9 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
                     }}
                     className={`relative flex flex-col items-center justify-center h-10 rounded-xl transition-all ${
                       isSelected
-                        ? 'bg-[white] text-[var(--accent-ink)] font-semibold shadow-sm shadow-[white]/20'
+                        ? 'bg-[var(--accent)] text-[var(--accent-ink)] font-semibold shadow-sm shadow-[var(--shadow-soft)]'
                         : isToday
-                          ? 'bg-[white]/10 text-[white]'
+                          ? 'bg-[var(--accent-soft)] text-[var(--text)]'
                           : isCurrentMonth
                             ? 'text-[var(--text)] hover:bg-[var(--surface)]'
                             : 'text-[var(--text-faint)] hover:bg-[var(--surface)]'
@@ -285,7 +285,7 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
                     {/* Event Dot */}
                     <div className="h-1 flex items-center justify-center mt-0.5">
                       {hasItems && (
-                        <div className={`w-1 h-1 rounded-full ${isSelected ? 'bg-[var(--canvas)]' : 'bg-[white]'}`} />
+                        <div className={`w-1 h-1 rounded-full ${isSelected ? 'bg-[var(--canvas)]' : 'bg-[var(--accent)]'}`} />
                       )}
                     </div>
                   </button>
@@ -296,13 +296,13 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
             <div className="mt-3 pt-2 border-t border-[var(--border)]/60 flex items-center justify-between text-[11px] text-[var(--text-faint)] px-1">
               <div className="flex items-center gap-2">
                 <span className="flex items-center gap-1 text-[10px] text-[var(--text-faint)]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[white] inline-block" /> Con actividades
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] inline-block" /> Con actividades
                 </span>
               </div>
               <button
                 type="button"
                 onClick={() => setIsMonthView(false)}
-                className="text-[white] hover:text-[white]/80 font-medium transition-colors"
+                className="text-[var(--text)] hover:text-[var(--text)]/80 font-medium transition-colors"
               >
                 Volver a vista semanal
               </button>

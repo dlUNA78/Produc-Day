@@ -526,7 +526,7 @@ export default function ExerciseEditorModal({
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-3 bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]   hover: hover: text-[var(--accent-ink)] text-xs font-bold rounded-xl shadow-[0_4px_15px_rgba(249,115,22,0.3)] transition-transform active:scale-95 flex items-center justify-center gap-1.5"
+                    className="flex-1 py-3 bg-[var(--accent)] text-[var(--accent-ink)] text-xs font-bold rounded-xl shadow-[var(--shadow-soft)] transition-transform active:scale-95 flex items-center justify-center gap-1.5"
                   >
                     <Check size={14} />
                     <span>Guardar Ejercicio</span>
