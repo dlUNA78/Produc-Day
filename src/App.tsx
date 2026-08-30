@@ -38,20 +38,10 @@ export default function App() {
   const [selectedDate, setSelectedDate] = useState<string>(() => formatDateKey(new Date()));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [confirmation, setConfirmation] = useState('');
-  const [editingEntry, setEditingEntry] = useState<EditableEntry | null>(null);
-  const [deletedEntry, setDeletedEntry] = useState<DeletedEntry | null>(null);
-  const toastTimer = useRef<number | null>(null);
 
   const showConfirmation = (type: 'activity' | 'task') => {
     setConfirmation(type === 'task' ? 'Tarea guardada en tu día' : 'Bloque añadido a tu agenda');
-    if (toastTimer.current) window.clearTimeout(toastTimer.current);
-    toastTimer.current = window.setTimeout(() => { setConfirmation(''); setDeletedEntry(null); }, 3500);
-  };
-
-  const showMessage = (message: string) => {
-    setConfirmation(message);
-    if (toastTimer.current) window.clearTimeout(toastTimer.current);
-    toastTimer.current = window.setTimeout(() => { setConfirmation(''); setDeletedEntry(null); }, 3500);
+    window.setTimeout(() => setConfirmation(''), 2600);
   };
 
   const handleToggleTask = (id: string) => {
@@ -166,7 +156,7 @@ export default function App() {
         
         {activeTab === 'home' && (
           <button
-            onClick={() => { setEditingEntry(null); setIsModalOpen(true); }}
+            onClick={() => setIsModalOpen(true)}
             aria-label="Crear una tarea o actividad"
             className="mb-3 mr-1 w-14 h-14 bg-[var(--accent)] text-[#17120e] rounded-2xl flex items-center justify-center shadow-[0_12px_32px_rgba(0,0,0,0.35)] hover:bg-[var(--accent-strong)] active:scale-95 transition-all pointer-events-auto"
           >
@@ -188,10 +178,6 @@ export default function App() {
         onAddActivity={handleAddActivity}
         onAddTask={handleAddTask}
         onCreated={showConfirmation}
-        editingEntry={editingEntry}
-        onUpdateActivity={handleEditActivity}
-        onUpdateTask={handleEditTask}
-        onDelete={handleDeleteEntry}
         defaultDate={selectedDate}
       />
 
@@ -206,7 +192,6 @@ export default function App() {
           >
             <span className="w-8 h-8 shrink-0 rounded-xl bg-[var(--sage)]/15 text-[var(--sage)] flex items-center justify-center"><Check size={17} /></span>
             <span className="text-sm font-medium text-[var(--text)]">{confirmation}</span>
-            {deletedEntry && <button type="button" onClick={handleUndoDelete} className="ml-auto text-sm font-semibold text-[var(--accent)] hover:text-[var(--accent-strong)]">Deshacer</button>}
           </motion.div>
         )}
       </AnimatePresence>

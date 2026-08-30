@@ -9,10 +9,6 @@ interface CreateEntryModalProps {
   onAddActivity: (activity: Omit<Activity, 'id' | 'isCompleted'>) => void;
   onAddTask: (task: Omit<Task, 'id' | 'isCompleted'>) => void;
   onCreated?: (type: 'activity' | 'task') => void;
-  editingEntry?: { type: 'activity'; item: Activity } | { type: 'task'; item: Task } | null;
-  onUpdateActivity?: (id: string, updates: Partial<Activity>) => void;
-  onUpdateTask?: (id: string, updates: Partial<Task>) => void;
-  onDelete?: (id: string, type: 'activity' | 'task') => void;
   defaultDate: string;
 }
 
@@ -29,10 +25,6 @@ export default function CreateEntryModal({
   onAddActivity,
   onAddTask,
   onCreated,
-  editingEntry,
-  onUpdateActivity,
-  onUpdateTask,
-  onDelete,
   defaultDate,
 }: CreateEntryModalProps) {
   const [type, setType] = useState<'activity' | 'task'>('task');
@@ -48,18 +40,17 @@ export default function CreateEntryModal({
 
   useEffect(() => {
     if (!isOpen) return;
-    const entry = editingEntry?.item;
-    setType(editingEntry?.type || 'task');
-    setTitle(entry?.title || '');
-    setCategory(entry?.category || 'Personal');
-    setDate(entry?.date || defaultDate);
-    setHasTime(editingEntry?.type === 'task' ? Boolean(editingEntry.item.time) : false);
-    setTime(editingEntry?.type === 'task' ? editingEntry.item.time || '12:00' : '12:00');
-    setStartTime(editingEntry?.type === 'activity' ? editingEntry.item.startTime : '09:00');
-    setEndTime(editingEntry?.type === 'activity' ? editingEntry.item.endTime : '10:00');
-    setDescription(entry?.description || '');
+    setType('task');
+    setTitle('');
+    setCategory('Personal');
+    setDate(defaultDate);
+    setHasTime(false);
+    setTime('12:00');
+    setStartTime('09:00');
+    setEndTime('10:00');
+    setDescription('');
     setError('');
-  }, [isOpen, defaultDate, editingEntry]);
+  }, [isOpen, defaultDate]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -107,7 +98,7 @@ export default function CreateEntryModal({
       });
     }
 
-    if (!editingEntry) onCreated?.(type);
+    onCreated?.(type);
     onClose();
   };
 
@@ -139,8 +130,8 @@ export default function CreateEntryModal({
               <div className="w-10 h-1 rounded-full bg-[var(--border)] mx-auto mb-4" />
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--accent)]">{editingEntry ? 'Ajusta tu plan' : 'Planifica tu día'}</p>
-                  <h2 id="create-entry-title" className="mt-1 text-xl font-semibold text-[var(--text)]">{editingEntry ? 'Editar entrada' : 'Nueva entrada'}</h2>
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--accent)]">Planifica tu día</p>
+                  <h2 id="create-entry-title" className="mt-1 text-xl font-semibold text-[var(--text)]">Nueva entrada</h2>
                 </div>
                 <button type="button" onClick={onClose} aria-label="Cerrar" className="w-11 h-11 rounded-2xl bg-[var(--surface-raised)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">
                   <X size={19} />
@@ -149,7 +140,7 @@ export default function CreateEntryModal({
             </div>
 
             <form onSubmit={handleSubmit} className="p-5 pb-[max(2rem,env(safe-area-inset-bottom))] space-y-5">
-              <fieldset disabled={Boolean(editingEntry)} className={editingEntry ? 'opacity-70' : ''}>
+              <fieldset>
                 <legend className={labelClass}>¿Qué quieres añadir?</legend>
                 <div className="grid grid-cols-2 gap-2 p-1.5 rounded-[18px] bg-[var(--canvas)] border border-[var(--border)]">
                   {[
@@ -222,14 +213,9 @@ export default function CreateEntryModal({
 
               {error && <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} role="alert" className="text-sm leading-5 text-[var(--clay)] bg-[var(--clay)]/10 border border-[var(--clay)]/30 rounded-xl px-3 py-2.5">{error}</motion.p>}
 
-              <div className="flex gap-3">
-                {editingEntry && onDelete && (
-                  <button type="button" onClick={() => { onDelete(editingEntry.item.id, editingEntry.type); onClose(); }} className="min-h-13 px-4 rounded-2xl border border-[var(--clay)]/40 text-[var(--clay)] font-semibold text-sm hover:bg-[var(--clay)]/10 transition-colors">Eliminar</button>
-                )}
-                <button type="submit" className="flex-1 min-h-13 rounded-2xl bg-[var(--accent)] hover:bg-[var(--accent-strong)] text-[#17120e] font-semibold text-sm transition-colors flex items-center justify-center gap-2">
-                  <Check size={18} /> {editingEntry ? 'Guardar cambios' : `Guardar ${type === 'task' ? 'tarea' : 'bloque'}`}
-                </button>
-              </div>
+              <button type="submit" className="w-full min-h-13 rounded-2xl bg-[var(--accent)] hover:bg-[var(--accent-strong)] text-[#17120e] font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+                <Check size={18} /> Guardar {type === 'task' ? 'tarea' : 'bloque'}
+              </button>
             </form>
           </motion.div>
         </div>

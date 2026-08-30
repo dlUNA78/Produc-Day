@@ -69,7 +69,7 @@ export default function TimelineItem({ item, isLast, isActive, onToggle, onOpen 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md border border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)]">
-              {categoryLabels[item.category] || item.category}
+              {item.category}
             </span>
             <p className={`text-sm font-medium transition-all ${
               isActive && !isDone
