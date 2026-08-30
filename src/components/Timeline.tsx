@@ -78,7 +78,7 @@ export default function Timeline({ activities, tasks, currentActivityId, onToggl
           <CalendarCheck size={30} className="text-[var(--text-faint)] mb-3" strokeWidth={1.5} />
           <p className="text-[var(--text)] text-sm font-medium">Tu agenda está despejada</p>
           <p className="text-[var(--text-muted)] text-xs leading-5 mt-1 max-w-[240px]">
-            Agrega una tarea o actividad con el botón <span className="text-white font-semibold">(+)</span> para verla en tu agenda.
+            Agrega una tarea o actividad con el botón <span className="text-[var(--text)] font-semibold">(+)</span> para verla en tu agenda.
           </p>
           {onOpenCreate && (
             <button

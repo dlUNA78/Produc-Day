@@ -7,7 +7,7 @@ export default function ProfileView() {
       <p className="text-sm text-[var(--text-muted)]">Tu espacio</p>
       <h1 className="mt-1 text-[28px] font-semibold tracking-[-0.03em] text-[var(--text)]">Perfil</h1>
 
-      <section className="mt-7 rounded-[20px] bg-[var(--surface)] border border-[var(--border)] p-5 flex items-center gap-4">
+      <section className="ui-card-raised mt-7 p-5 flex items-center gap-4">
         <div className="w-14 h-14 rounded-2xl bg-[var(--surface-raised)] flex items-center justify-center text-[var(--accent)]">
           <User size={25} />
         </div>
@@ -18,7 +18,7 @@ export default function ProfileView() {
       </section>
 
       <h2 className="mt-8 mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--text-faint)]">Preferencias</h2>
-      <div className="overflow-hidden rounded-[20px] bg-[var(--surface)] border border-[var(--border)] divide-y divide-[var(--border)]">
+      <div className="ui-card overflow-hidden divide-y divide-[var(--border)]">
         {[
           { label: 'Configuración', detail: 'Cuenta, datos y privacidad', icon: Settings },
           { label: 'Notificaciones', detail: 'Recordatorios y avisos', icon: Bell },

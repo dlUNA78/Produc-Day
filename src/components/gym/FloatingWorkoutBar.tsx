@@ -52,48 +52,22 @@ export default function FloatingWorkoutBar({
   }
 
   return (
-    <div className="fixed bottom-20 left-4 right-4 z-40 max-w-md mx-auto">
-      <div 
-        onClick={onExpand}
-        className="bg-[#111111]/95 backdrop-blur-md border border-orange-500/40 rounded-2xl p-3 shadow-[0_8px_30px_rgba(0,0,0,0.8)] flex items-center justify-between gap-3 cursor-pointer hover:border-orange-500 transition-all transform active:scale-[0.99]"
-      >
-        {/* Left: Flame / Rest timer */}
-        <div className="flex items-center gap-2.5 overflow-hidden">
-          <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border ${
-            isRestRunning 
-              ? 'bg-amber-500/20 border-amber-500/40 text-amber-400' 
-              : 'bg-orange-500/20 border-orange-500/40 text-orange-400'
-          }`}>
-            {isRestRunning ? (
-              <Timer size={18} className="animate-spin text-amber-400" />
-            ) : (
-              <Flame size={18} className={isWorkoutRunning ? 'animate-pulse text-orange-400' : ''} />
-            )}
-          </div>
-
-          <div className="overflow-hidden">
-            <div className="flex items-center gap-1.5">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-orange-400">
-                {isRestRunning ? `Descanso: ${Math.round(restSecondsLeft)}s` : 'En Vivo'}
-              </span>
-              <span className="text-[10px] font-mono text-slate-400">
-                • {formatTime(workoutSeconds)}
-              </span>
-            </div>
-            <p className="text-xs font-semibold text-white truncate">
-              {currentInfo.exerciseName} <span className="text-slate-400 font-mono font-normal">#{currentInfo.setNumber}</span>
-            </p>
-          </div>
-        </div>
-
-        {/* Right: Expand Button */}
-        <div className="flex items-center gap-1 shrink-0">
-          <div className="px-3 py-1.5 bg-orange-500 hover:bg-orange-400 text-slate-950 rounded-xl text-xs font-bold flex items-center gap-1 shadow-sm">
-            <span>Guiado</span>
-            <ChevronUp size={14} />
-          </div>
-        </div>
-      </div>
+    <div className="fixed bottom-24 left-4 right-4 z-40 mx-auto max-w-md">
+      <button type="button" onClick={onExpand} className="flex w-full items-center justify-between gap-3 rounded-[22px] border border-[var(--accent-border)] bg-[color:var(--surface-glass)] p-3 text-left shadow-[var(--shadow-raised)] backdrop-blur-2xl transition-transform active:scale-[0.99]">
+        <span className="flex min-w-0 items-center gap-3">
+          <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border ${isRestRunning ? 'border-[var(--warning-border)] bg-[var(--warning-soft)] text-[var(--warning)]' : 'border-[var(--accent-border)] bg-[var(--accent-soft)] text-[var(--accent)]'}`}>
+            {isRestRunning ? <Timer size={18} /> : <Flame size={18} />}
+          </span>
+          <span className="min-w-0">
+            <span className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.1em] text-[var(--accent)]">
+              {isRestRunning ? `Descanso · ${Math.round(restSecondsLeft)}s` : 'Sesión en curso'}
+              <span className="font-mono font-medium text-[var(--text-faint)]">{formatTime(workoutSeconds)}</span>
+            </span>
+            <span className="mt-1 block truncate text-sm font-medium text-[var(--text)]">{currentInfo.exerciseName} <span className="text-[var(--text-faint)]">· Serie {currentInfo.setNumber}</span></span>
+          </span>
+        </span>
+        <span className="flex h-10 shrink-0 items-center gap-1 rounded-2xl border border-[var(--border)] bg-[var(--surface-raised)] px-3 text-xs font-semibold text-[var(--text)]">Abrir<ChevronUp size={14} /></span>
+      </button>
     </div>
   );
 }

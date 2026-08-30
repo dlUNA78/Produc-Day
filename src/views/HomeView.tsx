@@ -101,7 +101,7 @@ export default function HomeView({
                 <button
                   onClick={() => onToggleItem(nextItem.id, nextItem.type)}
                   aria-label={`Completar ${nextItem.title}`}
-                  className="shrink-0 w-11 h-11 rounded-2xl bg-[var(--accent)] text-[#17120e] flex items-center justify-center hover:bg-[var(--accent-strong)] transition-colors"
+                  className="shrink-0 w-11 h-11 rounded-2xl bg-[var(--accent)] text-[var(--accent-ink)] flex items-center justify-center hover:bg-[var(--accent-strong)] transition-colors"
                 >
                   <Check size={20} strokeWidth={2.5} />
                 </button>

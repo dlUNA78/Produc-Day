@@ -41,17 +41,17 @@ interface RoutineDayDetailProps {
 }
 
 const muscleColors: Record<MuscleGroup, string> = {
-  Pecho: 'bg-red-950/40 text-red-400 border-red-800/40',
-  Espalda: 'bg-indigo-950/40 text-indigo-400 border-indigo-800/40',
-  Hombros: 'bg-amber-950/40 text-amber-400 border-amber-800/40',
-  Bíceps: 'bg-purple-950/40 text-purple-400 border-purple-800/40',
-  Tríceps: 'bg-rose-950/40 text-rose-400 border-rose-800/40',
-  Cuádriceps: 'bg-orange-950/40 text-orange-400 border-orange-800/40',
-  Isquios: 'bg-yellow-950/40 text-yellow-400 border-yellow-800/40',
-  Glúteos: 'bg-pink-950/40 text-pink-400 border-pink-800/40',
-  Gemelos: 'bg-teal-950/40 text-teal-400 border-teal-800/40',
-  'Core / Abdomen': 'bg-emerald-950/40 text-emerald-400 border-emerald-800/40',
-  'Cardio / Movilidad': 'bg-cyan-950/40 text-cyan-400 border-cyan-800/40',
+  Pecho: 'bg-[var(--danger-soft)] text-[var(--danger)] border-[var(--danger-border)]',
+  Espalda: 'bg-[var(--plum-soft)] text-[var(--plum)] border-[var(--plum-border)]',
+  Hombros: 'bg-[var(--warning-soft)] text-[var(--warning)] border-[var(--warning-border)]',
+  Bíceps: 'bg-[var(--plum-soft)] text-[var(--plum)] border-[var(--plum-border)]',
+  Tríceps: 'bg-[var(--danger-soft)] text-[var(--danger)] border-[var(--danger-border)]',
+  Cuádriceps: 'bg-[var(--accent-soft)] text-[var(--accent)] border-[var(--accent-border)]',
+  Isquios: 'bg-[var(--warning-soft)] text-[var(--warning)] border-[var(--warning-border)]',
+  Glúteos: 'bg-[var(--danger-soft)] text-[var(--danger)] border-[var(--danger-border)]',
+  Gemelos: 'bg-[var(--success-soft)] text-[var(--success)] border-[var(--success-border)]',
+  'Core / Abdomen': 'bg-[var(--success-soft)] text-[var(--success)] border-[var(--success-border)]',
+  'Cardio / Movilidad': 'bg-[var(--steel-soft)] text-[var(--steel)] border-[var(--steel-border)]',
 };
 
 export default function RoutineDayDetail({
@@ -84,22 +84,22 @@ export default function RoutineDayDetail({
   // If rest day & no routine selected
   if ((isRestDay && !routine) || (!routine && allRoutines.length === 0)) {
     return (
-      <div className="px-6 flex flex-col items-center text-center py-10 bg-slate-900/30 border border-slate-800/80 rounded-3xl mb-8">
-        <div className="w-16 h-16 rounded-3xl bg-slate-800/50 border border-slate-700/50 flex items-center justify-center mb-4 text-slate-400">
+      <div className="px-6 flex flex-col items-center text-center py-10 bg-[var(--surface)] border border-[var(--border)] rounded-3xl mb-8">
+        <div className="w-16 h-16 rounded-3xl bg-[var(--surface-raised)] border border-[var(--border-strong)] flex items-center justify-center mb-4 text-[var(--text-muted)]">
           <Coffee size={28} />
         </div>
-        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">
+        <span className="text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-widest mb-1">
           Día de Recuperación
         </span>
-        <h3 className="text-xl font-semibold text-white mb-2">Descanso Programado</h3>
-        <p className="text-slate-400 text-xs max-w-[280px] leading-relaxed mb-6">
+        <h3 className="text-xl font-semibold text-[var(--text)] mb-2">Descanso Programado</h3>
+        <p className="text-[var(--text-muted)] text-xs max-w-[280px] leading-relaxed mb-6">
           El descanso y la recuperación muscular son clave para el crecimiento y adaptación.
         </p>
 
         <button
           type="button"
           onClick={onSelectAlternativeRoutine}
-          className="px-4 py-2.5 bg-orange-500/10 hover:bg-orange-500/20 text-orange-400 border border-orange-500/30 rounded-xl text-xs font-semibold flex items-center gap-2 transition-colors"
+          className="px-4 py-2.5 bg-[var(--accent-soft)] hover:bg-[var(--accent-soft)] text-[var(--accent)] border border-[var(--accent-border)] rounded-xl text-xs font-semibold flex items-center gap-2 transition-colors"
         >
           <Dumbbell size={14} />
           <span>Elegir un Entrenamiento del Plan</span>
@@ -130,10 +130,10 @@ export default function RoutineDayDetail({
       {/* 1. Quick Routine Selector Tabs (Clear & Intuitive) */}
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between px-1">
-          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+          <span className="text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-widest">
             Rutinas del Plan
           </span>
-          <span className="text-[10px] text-orange-400 font-mono">
+          <span className="text-[10px] text-[var(--accent)] font-mono">
             {completedSetsCount}/{totalSets} series ({progressPercent}%)
           </span>
         </div>
@@ -150,15 +150,15 @@ export default function RoutineDayDetail({
                 onClick={() => onSelectRoutine(r.id)}
                 className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 ${
                   isSelected
-                    ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-slate-950 font-bold shadow-[0_4px_14px_rgba(249,115,22,0.3)]'
+                    ? 'bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]   text-[var(--accent-ink)] font-bold shadow-[0_4px_14px_rgba(249,115,22,0.3)]'
                     : isToday
-                      ? 'bg-orange-950/30 border border-orange-500/40 text-orange-300'
-                      : 'bg-slate-900/60 border border-slate-800 text-slate-400 hover:text-slate-200'
+                      ? 'bg-[var(--accent-soft)] border border-[var(--accent-border)] text-[var(--accent)]'
+                      : 'bg-[var(--surface)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]'
                 }`}
               >
                 <span>{r.shortName}</span>
                 {isToday && !isSelected && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] " />
                 )}
               </button>
             );
@@ -167,19 +167,19 @@ export default function RoutineDayDetail({
       </div>
 
       {/* 2. Hero Card: Focus & "Empezar Modo Guiado" Big Button */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-slate-900/95 via-[#111111] to-slate-900/95 border border-slate-800 rounded-3xl p-5 shadow-xl">
+      <div className="relative overflow-hidden bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]  via-[#111111]  border border-[var(--border)] rounded-3xl p-5 shadow-xl">
         <div className="relative z-10 flex flex-col gap-4">
           <div className="flex items-start justify-between">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-[10px] font-bold text-orange-400 uppercase tracking-wider bg-orange-500/10 border border-orange-500/20 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-bold text-[var(--accent)] uppercase tracking-wider bg-[var(--accent-soft)] border border-[var(--accent-border)] px-2 py-0.5 rounded-full">
                   {routine.shortName}
                 </span>
-                <span className="text-xs text-slate-400">
+                <span className="text-xs text-[var(--text-muted)]">
                   {routine.estimatedMinutes || 50} min • {routine.exercises.length} ejercicios
                 </span>
               </div>
-              <h2 className="text-xl font-bold text-white leading-tight">
+              <h2 className="text-xl font-bold text-[var(--text)] leading-tight">
                 {routine.name}
               </h2>
             </div>
@@ -191,7 +191,7 @@ export default function RoutineDayDetail({
               <span 
                 key={m} 
                 className={`text-[9px] font-bold px-2 py-0.5 rounded-lg border ${
-                  muscleColors[m] || 'bg-slate-800 text-slate-400'
+                  muscleColors[m] || 'bg-[var(--surface-raised)] text-[var(--text-muted)]'
                 }`}
               >
                 {m}
@@ -201,9 +201,9 @@ export default function RoutineDayDetail({
 
           {/* Progress bar */}
           <div className="flex flex-col gap-1.5">
-            <div className="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
+            <div className="w-full bg-[var(--canvas)] h-2 rounded-full overflow-hidden border border-[var(--border)]">
               <div 
-                className="bg-gradient-to-r from-orange-500 to-amber-400 h-full transition-all duration-300 rounded-full"
+                className="bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]   h-full transition-all duration-300 rounded-full"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -213,7 +213,7 @@ export default function RoutineDayDetail({
           <button
             type="button"
             onClick={onOpenGuidedWorkout}
-            className="w-full py-4 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-400 hover:from-orange-400 hover:to-amber-300 text-slate-950 font-black text-sm uppercase tracking-wider rounded-2xl shadow-[0_4px_20px_rgba(249,115,22,0.35)] flex items-center justify-center gap-2 transition-transform active:scale-[0.98]"
+            className="w-full py-4 bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]    hover: hover: text-[var(--accent-ink)] font-semibold text-sm uppercase tracking-wider rounded-2xl shadow-[0_4px_20px_rgba(249,115,22,0.35)] flex items-center justify-center gap-2 transition-transform active:scale-[0.98]"
           >
             {workoutSeconds > 0 ? (
               <>
@@ -233,14 +233,14 @@ export default function RoutineDayDetail({
       {/* 3. Exercise Checklist (Clear, Scannable & Expandable) */}
       <div>
         <div className="flex items-center justify-between mb-3 px-1">
-          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-            <Dumbbell size={14} className="text-orange-400" />
+          <h3 className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest flex items-center gap-1.5">
+            <Dumbbell size={14} className="text-[var(--accent)]" />
             Lista de Ejercicios ({routine.exercises.length})
           </h3>
           <button
             type="button"
             onClick={onAddExerciseClick}
-            className="text-xs font-semibold text-orange-400 hover:text-orange-300 flex items-center gap-1 bg-orange-500/10 border border-orange-500/20 px-2.5 py-1 rounded-xl transition-colors"
+            className="text-xs font-semibold text-[var(--accent)] hover:text-[var(--accent-strong)] flex items-center gap-1 bg-[var(--accent-soft)] border border-[var(--accent-border)] px-2.5 py-1 rounded-xl transition-colors"
           >
             <Plus size={13} />
             <span>Añadir</span>
@@ -257,36 +257,36 @@ export default function RoutineDayDetail({
             return (
               <div
                 key={exercise.id}
-                className={`bg-slate-900/40 border rounded-2xl transition-all overflow-hidden ${
+                className={`bg-[var(--surface)] border rounded-2xl transition-all overflow-hidden ${
                   isAllDone
-                    ? 'border-emerald-500/40 bg-emerald-950/10'
-                    : 'border-slate-800/80 hover:border-slate-700/80'
+                    ? 'border-[var(--success-border)] bg-[var(--success-soft)]'
+                    : 'border-[var(--border)] hover:border-[var(--border-strong)]'
                 }`}
               >
                 {/* Exercise Summary Row */}
                 <div 
                   onClick={() => setExpandedExerciseId(isExpanded ? null : exercise.id)}
-                  className="p-3.5 flex items-center justify-between cursor-pointer hover:bg-slate-800/20"
+                  className="p-3.5 flex items-center justify-between cursor-pointer hover:bg-[var(--surface-muted)]"
                 >
                   <div className="flex items-center gap-3">
                     <span className={`w-6 h-6 rounded-lg text-xs font-bold font-mono flex items-center justify-center border ${
                       isAllDone
-                        ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400'
-                        : 'bg-slate-800 border-slate-700 text-slate-400'
+                        ? 'bg-[var(--success-soft)] border-[var(--success-border)] text-[var(--success)]'
+                        : 'bg-[var(--surface-raised)] border-[var(--border-strong)] text-[var(--text-muted)]'
                     }`}>
                       {isAllDone ? '✓' : idx + 1}
                     </span>
 
                     <div>
-                      <h4 className="text-sm font-semibold text-white leading-snug">
+                      <h4 className="text-sm font-semibold text-[var(--text)] leading-snug">
                         {exercise.name}
                       </h4>
                       <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-[10px] text-slate-400 font-mono">
+                        <span className="text-[10px] text-[var(--text-muted)] font-mono">
                           {exercise.sets.length} series • {exercise.sets[0]?.reps} reps {exercise.sets[0]?.weightKg ? `(${exercise.sets[0].weightKg}kg)` : ''}
                         </span>
                         <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded border ${
-                          muscleColors[exercise.muscleGroup] || 'bg-slate-800 text-slate-400'
+                          muscleColors[exercise.muscleGroup] || 'bg-[var(--surface-raised)] text-[var(--text-muted)]'
                         }`}>
                           {exercise.muscleGroup}
                         </span>
@@ -301,20 +301,20 @@ export default function RoutineDayDetail({
                         e.stopPropagation();
                         onDeleteExercise(exercise.id);
                       }}
-                      className="text-slate-600 hover:text-red-400 p-1.5 rounded-lg hover:bg-red-500/10 transition-colors"
+                      className="text-[var(--text-faint)] hover:text-[var(--danger)] p-1.5 rounded-lg hover:bg-[var(--danger-soft)] transition-colors"
                       title="Eliminar ejercicio"
                     >
                       <Trash2 size={13} />
                     </button>
-                    {isExpanded ? <ChevronUp size={16} className="text-slate-400" /> : <ChevronDown size={16} className="text-slate-400" />}
+                    {isExpanded ? <ChevronUp size={16} className="text-[var(--text-muted)]" /> : <ChevronDown size={16} className="text-[var(--text-muted)]" />}
                   </div>
                 </div>
 
                 {/* Expanded Sets Details & Quick Adjusters */}
                 {isExpanded && (
-                  <div className="px-3.5 pb-3.5 pt-1 border-t border-slate-800/60 bg-slate-950/30 flex flex-col gap-2">
+                  <div className="px-3.5 pb-3.5 pt-1 border-t border-[var(--border)] bg-[var(--canvas)] flex flex-col gap-2">
                     {exercise.notes && (
-                      <p className="text-[11px] text-slate-400 italic">
+                      <p className="text-[11px] text-[var(--text-muted)] italic">
                         💡 {exercise.notes}
                       </p>
                     )}
@@ -329,19 +329,19 @@ export default function RoutineDayDetail({
                             key={set.id || set.setNumber}
                             className={`flex items-center justify-between p-2 rounded-xl border text-xs ${
                               isSetChecked 
-                                ? 'bg-emerald-950/20 border-emerald-900/40 text-emerald-300' 
-                                : 'bg-slate-900/50 border-slate-800/70 text-slate-300'
+                                ? 'bg-[var(--success-soft)] border-[var(--success-border)] text-[var(--success)]' 
+                                : 'bg-[var(--surface)] border-[var(--border)] text-[var(--text)]'
                             }`}
                           >
-                            <span className="font-mono font-bold text-slate-400">
+                            <span className="font-mono font-bold text-[var(--text-muted)]">
                               Serie #{set.setNumber}
                             </span>
 
                             <div className="flex items-center gap-2">
-                              <span className="font-mono text-white">
+                              <span className="font-mono text-[var(--text)]">
                                 {set.reps} reps
                               </span>
-                              <span className="font-mono text-slate-400">
+                              <span className="font-mono text-[var(--text-muted)]">
                                 • {set.weightKg || 0} kg
                               </span>
                             </div>
@@ -351,8 +351,8 @@ export default function RoutineDayDetail({
                               onClick={() => onToggleSet(exercise.id, set.setNumber)}
                               className={`w-7 h-7 rounded-xl flex items-center justify-center transition-all ${
                                 isSetChecked
-                                  ? 'bg-emerald-500 text-slate-950 font-bold'
-                                  : 'bg-slate-800 border border-slate-700 hover:border-orange-500 text-slate-500'
+                                  ? 'bg-[var(--success)] text-[var(--accent-ink)] font-bold'
+                                  : 'bg-[var(--surface-raised)] border border-[var(--border-strong)] hover:border-[var(--accent)] text-[var(--text-faint)]'
                               }`}
                             >
                               <Check size={14} strokeWidth={isSetChecked ? 3 : 2} />

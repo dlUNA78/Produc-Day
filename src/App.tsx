@@ -9,7 +9,6 @@ import { Activity, Task } from './types';
 import { Check, Plus } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import BottomNav, { TabType } from './components/BottomNav';
-import SpecularButton from './components/SpecularButton';
 import CreateEntryModal from './components/CreateEntryModal';
 import { formatDateKey } from './components/WeeklyCalendar';
 import HomeView from './views/HomeView';
@@ -132,7 +131,7 @@ export default function App() {
   useEffect(() => () => { if (toastTimer.current) window.clearTimeout(toastTimer.current); }, []);
 
   return (
-    <div className="max-w-md mx-auto min-h-dvh bg-[var(--canvas)] border-x border-[var(--border)]/60 relative overflow-hidden flex flex-col font-sans">
+    <div className="max-w-[430px] mx-auto min-h-dvh bg-[var(--canvas)] border-x border-[var(--border)]/60 relative overflow-hidden flex flex-col font-sans">
       
       {/* Active Tab View Rendering */}
       <div className="flex-1 pb-20 overflow-y-auto">
@@ -168,7 +167,7 @@ export default function App() {
           <button
             onClick={() => { setEditingEntry(null); setIsModalOpen(true); }}
             aria-label="Crear una tarea o actividad"
-            className="mb-3 mr-1 w-14 h-14 bg-[var(--accent)] text-[#17120e] rounded-2xl flex items-center justify-center shadow-[0_12px_32px_rgba(0,0,0,0.35)] hover:bg-[var(--accent-strong)] active:scale-95 transition-all pointer-events-auto"
+            className="mb-3 mr-1 w-14 h-14 bg-[var(--accent)] text-[var(--accent-ink)] rounded-[18px] border border-[var(--accent)] flex items-center justify-center shadow-[var(--shadow-soft)] hover:bg-[var(--accent-strong)] active:scale-95 transition-all pointer-events-auto"
           >
             <Plus size={25} strokeWidth={2.4} />
           </button>

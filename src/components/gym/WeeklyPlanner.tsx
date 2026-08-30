@@ -40,17 +40,17 @@ const dayNames = [
 ];
 
 const muscleColors: Record<MuscleGroup, string> = {
-  Pecho: 'bg-red-950/40 text-red-400 border-red-800/40',
-  Espalda: 'bg-indigo-950/40 text-indigo-400 border-indigo-800/40',
-  Hombros: 'bg-amber-950/40 text-amber-400 border-amber-800/40',
-  Bíceps: 'bg-purple-950/40 text-purple-400 border-purple-800/40',
-  Tríceps: 'bg-rose-950/40 text-rose-400 border-rose-800/40',
-  Cuádriceps: 'bg-orange-950/40 text-orange-400 border-orange-800/40',
-  Isquios: 'bg-yellow-950/40 text-yellow-400 border-yellow-800/40',
-  Glúteos: 'bg-pink-950/40 text-pink-400 border-pink-800/40',
-  Gemelos: 'bg-teal-950/40 text-teal-400 border-teal-800/40',
-  'Core / Abdomen': 'bg-emerald-950/40 text-emerald-400 border-emerald-800/40',
-  'Cardio / Movilidad': 'bg-cyan-950/40 text-cyan-400 border-cyan-800/40',
+  Pecho: 'bg-[var(--danger-soft)] text-[var(--danger)] border-[var(--danger-border)]',
+  Espalda: 'bg-[var(--plum-soft)] text-[var(--plum)] border-[var(--plum-border)]',
+  Hombros: 'bg-[var(--warning-soft)] text-[var(--warning)] border-[var(--warning-border)]',
+  Bíceps: 'bg-[var(--plum-soft)] text-[var(--plum)] border-[var(--plum-border)]',
+  Tríceps: 'bg-[var(--danger-soft)] text-[var(--danger)] border-[var(--danger-border)]',
+  Cuádriceps: 'bg-[var(--accent-soft)] text-[var(--accent)] border-[var(--accent-border)]',
+  Isquios: 'bg-[var(--warning-soft)] text-[var(--warning)] border-[var(--warning-border)]',
+  Glúteos: 'bg-[var(--danger-soft)] text-[var(--danger)] border-[var(--danger-border)]',
+  Gemelos: 'bg-[var(--success-soft)] text-[var(--success)] border-[var(--success-border)]',
+  'Core / Abdomen': 'bg-[var(--success-soft)] text-[var(--success)] border-[var(--success-border)]',
+  'Cardio / Movilidad': 'bg-[var(--steel-soft)] text-[var(--steel)] border-[var(--steel-border)]',
 };
 
 export default function WeeklyPlanner({
@@ -173,23 +173,23 @@ export default function WeeklyPlanner({
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-bold text-orange-400 bg-orange-500/10 border border-orange-500/20 px-2 py-0.5 rounded-full uppercase tracking-wider">
+              <span className="text-[10px] font-bold text-[var(--accent)] bg-[var(--accent-soft)] border border-[var(--accent-border)] px-2 py-0.5 rounded-full uppercase tracking-wider">
                 {isCurrentWeek ? 'Semana Actual' : 'Planificación'}
               </span>
-              <span className="text-xs text-slate-400 font-medium">
+              <span className="text-xs text-[var(--text-muted)] font-medium">
                 {formatRange()}
               </span>
             </div>
-            <h2 className="text-lg font-bold text-white mt-0.5">
+            <h2 className="text-lg font-bold text-[var(--text)] mt-0.5">
               Planificador de la Semana
             </h2>
           </div>
 
-          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
+          <div className="flex items-center gap-1 bg-[var(--canvas)] p-1 rounded-xl border border-[var(--border)]">
             <button
               type="button"
               onClick={handlePrevWeek}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 transition-colors"
+              className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-muted)] transition-colors"
               title="Semana anterior"
             >
               <ChevronLeft size={16} />
@@ -198,7 +198,7 @@ export default function WeeklyPlanner({
               <button
                 type="button"
                 onClick={handleCurrentWeek}
-                className="px-2 py-1 text-[10px] font-bold text-orange-400 hover:bg-slate-900 rounded-md"
+                className="px-2 py-1 text-[10px] font-bold text-[var(--accent)] hover:bg-[var(--surface-muted)] rounded-xl"
               >
                 Hoy
               </button>
@@ -206,7 +206,7 @@ export default function WeeklyPlanner({
             <button
               type="button"
               onClick={handleNextWeek}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 transition-colors"
+              className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-muted)] transition-colors"
               title="Semana siguiente"
             >
               <ChevronRight size={16} />
@@ -219,7 +219,7 @@ export default function WeeklyPlanner({
           <button
             type="button"
             onClick={() => setIsPresetModalOpen(true)}
-            className="flex-1 py-2 px-3 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-xl text-xs font-semibold text-orange-400 flex items-center justify-center gap-1.5 transition-colors"
+            className="flex-1 py-2 px-3 bg-[var(--surface)] hover:bg-[var(--surface-muted)] border border-[var(--border)] rounded-xl text-xs font-semibold text-[var(--accent)] flex items-center justify-center gap-1.5 transition-colors"
           >
             <Sparkles size={14} />
             <span>Cargar Plantilla de Semana</span>
@@ -228,7 +228,7 @@ export default function WeeklyPlanner({
           <button
             type="button"
             onClick={onOpenCreateRoutine}
-            className="py-2 px-3 bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 rounded-xl text-xs font-semibold text-orange-300 flex items-center gap-1.5 transition-colors"
+            className="py-2 px-3 bg-[var(--accent-soft)] hover:bg-[var(--accent-soft)] border border-[var(--accent-border)] rounded-xl text-xs font-semibold text-[var(--accent)] flex items-center gap-1.5 transition-colors"
           >
             <Dumbbell size={14} />
             <span>+ Nueva Rutina</span>
@@ -237,24 +237,24 @@ export default function WeeklyPlanner({
       </div>
 
       {/* 2. Summary stats for this week */}
-      <div className="grid grid-cols-3 gap-2 bg-gradient-to-br from-slate-900/60 to-[#121212] border border-slate-800/80 rounded-2xl p-3">
+      <div className="grid grid-cols-3 gap-2 bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]  to-[#121212] border border-[var(--border)] rounded-2xl p-3">
         <div className="flex flex-col">
-          <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider">Entrenamientos</span>
-          <span className="text-lg font-black text-white">{totalWorkouts} / 7 días</span>
+          <span className="text-[9px] font-bold text-[var(--text-faint)] uppercase tracking-wider">Entrenamientos</span>
+          <span className="text-lg font-semibold text-[var(--text)]">{totalWorkouts} / 7 días</span>
         </div>
         <div className="flex flex-col">
-          <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider">Series Totales</span>
-          <span className="text-lg font-black text-orange-400 font-mono">{totalSets} series</span>
+          <span className="text-[9px] font-bold text-[var(--text-faint)] uppercase tracking-wider">Series Totales</span>
+          <span className="text-lg font-semibold text-[var(--accent)] font-mono">{totalSets} series</span>
         </div>
         <div className="flex flex-col">
-          <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider">Tiempo Proyectado</span>
-          <span className="text-lg font-black text-white font-mono">~{Math.round(totalEstimatedMinutes / 60 * 10) / 10}h</span>
+          <span className="text-[9px] font-bold text-[var(--text-faint)] uppercase tracking-wider">Tiempo Proyectado</span>
+          <span className="text-lg font-semibold text-[var(--text)] font-mono">~{Math.round(totalEstimatedMinutes / 60 * 10) / 10}h</span>
         </div>
       </div>
 
       {/* 3. 7-Day Interactive Assignment Grid */}
       <div className="flex flex-col gap-2.5">
-        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest px-1">
+        <span className="text-[11px] font-bold text-[var(--text-muted)] uppercase tracking-widest px-1">
           Distribución de Lunes a Domingo
         </span>
 
@@ -273,27 +273,27 @@ export default function WeeklyPlanner({
           return (
             <div
               key={day}
-              className={`bg-slate-900/40 border rounded-2xl p-3.5 transition-all flex flex-col gap-2.5 ${
+              className={`bg-[var(--surface)] border rounded-2xl p-3.5 transition-all flex flex-col gap-2.5 ${
                 isToday
-                  ? 'border-orange-500/50 bg-gradient-to-r from-orange-950/20 to-slate-900/60 shadow-[0_0_15px_rgba(249,115,22,0.08)]'
+                  ? 'border-[var(--accent-border)] bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]   shadow-[var(--shadow-soft)]'
                   : isRest
-                    ? 'border-slate-800/60 opacity-80'
-                    : 'border-slate-800 hover:border-slate-700'
+                    ? 'border-[var(--border)] opacity-80'
+                    : 'border-[var(--border)] hover:border-[var(--border-strong)]'
               }`}
             >
               {/* Day Header */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className={`text-xs font-black px-2 py-0.5 rounded-md font-mono ${
-                    isToday ? 'bg-orange-500 text-slate-950' : 'bg-slate-800 text-slate-300'
+                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-xl font-mono ${
+                    isToday ? 'bg-[var(--accent)] text-[var(--accent-ink)]' : 'bg-[var(--surface-raised)] text-[var(--text)]'
                   }`}>
                     {short} {dateObj.getDate()}
                   </span>
-                  <span className="text-xs font-semibold text-white">
+                  <span className="text-xs font-semibold text-[var(--text)]">
                     {name}
                   </span>
                   {isToday && (
-                    <span className="text-[9px] font-bold text-orange-400 uppercase tracking-wider bg-orange-500/10 px-1.5 py-0.2 rounded border border-orange-500/20">
+                    <span className="text-[9px] font-bold text-[var(--accent)] uppercase tracking-wider bg-[var(--accent-soft)] px-1.5 py-0.2 rounded border border-[var(--accent-border)]">
                       Hoy
                     </span>
                   )}
@@ -303,7 +303,7 @@ export default function WeeklyPlanner({
                 <button
                   type="button"
                   onClick={() => setActiveDayPicker(day)}
-                  className="px-2.5 py-1 bg-slate-950 border border-slate-800 hover:border-orange-500/50 text-slate-300 hover:text-orange-400 rounded-xl text-[11px] font-semibold flex items-center gap-1 transition-colors"
+                  className="px-2.5 py-1 bg-[var(--canvas)] border border-[var(--border)] hover:border-[var(--accent)] text-[var(--text)] hover:text-[var(--accent-strong)] rounded-xl text-[11px] font-semibold flex items-center gap-1 transition-colors"
                 >
                   <Edit2 size={12} />
                   <span>{isRest ? 'Asignar' : 'Cambiar'}</span>
@@ -314,29 +314,29 @@ export default function WeeklyPlanner({
               {isRest ? (
                 <div 
                   onClick={() => setActiveDayPicker(day)}
-                  className="flex items-center gap-2.5 p-2 bg-slate-950/40 border border-dashed border-slate-800 rounded-xl cursor-pointer hover:bg-slate-900/30 transition-colors"
+                  className="flex items-center gap-2.5 p-2 bg-[var(--canvas)] border border-dashed border-[var(--border)] rounded-xl cursor-pointer hover:bg-[var(--surface-muted)] transition-colors"
                 >
-                  <div className="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-500">
+                  <div className="w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-faint)]">
                     <Coffee size={15} />
                   </div>
                   <div>
-                    <span className="text-xs font-medium text-slate-400">Descanso / Recuperación activa</span>
-                    <p className="text-[10px] text-slate-400">Toca para programar un entrenamiento</p>
+                    <span className="text-xs font-medium text-[var(--text-muted)]">Descanso / Recuperación activa</span>
+                    <p className="text-[10px] text-[var(--text-muted)]">Toca para programar un entrenamiento</p>
                   </div>
                 </div>
               ) : routine ? (
-                <div className="flex flex-col gap-2 p-2.5 bg-slate-950/60 border border-slate-800/80 rounded-xl">
+                <div className="flex flex-col gap-2 p-2.5 bg-[var(--canvas)] border border-[var(--border)] rounded-xl">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-bold text-orange-400 uppercase bg-orange-500/10 border border-orange-500/20 px-2 py-0.5 rounded-md font-mono">
+                      <span className="text-[10px] font-bold text-[var(--accent)] uppercase bg-[var(--accent-soft)] border border-[var(--accent-border)] px-2 py-0.5 rounded-xl font-mono">
                         {routine.shortName}
                       </span>
-                      <h4 className="text-xs font-bold text-white truncate max-w-[200px]">
+                      <h4 className="text-xs font-bold text-[var(--text)] truncate max-w-[200px]">
                         {routine.name}
                       </h4>
                     </div>
 
-                    <span className="text-[10px] text-slate-400 font-mono">
+                    <span className="text-[10px] text-[var(--text-muted)] font-mono">
                       {routine.exercises.length} ejercicios • {routine.estimatedMinutes || 60}m
                     </span>
                   </div>
@@ -347,7 +347,7 @@ export default function WeeklyPlanner({
                       <span
                         key={m}
                         className={`text-[9px] font-bold px-2 py-0.5 rounded border ${
-                          muscleColors[m] || 'bg-slate-800 text-slate-400'
+                          muscleColors[m] || 'bg-[var(--surface-raised)] text-[var(--text-muted)]'
                         }`}
                       >
                         {m}
@@ -360,7 +360,7 @@ export default function WeeklyPlanner({
                     <button
                       type="button"
                       onClick={() => onSelectRoutineToEdit(routine.id)}
-                      className="text-[10px] font-bold text-orange-400 hover:text-orange-300 flex items-center gap-1 hover:underline"
+                      className="text-[10px] font-bold text-[var(--accent)] hover:text-[var(--accent-strong)] flex items-center gap-1 hover:underline"
                     >
                       <Layers size={11} />
                       <span>Ver / Modificar ejercicios</span>
@@ -368,7 +368,7 @@ export default function WeeklyPlanner({
                   </div>
                 </div>
               ) : (
-                <div className="text-xs text-red-400 p-2 bg-red-950/20 border border-red-900/30 rounded-xl">
+                <div className="text-xs text-[var(--danger)] p-2 bg-[var(--danger-soft)] border border-[var(--danger-border)] rounded-xl">
                   Rutina no encontrada. Toca para asignar una.
                 </div>
               )}
@@ -386,7 +386,7 @@ export default function WeeklyPlanner({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setActiveDayPicker(null)}
-              className="absolute inset-0 bg-[#050505]/85 backdrop-blur-md"
+              className="absolute inset-0 bg-[color:var(--surface-glass)] backdrop-blur-md"
             />
 
             <motion.div
@@ -394,21 +394,21 @@ export default function WeeklyPlanner({
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              className="relative bg-[#0E0E0E] border-t sm:border border-slate-800/80 rounded-t-[32px] sm:rounded-3xl p-6 pb-8 w-full max-w-md max-h-[85vh] overflow-y-auto scrollbar-hide flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)]"
+              className="relative bg-[var(--surface)] border-t sm:border border-[var(--border)] rounded-t-[32px] sm:rounded-3xl p-6 pb-8 w-full max-w-md max-h-[85vh] overflow-y-auto scrollbar-hide flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)]"
             >
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="text-base font-bold text-white flex items-center gap-2">
-                    <Calendar size={16} className="text-orange-400" />
+                  <h3 className="text-base font-bold text-[var(--text)] flex items-center gap-2">
+                    <Calendar size={16} className="text-[var(--accent)]" />
                     Asignar para {dayNames.find(d => d.day === activeDayPicker)?.name}
                   </h3>
-                  <p className="text-xs text-slate-500">¿Qué entrenamiento harás este día?</p>
+                  <p className="text-xs text-[var(--text-faint)]">¿Qué entrenamiento harás este día?</p>
                 </div>
 
                 <button
                   type="button"
                   onClick={() => setActiveDayPicker(null)}
-                  className="px-2.5 py-1 text-xs text-slate-400 hover:text-white bg-slate-900 border border-slate-800 rounded-lg"
+                  className="px-2.5 py-1 text-xs text-[var(--text-muted)] hover:text-[var(--text)] bg-[var(--surface)] border border-[var(--border)] rounded-lg"
                 >
                   Cerrar
                 </button>
@@ -421,22 +421,22 @@ export default function WeeklyPlanner({
                   onClick={() => handleSetDayRoutine(activeDayPicker, 'REST')}
                   className={`p-3 rounded-2xl border flex items-center justify-between transition-all ${
                     currentWeekSchedule[activeDayPicker] === 'REST' || !currentWeekSchedule[activeDayPicker]
-                      ? 'bg-slate-800/70 border-orange-500/50 text-white'
-                      : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700'
+                      ? 'bg-[var(--surface-raised)] border-[var(--accent-border)] text-[var(--text)]'
+                      : 'bg-[var(--canvas)] border-[var(--border)] text-[var(--text)] hover:border-[var(--border-strong)]'
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400">
+                    <div className="w-8 h-8 rounded-xl bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)]">
                       <Coffee size={16} />
                     </div>
                     <div className="text-left">
-                      <div className="text-xs font-bold text-white">Día de Descanso</div>
-                      <div className="text-[10px] text-slate-500">Recuperación muscular activa</div>
+                      <div className="text-xs font-bold text-[var(--text)]">Día de Descanso</div>
+                      <div className="text-[10px] text-[var(--text-faint)]">Recuperación muscular activa</div>
                     </div>
                   </div>
 
                   {(currentWeekSchedule[activeDayPicker] === 'REST' || !currentWeekSchedule[activeDayPicker]) && (
-                    <div className="w-5 h-5 rounded-full bg-orange-500 text-slate-950 flex items-center justify-center">
+                    <div className="w-5 h-5 rounded-full bg-[var(--accent)] text-[var(--accent-ink)] flex items-center justify-center">
                       <Check size={12} strokeWidth={3} />
                     </div>
                   )}
@@ -453,31 +453,31 @@ export default function WeeklyPlanner({
                       onClick={() => handleSetDayRoutine(activeDayPicker, rt.id)}
                       className={`p-3 rounded-2xl border flex items-center justify-between transition-all ${
                         isSelected
-                          ? 'bg-orange-950/20 border-orange-500/60 text-white shadow-sm'
-                          : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700'
+                          ? 'bg-[var(--accent-soft)] border-[var(--accent-border)] text-[var(--text)] shadow-sm'
+                          : 'bg-[var(--canvas)] border-[var(--border)] text-[var(--text)] hover:border-[var(--border-strong)]'
                       }`}
                     >
                       <div className="flex items-center gap-3 text-left">
-                        <div className="w-8 h-8 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400">
+                        <div className="w-8 h-8 rounded-xl bg-[var(--accent-soft)] border border-[var(--accent-border)] flex items-center justify-center text-[var(--accent)]">
                           <Dumbbell size={16} />
                         </div>
                         <div>
                           <div className="flex items-center gap-1.5">
-                            <span className="text-[9px] font-bold text-orange-400 bg-orange-500/10 px-1.5 py-0.2 rounded font-mono">
+                            <span className="text-[9px] font-bold text-[var(--accent)] bg-[var(--accent-soft)] px-1.5 py-0.2 rounded font-mono">
                               {rt.shortName}
                             </span>
-                            <span className="text-xs font-bold text-white">
+                            <span className="text-xs font-bold text-[var(--text)]">
                               {rt.name}
                             </span>
                           </div>
-                          <div className="text-[10px] text-slate-400 font-mono mt-0.5">
+                          <div className="text-[10px] text-[var(--text-muted)] font-mono mt-0.5">
                             {rt.exercises.length} ejercicios • {rt.estimatedMinutes || 60}m • {rt.targetMuscles.slice(0, 3).join(', ')}
                           </div>
                         </div>
                       </div>
 
                       {isSelected && (
-                        <div className="w-5 h-5 rounded-full bg-orange-500 text-slate-950 flex items-center justify-center">
+                        <div className="w-5 h-5 rounded-full bg-[var(--accent)] text-[var(--accent-ink)] flex items-center justify-center">
                           <Check size={12} strokeWidth={3} />
                         </div>
                       )}
@@ -499,7 +499,7 @@ export default function WeeklyPlanner({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsPresetModalOpen(false)}
-              className="absolute inset-0 bg-[#050505]/85 backdrop-blur-md"
+              className="absolute inset-0 bg-[color:var(--surface-glass)] backdrop-blur-md"
             />
 
             <motion.div
@@ -507,21 +507,21 @@ export default function WeeklyPlanner({
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              className="relative bg-[#0E0E0E] border-t sm:border border-slate-800/80 rounded-t-[32px] sm:rounded-3xl p-6 pb-8 w-full max-w-md max-h-[85vh] overflow-y-auto scrollbar-hide flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)]"
+              className="relative bg-[var(--surface)] border-t sm:border border-[var(--border)] rounded-t-[32px] sm:rounded-3xl p-6 pb-8 w-full max-w-md max-h-[85vh] overflow-y-auto scrollbar-hide flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)]"
             >
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="text-base font-bold text-white flex items-center gap-2">
-                    <Sparkles size={16} className="text-orange-400" />
+                  <h3 className="text-base font-bold text-[var(--text)] flex items-center gap-2">
+                    <Sparkles size={16} className="text-[var(--accent)]" />
                     Plantillas de Semana
                   </h3>
-                  <p className="text-xs text-slate-500">Aplica una estructura completa a esta semana</p>
+                  <p className="text-xs text-[var(--text-faint)]">Aplica una estructura completa a esta semana</p>
                 </div>
 
                 <button
                   type="button"
                   onClick={() => setIsPresetModalOpen(false)}
-                  className="px-2.5 py-1 text-xs text-slate-400 hover:text-white bg-slate-900 border border-slate-800 rounded-lg"
+                  className="px-2.5 py-1 text-xs text-[var(--text-muted)] hover:text-[var(--text)] bg-[var(--surface)] border border-[var(--border)] rounded-lg"
                 >
                   Cerrar
                 </button>
@@ -531,12 +531,12 @@ export default function WeeklyPlanner({
                 {allSplits.map((split) => (
                   <div
                     key={split.id}
-                    className="p-3.5 bg-slate-950 border border-slate-800 hover:border-orange-500/40 rounded-2xl flex flex-col gap-2 transition-all"
+                    className="p-3.5 bg-[var(--canvas)] border border-[var(--border)] hover:border-[var(--accent)] rounded-2xl flex flex-col gap-2 transition-all"
                   >
                     <div className="flex items-start justify-between">
                       <div>
-                        <h4 className="text-xs font-bold text-white">{split.name}</h4>
-                        <p className="text-[10px] text-slate-400 mt-0.5 leading-relaxed">
+                        <h4 className="text-xs font-bold text-[var(--text)]">{split.name}</h4>
+                        <p className="text-[10px] text-[var(--text-muted)] mt-0.5 leading-relaxed">
                           {split.description}
                         </p>
                       </div>
@@ -544,14 +544,14 @@ export default function WeeklyPlanner({
                       <button
                         type="button"
                         onClick={() => handleApplySplitTemplate(split)}
-                        className="px-3 py-1.5 bg-orange-500 hover:bg-orange-400 text-slate-950 font-bold text-xs rounded-xl transition-colors shrink-0 shadow-sm"
+                        className="px-3 py-1.5 bg-[var(--accent)] hover:bg-[var(--accent-strong)] text-[var(--accent-ink)] font-bold text-xs rounded-xl transition-colors shrink-0 shadow-sm"
                       >
                         Aplicar
                       </button>
                     </div>
 
                     {/* Schedule preview tags */}
-                    <div className="flex items-center gap-1 pt-1 border-t border-slate-800/60">
+                    <div className="flex items-center gap-1 pt-1 border-t border-[var(--border)]">
                       {dayNames.map(({ day, short }) => {
                         const rId = split.schedule[day];
                         const isR = !rId || rId === 'REST';
@@ -561,7 +561,7 @@ export default function WeeklyPlanner({
                           <div
                             key={day}
                             className={`flex-1 text-center py-1 rounded text-[9px] font-mono font-semibold ${
-                              isR ? 'bg-slate-900 text-slate-500' : 'bg-orange-500/20 text-orange-300 border border-orange-500/30'
+                              isR ? 'bg-[var(--surface)] text-[var(--text-faint)]' : 'bg-[var(--accent-soft)] text-[var(--accent)] border border-[var(--accent-border)]'
                             }`}
                           >
                             <div>{short}</div>

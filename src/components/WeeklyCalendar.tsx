@@ -145,7 +145,7 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
               <button
                 type="button"
                 onClick={handlePrevMonth}
-                className="w-7 h-7 rounded-lg bg-black border border-white/10 flex items-center justify-center text-zinc-500 hover:text-white hover:border-slate-700 transition-colors"
+                className="w-7 h-7 rounded-lg bg-[var(--canvas)] border border-[var(--border)] flex items-center justify-center text-[var(--text-faint)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
                 title="Mes anterior"
               >
                 <ChevronLeft size={14} />
@@ -160,7 +160,7 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
               <button
                 type="button"
                 onClick={handleNextMonth}
-                className="w-7 h-7 rounded-lg bg-black border border-white/10 flex items-center justify-center text-zinc-500 hover:text-white hover:border-slate-700 transition-colors"
+                className="w-7 h-7 rounded-lg bg-[var(--canvas)] border border-[var(--border)] flex items-center justify-center text-[var(--text-faint)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
                 title="Mes siguiente"
               >
                 <ChevronRight size={14} />
@@ -208,17 +208,17 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
                   aria-pressed={isSelected}
                   className={`relative flex flex-col items-center justify-center w-11 h-14 rounded-[16px] border transition-all ${
                     isSelected
-                      ? 'bg-[var(--accent)] border-[var(--accent)] text-[#17120e]'
+                      ? 'bg-[var(--accent)] border-[var(--accent)] text-[var(--accent-ink)]'
                       : 'bg-transparent border-transparent hover:bg-[var(--surface)]'
                   }`}
                 >
                   <span className={`text-[10px] font-bold mb-1 ${
-                    isSelected ? 'text-[#17120e]/70' : 'text-[var(--text-faint)]'
+                    isSelected ? 'text-[var(--text-muted)]' : 'text-[var(--text-faint)]'
                   }`}>
                     {dayNames[index]}
                   </span>
                   <span className={`text-sm font-semibold ${
-                    isSelected ? 'text-[#17120e]' : isToday ? 'text-[var(--text)]' : 'text-[var(--text-muted)]'
+                    isSelected ? 'text-[var(--accent-ink)]' : isToday ? 'text-[var(--text)]' : 'text-[var(--text-muted)]'
                   }`}>
                     {date.getDate()}
                   </span>
@@ -226,10 +226,10 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
                   {/* Indicator dots */}
                   <div className="flex items-center gap-1 mt-0.5 h-1">
                     {hasItems && (
-                      <div className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-[#17120e]' : 'bg-[var(--accent)]'}`} />
+                      <div className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-[var(--accent-ink)]' : 'bg-[var(--accent)]'}`} />
                     )}
                     {isToday && !hasItems && (
-                      <div className={`w-1 h-1 rounded-full ${isSelected ? 'bg-black/50' : 'bg-white/30'}`} />
+                      <div className={`w-1 h-1 rounded-full ${isSelected ? 'bg-[var(--canvas)]' : 'bg-[var(--surface-soft)]'}`} />
                     )}
                   </div>
                 </button>
@@ -244,12 +244,12 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="bg-black/40 border border-white/10/80 rounded-md p-3.5 shadow-xl backdrop-blur-sm overflow-hidden"
+            className="bg-[var(--canvas)] border border-[var(--border)]/80 rounded-md p-3.5 shadow-xl backdrop-blur-sm overflow-hidden"
           >
             {/* Day name headers */}
-            <div className="grid grid-cols-7 gap-1 text-center mb-2 pb-2 border-b border-white/10/60">
+            <div className="grid grid-cols-7 gap-1 text-center mb-2 pb-2 border-b border-[var(--border)]/60">
               {dayNames.map(day => (
-                <span key={day} className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">
+                <span key={day} className="text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-wider">
                   {day}
                 </span>
               ))}
@@ -272,12 +272,12 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
                     }}
                     className={`relative flex flex-col items-center justify-center h-10 rounded-xl transition-all ${
                       isSelected
-                        ? 'bg-[white] text-black font-semibold shadow-sm shadow-[white]/20'
+                        ? 'bg-[white] text-[var(--accent-ink)] font-semibold shadow-sm shadow-[white]/20'
                         : isToday
                           ? 'bg-[white]/10 text-[white]'
                           : isCurrentMonth
-                            ? 'text-white hover:bg-[#1C1C1E]'
-                            : 'text-zinc-600 hover:bg-[#1C1C1E]/50'
+                            ? 'text-[var(--text)] hover:bg-[var(--surface)]'
+                            : 'text-[var(--text-faint)] hover:bg-[var(--surface)]'
                     }`}
                   >
                     <span className="text-xs">{date.getDate()}</span>
@@ -285,7 +285,7 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
                     {/* Event Dot */}
                     <div className="h-1 flex items-center justify-center mt-0.5">
                       {hasItems && (
-                        <div className={`w-1 h-1 rounded-full ${isSelected ? 'bg-black' : 'bg-[white]'}`} />
+                        <div className={`w-1 h-1 rounded-full ${isSelected ? 'bg-[var(--canvas)]' : 'bg-[white]'}`} />
                       )}
                     </div>
                   </button>
@@ -293,9 +293,9 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
               })}
             </div>
 
-            <div className="mt-3 pt-2 border-t border-white/10/60 flex items-center justify-between text-[11px] text-zinc-500 px-1">
+            <div className="mt-3 pt-2 border-t border-[var(--border)]/60 flex items-center justify-between text-[11px] text-[var(--text-faint)] px-1">
               <div className="flex items-center gap-2">
-                <span className="flex items-center gap-1 text-[10px] text-zinc-500">
+                <span className="flex items-center gap-1 text-[10px] text-[var(--text-faint)]">
                   <span className="w-1.5 h-1.5 rounded-full bg-[white] inline-block" /> Con actividades
                 </span>
               </div>

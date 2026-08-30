@@ -591,119 +591,65 @@ export default function GymView({ onAddActivity }: GymViewProps) {
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden pb-24 relative">
-      {/* Top Header */}
-      <header className="pt-12 pb-3 px-6 border-b border-slate-900 flex flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-white mb-0.5">Entrenamiento</h1>
-            <p className="text-zinc-500 text-xs font-medium uppercase tracking-widest">
-              {activeSplit.name}
-            </p>
+      {/* Gym command header */}
+      <header className="px-5 pt-[max(2rem,env(safe-area-inset-top))] pb-4">
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <p className="text-sm text-[var(--text-muted)]">Movimiento</p>
+            <h1 className="mt-1 text-[28px] font-semibold tracking-[-0.03em] text-[var(--text)]">Entrenamiento</h1>
+            <p className="mt-1 truncate text-sm text-[var(--text-faint)]">{activeSplit.name}</p>
           </div>
-
-          <button
-            type="button"
-            onClick={() => setIsSplitModalOpen(true)}
-            className="p-2 bg-black border border-white/10 hover:border-white/30 rounded-xl text-white hover:text-zinc-300 transition-colors flex items-center gap-1.5 text-xs font-semibold"
-          >
-            <Layers size={15} />
+          <button type="button" onClick={() => setIsSplitModalOpen(true)} className="ui-button-secondary shrink-0 px-3">
+            <Layers size={17} />
             <span>Planes</span>
           </button>
         </div>
 
-        {/* PROG BANNER */}
         {programSettings && progStats ? (
-          <button 
-            onClick={() => setIsProgramModalOpen(true)}
-            className="w-full flex items-center justify-between bg-gradient-to-r from-zinc-900 to-zinc-900/50 border border-white/10 hover:border-white/30 rounded-md p-3 transition-colors text-left"
-          >
-            <div className="flex flex-col gap-0.5">
-              <span className="text-[10px] text-white font-bold uppercase tracking-wider flex items-center gap-1">
-                <Target size={12} />
-                Fase Actual
+          <button type="button" onClick={() => setIsProgramModalOpen(true)} className="ui-card-raised mt-5 flex w-full items-center justify-between gap-4 p-4 text-left">
+            <span className="flex min-w-0 items-center gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[var(--accent-soft)] text-[var(--accent)]"><Target size={18} /></span>
+              <span className="min-w-0">
+                <span className="block text-xs font-medium text-[var(--text-muted)]">Programa activo</span>
+                <span className="mt-0.5 block truncate text-sm font-semibold text-[var(--text)]">
+                  {progStats.currentWeek === 0 ? 'Inicia pronto' : progStats.isFinished ? 'Programa finalizado' : `Semana ${progStats.currentWeek} de ${programSettings.durationWeeks}`}
+                </span>
               </span>
-              <span className="text-sm font-bold text-white">
-                {progStats.currentWeek === 0 
-                  ? 'Inicia pronto' 
-                  : progStats.isFinished 
-                    ? 'Programa Finalizado' 
-                    : `Semana ${progStats.currentWeek} de ${programSettings.durationWeeks}`}
-              </span>
-            </div>
-            
-            <div className="flex flex-col items-end gap-0.5">
-              <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
-                Objetivo de Peso
-              </span>
-              <span className="text-sm font-bold text-white font-mono">
-                {programSettings.startWeight} <span className="text-zinc-500 text-xs">→</span> {programSettings.targetWeight}kg
-              </span>
-            </div>
+            </span>
+            <span className="shrink-0 text-right">
+              <span className="block text-[10px] uppercase tracking-[0.1em] text-[var(--text-faint)]">Objetivo</span>
+              <span className="mt-1 block text-sm font-semibold text-[var(--text)]">{programSettings.targetWeight} kg</span>
+            </span>
           </button>
         ) : (
-          <button
-            onClick={() => setIsProgramModalOpen(true)}
-            className="w-full py-2.5 px-4 bg-black/60 hover:bg-black border border-dashed border-slate-700 hover:border-white/30 rounded-md text-xs font-semibold text-zinc-500 hover:text-white transition-colors flex items-center justify-center gap-2"
-          >
-            <Target size={14} />
-            <span>Configurar meta y duración de programa</span>
+          <button type="button" onClick={() => setIsProgramModalOpen(true)} className="mt-5 flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-[var(--border-strong)] bg-[var(--surface)] px-4 text-sm font-medium text-[var(--text-muted)] transition-colors hover:bg-[var(--surface-raised)] hover:text-[var(--text)]">
+            <Target size={17} />
+            <span>Configurar programa y objetivo</span>
           </button>
         )}
 
-        {/* Main Functional Gym Tabs */}
-        <div className="flex bg-black p-1 rounded-md border border-white/10/90 shadow-inner mt-1">
-          <button
-            type="button"
-            onClick={() => setGymSubTab('today')}
-            className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 ${
-              gymSubTab === 'today'
-                ? 'bg-white text-black '
-                : 'text-zinc-500 hover:text-white'
-            }`}
-          >
-            <Dumbbell size={14} />
-            <span>Hoy</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setGymSubTab('planner')}
-            className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 ${
-              gymSubTab === 'planner'
-                ? 'bg-white text-black '
-                : 'text-zinc-500 hover:text-white'
-            }`}
-          >
-            <CalendarDays size={14} />
-            <span>Plan Semanal</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setGymSubTab('routines')}
-            className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 ${
-              gymSubTab === 'routines'
-                ? 'bg-white text-black '
-                : 'text-zinc-500 hover:text-white'
-            }`}
-          >
-            <ListOrdered size={14} />
-            <span className="hidden sm:inline">Rutinas</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setGymSubTab('progress')}
-            className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 ${
-              gymSubTab === 'progress'
-                ? 'bg-white text-black '
-                : 'text-zinc-500 hover:text-white'
-            }`}
-          >
-            <BarChart2 size={14} />
-            <span>Progreso</span>
-          </button>
-        </div>
+        <nav aria-label="Secciones de entrenamiento" className="mt-4 grid grid-cols-4 gap-1 rounded-[20px] border border-[var(--border)] bg-[var(--surface)] p-1.5">
+          {([
+            { id: 'today', label: 'Hoy', icon: Dumbbell },
+            { id: 'planner', label: 'Semana', icon: CalendarDays },
+            { id: 'routines', label: 'Rutinas', icon: ListOrdered },
+            { id: 'progress', label: 'Progreso', icon: BarChart2 },
+          ] as const).map(({ id, label, icon: Icon }) => {
+            const selected = gymSubTab === id;
+            return (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setGymSubTab(id)}
+                aria-current={selected ? 'page' : undefined}
+                className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-[15px] text-[10px] font-medium transition-colors ${selected ? 'border border-[var(--accent-border)] bg-[var(--accent-soft)] text-[var(--text)]' : 'border border-transparent text-[var(--text-faint)] hover:text-[var(--text-muted)]'}`}
+              >
+                <Icon size={17} className={selected ? 'text-[var(--accent)]' : ''} />
+                <span>{label}</span>
+              </button>
+            );
+          })}
+        </nav>
       </header>
 
       {/* Main Content Area */}
@@ -711,29 +657,18 @@ export default function GymView({ onAddActivity }: GymViewProps) {
         {/* SUBTAB 1: TODAY / ACTIVE WORKOUT */}
         {gymSubTab === 'today' && (
           <>
-            {/* Quick Stats Grid */}
-            <div className="grid grid-cols-2 gap-3 px-6 mb-5">
-              <div className="bg-gradient-to-br from-zinc-900 to-zinc-900/60 border border-white/10 rounded-md p-3.5 flex flex-col">
-                <div className="flex items-center justify-between mb-1">
-                  <Trophy size={15} className="text-white" />
-                  <span className="text-[9px] font-bold text-white/80 uppercase tracking-widest font-mono">
-                    Racha
-                  </span>
-                </div>
-                <span className="text-2xl font-black text-white">{streakDays}</span>
-                <span className="text-[10px] text-zinc-500 mt-0.5">Días consecutivos</span>
-              </div>
-
-              <div className="bg-gradient-to-br from-zinc-900 to-zinc-900/60 border border-white/10 rounded-md p-3.5 flex flex-col">
-                <div className="flex items-center justify-between mb-1">
-                  <CheckCircle2 size={15} className="text-white" />
-                  <span className="text-[9px] font-bold text-white/80 uppercase tracking-widest font-mono">
-                    Sesiones
-                  </span>
-                </div>
-                <span className="text-2xl font-black text-white">{totalCompletedWorkouts}</span>
-                <span className="text-[10px] text-zinc-500 mt-0.5">Entrenamientos listos</span>
-              </div>
+            {/* Quiet performance summary */}
+            <div className="mb-5 grid grid-cols-2 gap-3 px-5">
+              <section className="ui-card p-4">
+                <div className="flex items-center justify-between text-[var(--text-muted)]"><span className="text-xs font-medium">Racha</span><Trophy size={17} /></div>
+                <p className="mt-5 text-2xl font-semibold tracking-[-0.03em] text-[var(--text)]">{streakDays}</p>
+                <p className="mt-1 text-xs text-[var(--text-faint)]">días consecutivos</p>
+              </section>
+              <section className="ui-card p-4">
+                <div className="flex items-center justify-between text-[var(--text-muted)]"><span className="text-xs font-medium">Sesiones</span><CheckCircle2 size={17} /></div>
+                <p className="mt-5 text-2xl font-semibold tracking-[-0.03em] text-[var(--text)]">{totalCompletedWorkouts}</p>
+                <p className="mt-1 text-xs text-[var(--text-faint)]">completadas</p>
+              </section>
             </div>
 
             {/* Dynamic Gym Calendar (Week + Month) */}
@@ -884,60 +819,22 @@ export default function GymView({ onAddActivity }: GymViewProps) {
         routineName={currentRoutine?.name || 'Rutina Actual'}
       />
 
-      {/* Workout Completion Summary Celebration Modal */}
+      {/* Workout completion summary */}
       <AnimatePresence>
         {workoutFinishedSummary && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setWorkoutFinishedSummary(null)}
-              className="absolute inset-0 bg-[#050505]/85 backdrop-blur-md"
-            />
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative bg-[#0E0E0E] border border-white/10 rounded-none p-6 w-full max-w-sm flex flex-col items-center text-center  z-10"
-            >
-              <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-black  mb-4">
-                <Award size={32} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-5">
+            <motion.button type="button" aria-label="Cerrar resumen" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setWorkoutFinishedSummary(null)} className="absolute inset-0 bg-[color:var(--surface-glass)] backdrop-blur-xl" />
+            <motion.section initial={{ scale: 0.96, opacity: 0, y: 16 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.96, opacity: 0, y: 16 }} className="ui-card-raised relative z-10 w-full max-w-sm p-6 text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-[20px] bg-[var(--success-soft)] text-[var(--success)]"><Award size={27} /></div>
+              <p className="mt-5 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--success)]">Sesión completada</p>
+              <h3 className="mt-2 text-xl font-semibold text-[var(--text)]">{workoutFinishedSummary.routineName}</h3>
+              <p className="mt-2 text-sm text-[var(--text-muted)]">Buen trabajo. El entrenamiento quedó guardado en tu progreso.</p>
+              <div className="mt-6 grid grid-cols-2 gap-3">
+                <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4"><span className="block text-xs text-[var(--text-faint)]">Duración</span><span className="mt-1 block text-lg font-semibold text-[var(--text)]">{workoutFinishedSummary.durationMinutes} min</span></div>
+                <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4"><span className="block text-xs text-[var(--text-faint)]">Series</span><span className="mt-1 block text-lg font-semibold text-[var(--text)]">{workoutFinishedSummary.setsCompleted}</span></div>
               </div>
-
-              <span className="text-[10px] font-bold text-white uppercase tracking-widest mb-1">
-                ¡Gran Trabajo!
-              </span>
-              <h3 className="text-xl font-bold text-white mb-1">
-                Entrenamiento Finalizado
-              </h3>
-              <p className="text-xs text-zinc-500 mb-5">
-                {workoutFinishedSummary.routineName}
-              </p>
-
-              <div className="grid grid-cols-2 gap-3 w-full mb-6">
-                <div className="bg-black/60 border border-white/10 rounded-md p-3">
-                  <span className="text-[10px] text-zinc-500 font-bold uppercase block">Duración</span>
-                  <span className="text-lg font-bold text-white font-mono">
-                    {workoutFinishedSummary.durationMinutes} min
-                  </span>
-                </div>
-                <div className="bg-black/60 border border-white/10 rounded-md p-3">
-                  <span className="text-[10px] text-zinc-500 font-bold uppercase block">Series Realizadas</span>
-                  <span className="text-lg font-bold text-white font-mono">
-                    {workoutFinishedSummary.setsCompleted}
-                  </span>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setWorkoutFinishedSummary(null)}
-                className="w-full py-3.5 bg-white  text-black font-bold text-sm rounded-xl  transition-transform active:scale-95"
-              >
-                Continuar
-              </button>
-            </motion.div>
+              <button type="button" onClick={() => setWorkoutFinishedSummary(null)} className="ui-button-primary mt-6 w-full">Continuar</button>
+            </motion.section>
           </div>
         )}
       </AnimatePresence>
