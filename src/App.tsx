@@ -14,7 +14,6 @@ import { formatDateKey } from './components/WeeklyCalendar';
 import HomeView from './views/HomeView';
 import GymView from './views/GymView';
 import StatsView from './views/StatsView';
-import SettingsView from './views/SettingsView';
 import ProfileView from './views/ProfileView';
 
 export default function App() {
@@ -67,11 +66,11 @@ export default function App() {
   };
 
   useEffect(() => {
-    document.body.className = 'bg-black text-white antialiased selection:bg-white/30';
+    document.body.className = 'antialiased selection:bg-[var(--accent)]/30';
   }, []);
 
   return (
-    <div className="max-w-md mx-auto min-h-screen bg-black border-x border-white/5 relative overflow-hidden flex flex-col font-sans">
+    <div className="max-w-md mx-auto min-h-dvh bg-[var(--canvas)] border-x border-[var(--border)]/60 relative overflow-hidden flex flex-col font-sans">
       
       {/* Active Tab View Rendering */}
       <div className="flex-1 pb-20 overflow-y-auto">
@@ -94,10 +93,6 @@ export default function App() {
           <StatsView />
         )}
 
-        {activeTab === 'settings' && (
-          <SettingsView />
-        )}
-
         {activeTab === 'profile' && (
           <ProfileView />
         )}
@@ -106,12 +101,15 @@ export default function App() {
       {/* Floating Add Button & Nav */}
       <div className="fixed bottom-6 left-0 right-0 z-[60] max-w-md mx-auto flex flex-col items-end px-4 pb-safe pointer-events-none">
         
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="mb-4 w-14 h-14 bg-[white] text-black rounded-full flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform pointer-events-auto"
-        >
-          <Plus size={28} strokeWidth={2.5} />
-        </button>
+        {activeTab === 'home' && (
+          <button
+            onClick={() => setIsModalOpen(true)}
+            aria-label="Crear una tarea o actividad"
+            className="mb-3 mr-1 w-14 h-14 bg-[var(--accent)] text-[#17120e] rounded-2xl flex items-center justify-center shadow-[0_12px_32px_rgba(0,0,0,0.35)] hover:bg-[var(--accent-strong)] active:scale-95 transition-all pointer-events-auto"
+          >
+            <Plus size={25} strokeWidth={2.4} />
+          </button>
+        )}
 
         <div className="w-full pointer-events-auto">
           <BottomNav 

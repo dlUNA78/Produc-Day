@@ -1,17 +1,35 @@
 import React from 'react';
-import { User } from 'lucide-react';
+import { Bell, ChevronRight, Settings, SlidersHorizontal, User } from 'lucide-react';
 
 export default function ProfileView() {
   return (
-    <div className="p-6 h-full flex flex-col items-center justify-center text-center gap-4 mt-20">
-      <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-500">
-        <User size={32} />
-      </div>
-      <div>
-        <h2 className="text-xl font-bold text-white mb-2">Perfil</h2>
-        <p className="text-sm text-zinc-500 max-w-xs mx-auto">
-          Gestiona tu cuenta, tus metas personales y sincronización de datos.
-        </p>
+    <div className="px-5 pt-[max(2rem,env(safe-area-inset-top))] pb-28 min-h-full">
+      <p className="text-sm text-[var(--text-muted)]">Tu espacio</p>
+      <h1 className="mt-1 text-[28px] font-semibold tracking-[-0.03em] text-[var(--text)]">Perfil</h1>
+
+      <section className="mt-7 rounded-[20px] bg-[var(--surface)] border border-[var(--border)] p-5 flex items-center gap-4">
+        <div className="w-14 h-14 rounded-2xl bg-[var(--surface-raised)] flex items-center justify-center text-[var(--accent)]">
+          <User size={25} />
+        </div>
+        <div>
+          <h2 className="font-semibold text-[var(--text)]">David</h2>
+          <p className="text-sm text-[var(--text-muted)]">Construyendo constancia</p>
+        </div>
+      </section>
+
+      <h2 className="mt-8 mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--text-faint)]">Preferencias</h2>
+      <div className="overflow-hidden rounded-[20px] bg-[var(--surface)] border border-[var(--border)] divide-y divide-[var(--border)]">
+        {[
+          { label: 'Configuración', detail: 'Cuenta, datos y privacidad', icon: Settings },
+          { label: 'Notificaciones', detail: 'Recordatorios y avisos', icon: Bell },
+          { label: 'Personalización', detail: 'Objetivos y preferencias', icon: SlidersHorizontal },
+        ].map(({ label, detail, icon: Icon }) => (
+          <button key={label} className="w-full min-h-[68px] px-4 flex items-center gap-3 text-left hover:bg-[var(--surface-raised)] transition-colors">
+            <Icon size={19} className="text-[var(--text-muted)]" />
+            <span className="flex-1"><span className="block text-sm font-medium text-[var(--text)]">{label}</span><span className="block text-xs text-[var(--text-faint)]">{detail}</span></span>
+            <ChevronRight size={17} className="text-[var(--text-faint)]" />
+          </button>
+        ))}
       </div>
     </div>
   );

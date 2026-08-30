@@ -1,10 +1,9 @@
 import React from 'react';
 import Header from '../components/Header';
-import WeeklyCalendar from '../components/WeeklyCalendar';
+import WeeklyCalendar, { formatDateKey, parseDateKey } from '../components/WeeklyCalendar';
 import Timeline from '../components/Timeline';
 import { Activity, Task } from '../types';
-import { formatDateKey } from '../components/WeeklyCalendar';
-import { ChevronRight, CheckSquare } from 'lucide-react';
+import { ArrowUpRight, Check, Clock3, ListTodo, Plus } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface HomeViewProps {
@@ -16,92 +15,126 @@ interface HomeViewProps {
   onOpenCreate: () => void;
 }
 
-export default function HomeView({ 
-  activities, 
-  tasks, 
-  selectedDate, 
-  onSelectDate, 
+const longDate = new Intl.DateTimeFormat('es-ES', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+});
+
+export default function HomeView({
+  activities,
+  tasks,
+  selectedDate,
+  onSelectDate,
   onToggleItem,
-  onOpenCreate
+  onOpenCreate,
 }: HomeViewProps) {
-  // Filter based on selected date
-  const filteredActivities = activities.filter(a => a.date === selectedDate);
-  const filteredTasks = tasks.filter(t => t.date === selectedDate);
-  
+  const filteredActivities = activities.filter((activity) => activity.date === selectedDate);
+  const filteredTasks = tasks.filter((task) => task.date === selectedDate);
   const todayKey = formatDateKey(new Date());
-  const isViewingToday = selectedDate === todayKey;
+  const isToday = selectedDate === todayKey;
 
-  const hasItemsForDate = (dateKey: string) => {
-    return activities.some(a => a.date === dateKey) || tasks.some(t => t.date === dateKey);
-  };
+  const pendingItems = [
+    ...filteredActivities.filter((item) => !item.isCompleted).map((item) => ({
+      id: item.id,
+      type: 'activity' as const,
+      title: item.title,
+      time: item.startTime,
+      label: `${item.startTime} · ${item.category}`,
+    })),
+    ...filteredTasks.filter((item) => !item.isCompleted).map((item) => ({
+      id: item.id,
+      type: 'task' as const,
+      title: item.title,
+      time: item.time || '23:59',
+      label: item.time ? `${item.time} · Tarea` : 'Sin hora · Tarea',
+    })),
+  ].sort((a, b) => a.time.localeCompare(b.time));
 
-  const completedTasks = filteredTasks.filter(t => t.completed).length;
-  const totalTasks = filteredTasks.length;
+  const totalItems = filteredActivities.length + filteredTasks.length;
+  const completedItems = [...filteredActivities, ...filteredTasks].filter((item) => item.isCompleted).length;
+  const progress = totalItems ? Math.round((completedItems / totalItems) * 100) : 0;
+  const nextItem = pendingItems[0];
+
+  const hasItemsForDate = (dateKey: string) =>
+    activities.some((item) => item.date === dateKey) || tasks.some((item) => item.date === dateKey);
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden pb-24">
+    <div className="flex-1 flex flex-col pb-24">
       <Header />
-      
-      <WeeklyCalendar 
-        selectedDate={selectedDate} 
-        onSelectDate={onSelectDate} 
-        hasItemsForDate={hasItemsForDate}
-      />
 
-      <div className="flex-1 overflow-y-auto scrollbar-hide flex flex-col px-6">
-        <h2 className="text-lg font-bold text-white mb-4">Recent Activity</h2>
-        
-        {/* Full width Tasks Card */}
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
-          className="bg-[#1C1C1E] rounded-[24px] p-5 mb-4"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2 text-[white]">
-              <CheckSquare size={20} />
-              <span className="font-semibold text-white">Tareas</span>
-            </div>
-            <ChevronRight size={18} className="text-zinc-500" />
-          </div>
-          
-          <div className="flex items-end justify-between">
-            <div>
-              <h3 className="text-3xl font-bold text-white mb-1">
-                {completedTasks}<span className="text-xl text-zinc-500">/{totalTasks || 0}</span>
-              </h3>
-              <p className="text-xs text-zinc-500">Completadas hoy</p>
-            </div>
-            
-            {/* Mock Bar Chart */}
-            <div className="flex items-end gap-1.5 h-12">
-              {[40, 60, 30, 80, 50, 100, 70].map((h, i) => (
-                <div key={i} className="flex flex-col items-center gap-1">
-                  <div 
-                    className={`w-3.5 rounded-sm ${i === 5 ? 'bg-[white]' : 'bg-[white]/50'}`} 
-                    style={{ height: `${h}%` }}
-                  />
-                  <span className="text-[8px] text-zinc-500">
-                    {['L','M','M','J','V','S','D'][i]}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-
-        <h2 className="text-lg font-bold text-white mb-4">Planes del día</h2>
-        <div className="bg-[#1C1C1E] rounded-[24px] p-5 mb-8">
-          <Timeline 
-            activities={filteredActivities}
-            tasks={filteredTasks} 
-            onToggleItem={onToggleItem}
-            onOpenCreate={onOpenCreate}
-          />
+      <main>
+        <div className="px-5 mb-4">
+          <p className="text-[13px] capitalize text-[var(--text-muted)]">
+            {isToday ? 'Hoy' : longDate.format(parseDateKey(selectedDate))}
+          </p>
+          <h2 className="mt-1 text-[28px] leading-tight font-semibold tracking-[-0.03em] text-[var(--text)]">
+            {isToday ? 'Haz que hoy cuente.' : 'Planifica con intención.'}
+          </h2>
         </div>
-      </div>
+
+        <WeeklyCalendar
+          selectedDate={selectedDate}
+          onSelectDate={onSelectDate}
+          hasItemsForDate={hasItemsForDate}
+        />
+
+        <div className="px-5 space-y-5">
+          {nextItem ? (
+            <motion.section
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="relative overflow-hidden rounded-[20px] bg-[var(--surface-raised)] border border-[var(--border)] p-5"
+            >
+              <div className="absolute left-0 top-5 bottom-5 w-1 rounded-r-full bg-[var(--accent)]" />
+              <div className="flex items-start justify-between gap-4 pl-1">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 text-[var(--accent)]">
+                    <Clock3 size={15} />
+                    <span className="text-xs font-semibold uppercase tracking-[0.12em]">Lo siguiente</span>
+                  </div>
+                  <h3 className="mt-3 text-xl font-semibold text-[var(--text)] truncate">{nextItem.title}</h3>
+                  <p className="mt-1 text-sm text-[var(--text-muted)]">{nextItem.label}</p>
+                </div>
+                <button
+                  onClick={() => onToggleItem(nextItem.id, nextItem.type)}
+                  aria-label={`Completar ${nextItem.title}`}
+                  className="shrink-0 w-11 h-11 rounded-2xl bg-[var(--accent)] text-[#17120e] flex items-center justify-center hover:bg-[var(--accent-strong)] transition-colors"
+                >
+                  <Check size={20} strokeWidth={2.5} />
+                </button>
+              </div>
+            </motion.section>
+          ) : totalItems === 0 ? (
+            <section className="rounded-[20px] bg-[var(--surface)] border border-[var(--border)] p-5">
+              <div className="w-10 h-10 rounded-2xl bg-[var(--surface-raised)] text-[var(--accent)] flex items-center justify-center mb-4">
+                <Plus size={19} />
+              </div>
+              <h3 className="text-lg font-semibold text-[var(--text)]">Un día con espacio.</h3>
+              <p className="mt-1.5 text-sm leading-6 text-[var(--text-muted)]">Añade una prioridad o reserva tiempo para lo que importa.</p>
+              <button onClick={onOpenCreate} className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)]">
+                Crear primera entrada <ArrowUpRight size={16} />
+              </button>
+            </section>
+          ) : (
+            <section className="rounded-[20px] bg-[var(--surface)] border border-[var(--border)] p-5 flex items-center gap-4">
+              <div className="w-11 h-11 rounded-2xl bg-[var(--sage)]/15 text-[var(--sage)] flex items-center justify-center"><Check size={21} /></div>
+              <div><h3 className="font-semibold text-[var(--text)]">Todo listo por hoy</h3><p className="text-sm text-[var(--text-muted)]">Completaste tu agenda.</p></div>
+            </section>
+          )}
+
+          <section aria-label="Resumen del día" className="grid grid-cols-[1fr_auto] gap-4 items-center rounded-[20px] bg-[var(--surface)] border border-[var(--border)] p-5">
+            <div>
+              <div className="flex items-center gap-2 text-[var(--text-muted)]"><ListTodo size={16} /><span className="text-sm font-medium">Ritmo del día</span></div>
+              <p className="mt-3 text-2xl font-semibold text-[var(--text)]">{completedItems}<span className="text-base text-[var(--text-faint)]">/{totalItems}</span></p>
+              <div className="mt-3 h-1.5 bg-[var(--surface-muted)] rounded-full overflow-hidden"><div className="h-full bg-[var(--sage)] rounded-full transition-all" style={{ width: `${progress}%` }} /></div>
+            </div>
+            <span className="text-sm font-semibold text-[var(--sage)]">{progress}%</span>
+          </section>
+
+          <Timeline activities={filteredActivities} tasks={filteredTasks} onToggleItem={onToggleItem} onOpenCreate={onOpenCreate} />
+        </div>
+      </main>
     </div>
   );
 }
-
