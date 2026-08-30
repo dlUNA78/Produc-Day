@@ -6,7 +6,8 @@
 import React, { useState, useEffect } from 'react';
 import { MOCK_ACTIVITIES, MOCK_TASKS } from './data';
 import { Activity, Task } from './types';
-import { Plus } from 'lucide-react';
+import { Check, Plus } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import BottomNav, { TabType } from './components/BottomNav';
 import SpecularButton from './components/SpecularButton';
 import CreateEntryModal from './components/CreateEntryModal';
@@ -22,6 +23,12 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [selectedDate, setSelectedDate] = useState<string>(() => formatDateKey(new Date()));
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [confirmation, setConfirmation] = useState('');
+
+  const showConfirmation = (type: 'activity' | 'task') => {
+    setConfirmation(type === 'task' ? 'Tarea guardada en tu día' : 'Bloque añadido a tu agenda');
+    window.setTimeout(() => setConfirmation(''), 2600);
+  };
 
   const handleToggleTask = (id: string) => {
     setTasks(prev => prev.map(t => t.id === id ? { ...t, isCompleted: !t.isCompleted } : t));
@@ -124,8 +131,24 @@ export default function App() {
         onClose={() => setIsModalOpen(false)}
         onAddActivity={handleAddActivity}
         onAddTask={handleAddTask}
+        onCreated={showConfirmation}
         defaultDate={selectedDate}
       />
+
+      <AnimatePresence>
+        {confirmation && (
+          <motion.div
+            initial={{ opacity: 0, y: 16, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8 }}
+            role="status"
+            className="fixed z-[120] left-1/2 -translate-x-1/2 bottom-28 w-[calc(100%-2rem)] max-w-sm rounded-2xl bg-[var(--surface-raised)] border border-[var(--border)] shadow-2xl px-4 py-3 flex items-center gap-3"
+          >
+            <span className="w-8 h-8 shrink-0 rounded-xl bg-[var(--sage)]/15 text-[var(--sage)] flex items-center justify-center"><Check size={17} /></span>
+            <span className="text-sm font-medium text-[var(--text)]">{confirmation}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
