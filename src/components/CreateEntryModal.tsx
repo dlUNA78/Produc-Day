@@ -75,7 +75,11 @@ export default function CreateEntryModal({
       return;
     }
 
-    if (type === 'activity') {
+    if (editingEntry?.type === 'activity') {
+      onUpdateActivity?.(editingEntry.item.id, { title: title.trim(), category, date, startTime, endTime, description: description.trim() || undefined });
+    } else if (editingEntry?.type === 'task') {
+      onUpdateTask?.(editingEntry.item.id, { title: title.trim(), category, date, time: hasTime ? time : undefined, description: description.trim() || undefined });
+    } else if (type === 'activity') {
       onAddActivity({
         title: title.trim(),
         category,

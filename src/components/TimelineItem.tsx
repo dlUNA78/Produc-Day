@@ -20,6 +20,7 @@ interface TimelineItemProps {
   isLast?: boolean;
   isActive?: boolean;
   onToggle: (id: string, type: 'activity' | 'task') => void;
+  onOpen?: (id: string, type: 'activity' | 'task') => void;
 }
 
 const categoryDotColors: Record<string, string> = {
@@ -31,7 +32,16 @@ const categoryDotColors: Record<string, string> = {
   Task: 'border-[var(--text-faint)]',
 };
 
-export default function TimelineItem({ item, isLast, isActive, onToggle }: TimelineItemProps) {
+const categoryLabels: Record<string, string> = {
+  Gym: 'Entrenamiento',
+  School: 'Clases',
+  Work: 'Trabajo',
+  Study: 'Estudio',
+  Personal: 'Personal',
+  Task: 'Tarea',
+};
+
+export default function TimelineItem({ item, isLast, isActive, onToggle, onOpen }: TimelineItemProps) {
   const isDone = item.isCompleted;
   const colorClass = categoryDotColors[item.category] || categoryDotColors.Personal;
   const [borderColor] = colorClass.split(' ');
@@ -55,7 +65,7 @@ export default function TimelineItem({ item, isLast, isActive, onToggle }: Timel
       </button>
 
       {/* Content */}
-      <div className="flex justify-between items-start gap-3">
+      <button type="button" onClick={() => onOpen?.(item.id, item.type)} className="w-full flex justify-between items-start gap-3 text-left rounded-xl focus-visible:outline-offset-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md border border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)]">
@@ -78,7 +88,7 @@ export default function TimelineItem({ item, isLast, isActive, onToggle }: Timel
         <span className="text-[11px] text-[var(--text-muted)] flex-shrink-0 whitespace-nowrap bg-[var(--surface)] border border-[var(--border)] px-2 py-1 rounded-lg">
           {item.timeDisplay}
         </span>
-      </div>
+      </button>
     </div>
   );
 }

@@ -10,9 +10,10 @@ interface TimelineProps {
   currentActivityId?: string;
   onToggleItem: (id: string, type: 'activity' | 'task') => void;
   onOpenCreate?: () => void;
+  onOpenItem?: (id: string, type: 'activity' | 'task') => void;
 }
 
-export default function Timeline({ activities, tasks, currentActivityId, onToggleItem, onOpenCreate }: TimelineProps) {
+export default function Timeline({ activities, tasks, currentActivityId, onToggleItem, onOpenCreate, onOpenItem }: TimelineProps) {
   // Convert activities and tasks into unified agenda items
   const agendaItems: UnifiedAgendaItem[] = [
     ...activities.map(a => ({
@@ -99,6 +100,7 @@ export default function Timeline({ activities, tasks, currentActivityId, onToggl
               isLast={index === agendaItems.length - 1}
               isActive={item.id === currentActivityId && !item.isCompleted}
               onToggle={onToggleItem}
+              onOpen={onOpenItem}
             />
           ))}
         </div>

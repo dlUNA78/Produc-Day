@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MOCK_ACTIVITIES, MOCK_TASKS } from './data';
 import { Activity, Task } from './types';
 import { Check, Plus } from 'lucide-react';
@@ -17,9 +17,23 @@ import GymView from './views/GymView';
 import StatsView from './views/StatsView';
 import ProfileView from './views/ProfileView';
 
+type EditableEntry = { type: 'activity'; item: Activity } | { type: 'task'; item: Task };
+type DeletedEntry = EditableEntry;
+
+const loadEntries = <T,>(key: string, fallback: T[]): T[] => {
+  try {
+    const saved = localStorage.getItem(key);
+    if (!saved) return fallback;
+    const parsed = JSON.parse(saved);
+    return Array.isArray(parsed) ? parsed : fallback;
+  } catch {
+    return fallback;
+  }
+};
+
 export default function App() {
-  const [activities, setActivities] = useState<Activity[]>(MOCK_ACTIVITIES);
-  const [tasks, setTasks] = useState<Task[]>(MOCK_TASKS);
+  const [activities, setActivities] = useState<Activity[]>(() => loadEntries('produc_day_activities_v1', MOCK_ACTIVITIES));
+  const [tasks, setTasks] = useState<Task[]>(() => loadEntries('produc_day_tasks_v1', MOCK_TASKS));
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [selectedDate, setSelectedDate] = useState<string>(() => formatDateKey(new Date()));
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -64,17 +78,48 @@ export default function App() {
     setTasks(prev => [...prev, newTask]);
   };
 
-  const handleDeleteTask = (id: string) => {
-    setTasks(prev => prev.filter(t => t.id !== id));
-  };
-
   const handleEditTask = (id: string, updates: Partial<Task>) => {
     setTasks(prev => prev.map(t => t.id === id ? { ...t, ...updates } : t));
+    showMessage('Cambios guardados');
+  };
+
+  const handleEditActivity = (id: string, updates: Partial<Activity>) => {
+    setActivities(prev => prev.map(activity => activity.id === id ? { ...activity, ...updates } : activity));
+    showMessage('Cambios guardados');
+  };
+
+  const handleOpenItem = (id: string, type: 'activity' | 'task') => {
+    const item = type === 'activity' ? activities.find(entry => entry.id === id) : tasks.find(entry => entry.id === id);
+    if (!item) return;
+    setEditingEntry(type === 'activity' ? { type, item: item as Activity } : { type, item: item as Task });
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteEntry = (id: string, type: 'activity' | 'task') => {
+    const item = type === 'activity' ? activities.find(entry => entry.id === id) : tasks.find(entry => entry.id === id);
+    if (!item) return;
+    setDeletedEntry(type === 'activity' ? { type, item: item as Activity } : { type, item: item as Task });
+    if (type === 'activity') setActivities(prev => prev.filter(entry => entry.id !== id));
+    else setTasks(prev => prev.filter(entry => entry.id !== id));
+    setEditingEntry(null);
+    showMessage('Entrada eliminada');
+  };
+
+  const handleUndoDelete = () => {
+    if (!deletedEntry) return;
+    if (deletedEntry.type === 'activity') setActivities(prev => [...prev, deletedEntry.item].sort((a, b) => a.startTime.localeCompare(b.startTime)));
+    else setTasks(prev => [...prev, deletedEntry.item]);
+    setDeletedEntry(null);
+    showMessage('Entrada restaurada');
   };
 
   useEffect(() => {
     document.body.className = 'antialiased selection:bg-[var(--accent)]/30';
   }, []);
+
+  useEffect(() => localStorage.setItem('produc_day_activities_v1', JSON.stringify(activities)), [activities]);
+  useEffect(() => localStorage.setItem('produc_day_tasks_v1', JSON.stringify(tasks)), [tasks]);
+  useEffect(() => () => { if (toastTimer.current) window.clearTimeout(toastTimer.current); }, []);
 
   return (
     <div className="max-w-md mx-auto min-h-dvh bg-[var(--canvas)] border-x border-[var(--border)]/60 relative overflow-hidden flex flex-col font-sans">
@@ -88,7 +133,8 @@ export default function App() {
             selectedDate={selectedDate}
             onSelectDate={setSelectedDate}
             onToggleItem={handleToggleItem}
-            onOpenCreate={() => setIsModalOpen(true)}
+            onOpenCreate={() => { setEditingEntry(null); setIsModalOpen(true); }}
+            onOpenItem={handleOpenItem}
           />
         )}
         
@@ -128,7 +174,7 @@ export default function App() {
       
       <CreateEntryModal 
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => { setIsModalOpen(false); setEditingEntry(null); }}
         onAddActivity={handleAddActivity}
         onAddTask={handleAddTask}
         onCreated={showConfirmation}

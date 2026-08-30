@@ -13,6 +13,7 @@ interface HomeViewProps {
   onSelectDate: (date: string) => void;
   onToggleItem: (id: string, type: 'activity' | 'task') => void;
   onOpenCreate: () => void;
+  onOpenItem: (id: string, type: 'activity' | 'task') => void;
 }
 
 const longDate = new Intl.DateTimeFormat('es-ES', {
