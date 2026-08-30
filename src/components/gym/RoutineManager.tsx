@@ -235,7 +235,7 @@ export default function RoutineManager({
           <button
             type="button"
             onClick={handleOpenCreateRoutine}
-            className="px-3 py-2 bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]   hover: hover: text-[var(--accent-ink)] font-bold text-xs rounded-xl shadow-[0_4px_12px_rgba(249,115,22,0.3)] flex items-center gap-1.5 transition-transform active:scale-95 shrink-0"
+            className="px-3 py-2 bg-[var(--accent)] text-[var(--accent-ink)] font-bold text-xs rounded-xl shadow-[var(--shadow-soft)] flex items-center gap-1.5 transition-transform active:scale-95 shrink-0"
           >
             <Plus size={14} />
             <span>Nueva Rutina</span>
@@ -579,7 +579,7 @@ export default function RoutineManager({
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-2.5 bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]   text-[var(--accent-ink)] text-xs font-bold rounded-xl shadow-[0_4px_12px_rgba(249,115,22,0.3)]"
+                    className="flex-1 py-2.5 bg-[var(--accent)]   text-[var(--accent-ink)] text-xs font-bold rounded-xl shadow-[var(--shadow-soft)]"
                   >
                     Guardar Rutina
                   </button>

@@ -237,7 +237,7 @@ export default function WeeklyPlanner({
       </div>
 
       {/* 2. Summary stats for this week */}
-      <div className="grid grid-cols-3 gap-2 bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]  to-[#121212] border border-[var(--border)] rounded-2xl p-3">
+      <div className="grid grid-cols-3 gap-2 bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))] border border-[var(--border)] rounded-2xl p-3">
         <div className="flex flex-col">
           <span className="text-[9px] font-bold text-[var(--text-faint)] uppercase tracking-wider">Entrenamientos</span>
           <span className="text-lg font-semibold text-[var(--text)]">{totalWorkouts} / 7 días</span>

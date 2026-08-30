@@ -230,7 +230,7 @@ export default function AddExerciseModal({
 
               <button
                 type="submit"
-                className="mt-2 w-full py-3.5 bg-[var(--accent)] hover:bg-[var(--accent-strong)] text-[var(--accent-ink)] font-bold text-sm rounded-xl shadow-[0_4px_15px_rgba(249,115,22,0.3)] transition-all"
+                className="mt-2 w-full py-3.5 bg-[var(--accent)] hover:bg-[var(--accent-strong)] text-[var(--accent-ink)] font-bold text-sm rounded-xl shadow-[var(--shadow-soft)] transition-all"
               >
                 Guardar Ejercicio en Rutina
               </button>

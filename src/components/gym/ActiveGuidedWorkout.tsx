@@ -306,7 +306,7 @@ export default function ActiveGuidedWorkout({
                 <button
                   type="button"
                   onClick={onSkipRest}
-                  className="px-4 py-1.5 text-xs font-bold bg-[var(--warning)] hover:bg-[var(--warning)] text-[var(--accent-ink)] rounded-xl shadow-[0_2px_10px_rgba(245,158,11,0.3)] flex items-center gap-1 transition-transform active:scale-95"
+                  className="px-4 py-1.5 text-xs font-bold bg-[var(--warning)] hover:bg-[var(--warning)] text-[var(--accent-ink)] rounded-xl shadow-[var(--shadow-soft)] flex items-center gap-1 transition-transform active:scale-95"
                 >
                   <FastForward size={13} />
                   <span>Saltar Descanso</span>
@@ -396,7 +396,7 @@ export default function ActiveGuidedWorkout({
 
           {/* Large Target Control Box for Active Set */}
           {currentSet && (
-            <div className="bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]  via-[#131313]  border border-[var(--border)] rounded-3xl p-5 shadow-2xl flex flex-col gap-4">
+            <div className="bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]  border border-[var(--border)] rounded-3xl p-5 shadow-2xl flex flex-col gap-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">
                   Objetivo Serie #{currentSet.setNumber}
@@ -500,7 +500,7 @@ export default function ActiveGuidedWorkout({
           <button
             type="button"
             onClick={handleCompleteCurrentSet}
-            className="w-full py-5 bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]    hover: hover: text-[var(--accent-ink)] font-semibold text-base uppercase tracking-wider rounded-2xl shadow-[0_6px_25px_rgba(249,115,22,0.4)] flex items-center justify-center gap-2.5 transition-transform active:scale-[0.98]"
+            className="w-full py-5 bg-[var(--accent)] text-[var(--accent-ink)] font-semibold text-base uppercase tracking-wider rounded-2xl shadow-[var(--shadow-soft)] flex items-center justify-center gap-2.5 transition-transform active:scale-[0.98]"
           >
             <Check size={22} strokeWidth={3} />
             <span>
