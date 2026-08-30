@@ -29,6 +29,7 @@ export default function HomeView({
   onSelectDate,
   onToggleItem,
   onOpenCreate,
+  onOpenItem,
 }: HomeViewProps) {
   const filteredActivities = activities.filter((activity) => activity.date === selectedDate);
   const filteredTasks = tasks.filter((task) => task.date === selectedDate);
@@ -133,7 +134,7 @@ export default function HomeView({
             <span className="text-sm font-semibold text-[var(--sage)]">{progress}%</span>
           </section>
 
-          <Timeline activities={filteredActivities} tasks={filteredTasks} onToggleItem={onToggleItem} onOpenCreate={onOpenCreate} />
+          <Timeline activities={filteredActivities} tasks={filteredTasks} onToggleItem={onToggleItem} onOpenCreate={onOpenCreate} onOpenItem={onOpenItem} />
         </div>
       </main>
     </div>
