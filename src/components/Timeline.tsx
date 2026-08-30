@@ -59,30 +59,30 @@ export default function Timeline({ activities, tasks, currentActivityId, onToggl
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
-      className="flex-1 overflow-hidden px-6 mb-8"
+      className="flex-1 overflow-hidden mb-8"
     >
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
-          Agenda del día
+        <h2 className="text-sm font-semibold text-[var(--text)]">
+          Tu agenda
         </h2>
         {totalCount > 0 && (
-          <span className="text-[10px] text-zinc-400 px-2 py-0.5 bg-white/5 border border-white/10 rounded-full font-mono">
-            {completedCount}/{totalCount} completado
+          <span className="text-xs text-[var(--text-muted)] px-2.5 py-1 bg-[var(--surface)] border border-[var(--border)] rounded-full">
+            {completedCount}/{totalCount} listas
           </span>
         )}
       </div>
       
       {agendaItems.length === 0 ? (
-        <div className="bg-white/5/30 border border-white/10/80 rounded-2xl p-6 text-center mt-2 flex flex-col items-center">
-          <CalendarCheck size={32} className="text-zinc-600 mb-3" strokeWidth={1.5} />
-          <p className="text-white text-sm font-medium">No hay entradas para este día</p>
-          <p className="text-zinc-500 text-xs mt-1 max-w-[240px]">
+        <div className="border border-dashed border-[var(--border)] rounded-[20px] p-6 text-center mt-2 flex flex-col items-center">
+          <CalendarCheck size={30} className="text-[var(--text-faint)] mb-3" strokeWidth={1.5} />
+          <p className="text-[var(--text)] text-sm font-medium">Tu agenda está despejada</p>
+          <p className="text-[var(--text-muted)] text-xs leading-5 mt-1 max-w-[240px]">
             Agrega una tarea o actividad con el botón <span className="text-white font-semibold">(+)</span> para verla en tu agenda.
           </p>
           {onOpenCreate && (
             <button
               onClick={onOpenCreate}
-              className="mt-4 flex items-center gap-1.5 px-3 py-1.5 bg-white/10 border border-white/30 text-white rounded-xl text-xs font-medium hover:bg-white/20 transition-colors"
+              className="mt-4 flex items-center gap-1.5 px-3 py-2 bg-[var(--surface-raised)] border border-[var(--border)] text-[var(--text)] rounded-xl text-xs font-medium hover:border-[var(--accent)] transition-colors"
             >
               <PlusCircle size={14} />
               <span>Añadir entrada</span>
@@ -91,7 +91,7 @@ export default function Timeline({ activities, tasks, currentActivityId, onToggl
         </div>
       ) : (
         <div className="space-y-0 relative pt-1">
-          <div className="absolute left-[7px] top-3 bottom-4 w-[1px] bg-white/10/80"></div>
+          <div className="absolute left-[7px] top-3 bottom-4 w-px bg-[var(--border)]"></div>
           {agendaItems.map((item, index) => (
             <TimelineItem 
               key={`${item.type}-${item.id}`} 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, CalendarDays, Calendar as CalendarIcon, ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CalendarDays, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface WeeklyCalendarProps {
   selectedDate: string;
@@ -38,20 +38,20 @@ export function getMonthDays(year: number, month: number) {
   // month is 0-indexed (0 = Jan, 11 = Dec)
   const firstDayOfMonth = new Date(year, month, 1);
   const lastDayOfMonth = new Date(year, month + 1, 0);
-  
+
   // Find Monday of the first week
   const startDay = firstDayOfMonth.getDay(); // 0 is Sun, 1 is Mon
   const startOffset = (startDay === 0 ? -6 : 1) - startDay;
   const startDate = new Date(year, month, 1 + startOffset);
-  
+
   // Find Sunday of the last week
   const endDay = lastDayOfMonth.getDay();
   const endOffset = (endDay === 0 ? 0 : 7 - endDay);
   const endDate = new Date(year, month + 1, endOffset);
-  
+
   const days: { date: Date; isCurrentMonth: boolean }[] = [];
   const current = new Date(startDate);
-  
+
   while (current <= endDate || days.length % 7 !== 0 || days.length < 35) {
     days.push({
       date: new Date(current),
@@ -60,7 +60,7 @@ export function getMonthDays(year: number, month: number) {
     current.setDate(current.getDate() + 1);
     if (current > endDate && days.length % 7 === 0) break;
   }
-  
+
   return days;
 }
 
@@ -72,7 +72,7 @@ const monthNames = [
 
 export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsForDate }: WeeklyCalendarProps) {
   const [isMonthView, setIsMonthView] = useState(false);
-  
+
   // Selected date parsed
   const selectedParsed = parseDateKey(selectedDate);
   const today = new Date();
@@ -106,15 +106,15 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
   const monthDays = getMonthDays(viewYear, viewMonth);
 
   return (
-    <motion.section 
+    <motion.section
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
-      className="px-6 mb-6"
+      className="px-5 mb-5"
     >
       {/* Calendar Header & View Switcher */}
       <div className="flex items-center justify-between mb-3">
-        <button 
+        <button
           type="button"
           onClick={() => {
             if (!isMonthView) {
@@ -125,16 +125,16 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
           className="flex items-center gap-2 group text-left transition-all"
         >
           <div className="flex items-center gap-1.5">
-            <span className="text-sm font-semibold text-white group-hover:text-[white] transition-colors">
+            <span className="text-sm font-semibold text-[var(--text)] transition-colors">
               {monthNames[viewMonth]} {viewYear}
             </span>
             {isMonthView ? (
-              <ChevronUp size={14} className="text-[white] transition-transform" />
+              <ChevronUp size={14} className="text-[var(--accent)] transition-transform" />
             ) : (
-              <ChevronDown size={14} className="text-zinc-500 group-hover:text-white transition-transform" />
+              <ChevronDown size={14} className="text-[var(--text-faint)] group-hover:text-[var(--text)] transition-transform" />
             )}
           </div>
-          <span className="text-[10px] text-zinc-500 font-medium px-2 py-0.5 bg-black border border-white/10 rounded-full">
+          <span className="text-[10px] text-[var(--text-muted)] font-medium px-2 py-0.5 bg-[var(--surface)] border border-[var(--border)] rounded-full">
             {isMonthView ? 'Mes completo' : 'Semana'}
           </span>
         </button>
@@ -173,9 +173,9 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
                 setCurrentViewDate(parseDateKey(selectedDate));
                 setIsMonthView(true);
               }}
-              className="flex items-center gap-1 text-[11px] font-medium text-zinc-500 hover:text-[white] transition-colors px-2 py-1 bg-black/60 border border-white/10/80 rounded-xl"
+                className="flex items-center gap-1 text-[11px] font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors px-2 py-1 bg-[var(--surface)] border border-[var(--border)] rounded-xl"
             >
-              <CalendarDays size={13} className="text-[white]" />
+              <CalendarDays size={13} className="text-[var(--accent)]" />
               <span>Ver mes</span>
             </button>
           )}
@@ -204,27 +204,29 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
                 <button
                   key={dateKey}
                   onClick={() => onSelectDate(dateKey)}
-                  className={`relative flex flex-col items-center justify-center w-11 h-14 rounded-[16px] transition-all ${
-                    isSelected 
-                      ? 'bg-[white] text-black shadow-lg shadow-[white]/20' 
-                      : 'bg-transparent hover:bg-[#1C1C1E]'
+                  aria-label={`Seleccionar ${date.getDate()} de ${monthNames[date.getMonth()]}`}
+                  aria-pressed={isSelected}
+                  className={`relative flex flex-col items-center justify-center w-11 h-14 rounded-[16px] border transition-all ${
+                    isSelected
+                      ? 'bg-[var(--accent)] border-[var(--accent)] text-[#17120e]'
+                      : 'bg-transparent border-transparent hover:bg-[var(--surface)]'
                   }`}
                 >
                   <span className={`text-[10px] font-bold mb-1 ${
-                    isSelected ? 'text-black/70' : 'text-zinc-500'
+                    isSelected ? 'text-[#17120e]/70' : 'text-[var(--text-faint)]'
                   }`}>
                     {dayNames[index]}
                   </span>
                   <span className={`text-sm font-semibold ${
-                    isSelected ? 'text-black' : isToday ? 'text-white' : 'text-zinc-400'
+                    isSelected ? 'text-[#17120e]' : isToday ? 'text-[var(--text)]' : 'text-[var(--text-muted)]'
                   }`}>
                     {date.getDate()}
                   </span>
-                  
+
                   {/* Indicator dots */}
                   <div className="flex items-center gap-1 mt-0.5 h-1">
                     {hasItems && (
-                      <div className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-black' : 'bg-[white]/80 shadow-[0_0_6px_rgba(255,255,255,0.5)]'}`} />
+                      <div className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-[#17120e]' : 'bg-[var(--accent)]'}`} />
                     )}
                     {isToday && !hasItems && (
                       <div className={`w-1 h-1 rounded-full ${isSelected ? 'bg-black/50' : 'bg-white/30'}`} />
@@ -279,7 +281,7 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
                     }`}
                   >
                     <span className="text-xs">{date.getDate()}</span>
-                    
+
                     {/* Event Dot */}
                     <div className="h-1 flex items-center justify-center mt-0.5">
                       {hasItems && (
@@ -311,4 +313,3 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
     </motion.section>
   );
 }
-

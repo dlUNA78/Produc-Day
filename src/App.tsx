@@ -6,7 +6,8 @@
 import React, { useState, useEffect } from 'react';
 import { MOCK_ACTIVITIES, MOCK_TASKS } from './data';
 import { Activity, Task } from './types';
-import { Plus } from 'lucide-react';
+import { Check, Plus } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import BottomNav, { TabType } from './components/BottomNav';
 import SpecularButton from './components/SpecularButton';
 import CreateEntryModal from './components/CreateEntryModal';
@@ -14,7 +15,6 @@ import { formatDateKey } from './components/WeeklyCalendar';
 import HomeView from './views/HomeView';
 import GymView from './views/GymView';
 import StatsView from './views/StatsView';
-import SettingsView from './views/SettingsView';
 import ProfileView from './views/ProfileView';
 
 export default function App() {
@@ -23,6 +23,12 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [selectedDate, setSelectedDate] = useState<string>(() => formatDateKey(new Date()));
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [confirmation, setConfirmation] = useState('');
+
+  const showConfirmation = (type: 'activity' | 'task') => {
+    setConfirmation(type === 'task' ? 'Tarea guardada en tu día' : 'Bloque añadido a tu agenda');
+    window.setTimeout(() => setConfirmation(''), 2600);
+  };
 
   const handleToggleTask = (id: string) => {
     setTasks(prev => prev.map(t => t.id === id ? { ...t, isCompleted: !t.isCompleted } : t));
@@ -67,11 +73,11 @@ export default function App() {
   };
 
   useEffect(() => {
-    document.body.className = 'bg-black text-white antialiased selection:bg-white/30';
+    document.body.className = 'antialiased selection:bg-[var(--accent)]/30';
   }, []);
 
   return (
-    <div className="max-w-md mx-auto min-h-screen bg-black border-x border-white/5 relative overflow-hidden flex flex-col font-sans">
+    <div className="max-w-md mx-auto min-h-dvh bg-[var(--canvas)] border-x border-[var(--border)]/60 relative overflow-hidden flex flex-col font-sans">
       
       {/* Active Tab View Rendering */}
       <div className="flex-1 pb-20 overflow-y-auto">
@@ -94,10 +100,6 @@ export default function App() {
           <StatsView />
         )}
 
-        {activeTab === 'settings' && (
-          <SettingsView />
-        )}
-
         {activeTab === 'profile' && (
           <ProfileView />
         )}
@@ -106,12 +108,15 @@ export default function App() {
       {/* Floating Add Button & Nav */}
       <div className="fixed bottom-6 left-0 right-0 z-[60] max-w-md mx-auto flex flex-col items-end px-4 pb-safe pointer-events-none">
         
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="mb-4 w-14 h-14 bg-[white] text-black rounded-full flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform pointer-events-auto"
-        >
-          <Plus size={28} strokeWidth={2.5} />
-        </button>
+        {activeTab === 'home' && (
+          <button
+            onClick={() => setIsModalOpen(true)}
+            aria-label="Crear una tarea o actividad"
+            className="mb-3 mr-1 w-14 h-14 bg-[var(--accent)] text-[#17120e] rounded-2xl flex items-center justify-center shadow-[0_12px_32px_rgba(0,0,0,0.35)] hover:bg-[var(--accent-strong)] active:scale-95 transition-all pointer-events-auto"
+          >
+            <Plus size={25} strokeWidth={2.4} />
+          </button>
+        )}
 
         <div className="w-full pointer-events-auto">
           <BottomNav 
@@ -126,8 +131,24 @@ export default function App() {
         onClose={() => setIsModalOpen(false)}
         onAddActivity={handleAddActivity}
         onAddTask={handleAddTask}
+        onCreated={showConfirmation}
         defaultDate={selectedDate}
       />
+
+      <AnimatePresence>
+        {confirmation && (
+          <motion.div
+            initial={{ opacity: 0, y: 16, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8 }}
+            role="status"
+            className="fixed z-[120] left-1/2 -translate-x-1/2 bottom-28 w-[calc(100%-2rem)] max-w-sm rounded-2xl bg-[var(--surface-raised)] border border-[var(--border)] shadow-2xl px-4 py-3 flex items-center gap-3"
+          >
+            <span className="w-8 h-8 shrink-0 rounded-xl bg-[var(--sage)]/15 text-[var(--sage)] flex items-center justify-center"><Check size={17} /></span>
+            <span className="text-sm font-medium text-[var(--text)]">{confirmation}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
