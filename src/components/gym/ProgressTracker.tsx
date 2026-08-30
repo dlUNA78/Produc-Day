@@ -146,13 +146,13 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
     <div className="p-6 flex flex-col gap-6 pb-24">
       
       {/* Sub-Tabs */}
-      <div className="flex bg-black p-1 rounded-none border-b border border-white/10">
+      <div className="flex bg-[var(--canvas)] p-1 rounded-[24px] border-b border border-[var(--border)]">
         <button
           onClick={() => setActiveTab('overload')}
           className={`flex-1 py-2 text-xs font-bold rounded-sm transition-all flex items-center justify-center gap-1.5 ${
             activeTab === 'overload'
-              ? 'bg-white text-black shadow-md'
-              : 'text-zinc-500 hover:text-white'
+              ? 'bg-[var(--accent)] text-[var(--accent-ink)] shadow-md'
+              : 'text-[var(--text-faint)] hover:text-[var(--text)]'
           }`}
         >
           <Target size={14} />
@@ -162,8 +162,8 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
           onClick={() => setActiveTab('exercises')}
           className={`flex-1 py-2 text-xs font-bold rounded-sm transition-all flex items-center justify-center gap-1.5 ${
             activeTab === 'exercises'
-              ? 'bg-white text-black shadow-md'
-              : 'text-zinc-500 hover:text-white'
+              ? 'bg-[var(--accent)] text-[var(--accent-ink)] shadow-md'
+              : 'text-[var(--text-faint)] hover:text-[var(--text)]'
           }`}
         >
           <TrendingUp size={14} />
@@ -173,8 +173,8 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
           onClick={() => setActiveTab('summary')}
           className={`flex-1 py-2 text-xs font-bold rounded-sm transition-all flex items-center justify-center gap-1.5 ${
             activeTab === 'summary'
-              ? 'bg-white text-black shadow-md'
-              : 'text-zinc-500 hover:text-white'
+              ? 'bg-[var(--accent)] text-[var(--accent-ink)] shadow-md'
+              : 'text-[var(--text-faint)] hover:text-[var(--text)]'
           }`}
         >
           <CalendarDays size={14} />
@@ -185,20 +185,20 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
       {activeTab === 'overload' && (
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-bold text-white">Registro de Sobrecarga</h3>
-            <button onClick={onOpenSettings} className="text-xs font-bold text-orange-400 hover:text-orange-300">
+            <h3 className="text-sm font-bold text-[var(--text)]">Registro de Sobrecarga</h3>
+            <button onClick={onOpenSettings} className="text-xs font-bold text-[var(--accent)] hover:text-[var(--accent-strong)]">
               Editar Lista
             </button>
           </div>
           
           {!programSettings?.keyLifts || programSettings.keyLifts.length === 0 ? (
-            <div className="bg-black/60 border border-white/10 rounded-none border-b p-6 text-center">
-              <Target size={32} className="text-slate-600 mx-auto mb-3" />
-              <p className="text-sm font-bold text-white mb-2">Sin ejercicios base</p>
-              <p className="text-xs text-zinc-500 mb-4">Añade los ejercicios que deseas someter a sobrecarga progresiva.</p>
+            <div className="bg-[var(--canvas)] border border-[var(--border)] rounded-[24px] border-b p-6 text-center">
+              <Target size={32} className="text-[var(--text-faint)] mx-auto mb-3" />
+              <p className="text-sm font-bold text-[var(--text)] mb-2">Sin ejercicios base</p>
+              <p className="text-xs text-[var(--text-faint)] mb-4">Añade los ejercicios que deseas someter a sobrecarga progresiva.</p>
               <button 
                 onClick={onOpenSettings}
-                className="bg-white text-black px-4 py-2 rounded-sm text-xs font-bold hover:bg-orange-400"
+                className="bg-[var(--accent)] text-[var(--accent-ink)] px-4 py-2 rounded-sm text-xs font-bold hover:bg-[var(--accent-strong)]"
               >
                 Configurar Ejercicios
               </button>
@@ -214,27 +214,27 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
                 }
 
                 return (
-                  <div key={lift.id} className="bg-black border border-white/10 rounded-none border-b p-5 flex flex-col gap-4">
+                  <div key={lift.id} className="bg-[var(--canvas)] border border-[var(--border)] rounded-[24px] border-b p-5 flex flex-col gap-4">
                     <div className="flex justify-between items-center">
-                      <h4 className="font-bold text-white text-sm capitalize">{lift.name}</h4>
-                      <div className="flex items-center gap-1.5 bg-black px-3 py-1.5 rounded-lg border border-white/10">
-                        <Activity size={14} className="text-orange-500" />
-                        <span className="text-xs text-orange-400 font-mono font-bold">{current} kg</span>
+                      <h4 className="font-bold text-[var(--text)] text-sm capitalize">{lift.name}</h4>
+                      <div className="flex items-center gap-1.5 bg-[var(--canvas)] px-3 py-1.5 rounded-lg border border-[var(--border)]">
+                        <Activity size={14} className="text-[var(--accent)]" />
+                        <span className="text-xs text-[var(--accent)] font-mono font-bold">{current} kg</span>
                       </div>
                     </div>
                     
                     <div className="flex items-center justify-between gap-4">
                       <div className="flex flex-col gap-1 w-1/4">
-                        <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Inicio</span>
-                        <span className="text-sm text-slate-300 font-mono font-bold">{lift.initialWeight} kg</span>
+                        <span className="text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-wider">Inicio</span>
+                        <span className="text-sm text-[var(--text)] font-mono font-bold">{lift.initialWeight} kg</span>
                       </div>
                       
                       <div className="flex flex-col gap-1 flex-1 items-center">
-                        <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Actual</span>
-                        <div className="flex items-center gap-2 bg-black px-2 py-1.5 rounded-sm border border-white/10 w-full justify-between">
+                        <span className="text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-wider">Actual</span>
+                        <div className="flex items-center gap-2 bg-[var(--canvas)] px-2 py-1.5 rounded-sm border border-[var(--border)] w-full justify-between">
                           <button 
                             onClick={() => handleUpdateWeight(lift.id, current - 2.5)}
-                            className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-800 text-zinc-500 hover:text-white hover:bg-slate-700 transition-colors font-mono font-bold text-xs"
+                            className="w-8 h-8 flex items-center justify-center rounded-lg bg-[var(--surface-raised)] text-[var(--text-faint)] hover:text-[var(--text)] hover:bg-[var(--surface-muted)] transition-colors font-mono font-bold text-xs"
                           >
                             -2.5
                           </button>
@@ -242,11 +242,11 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
                             type="number" 
                             value={current}
                             onChange={(e) => handleUpdateWeight(lift.id, parseFloat(e.target.value) || 0)}
-                            className="w-14 bg-transparent text-center text-white font-mono font-bold text-lg focus:outline-none"
+                            className="w-14 bg-transparent text-center text-[var(--text)] font-mono font-bold text-lg focus:outline-none"
                           />
                           <button 
                             onClick={() => handleUpdateWeight(lift.id, current + 2.5)}
-                            className="w-8 h-8 flex items-center justify-center rounded-lg bg-orange-500/10 text-orange-400 hover:text-orange-300 hover:bg-orange-500/20 transition-colors font-mono font-bold text-xs"
+                            className="w-8 h-8 flex items-center justify-center rounded-lg bg-[var(--accent-soft)] text-[var(--accent)] hover:text-[var(--accent-strong)] hover:bg-[var(--accent-soft)] transition-colors font-mono font-bold text-xs"
                           >
                             +2.5
                           </button>
@@ -254,19 +254,19 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
                       </div>
 
                       <div className="flex flex-col gap-1 w-1/4 items-end">
-                        <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Meta</span>
-                        <span className="text-sm text-slate-300 font-mono font-bold">{target > 0 ? target : '--'} kg</span>
+                        <span className="text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-wider">Meta</span>
+                        <span className="text-sm text-[var(--text)] font-mono font-bold">{target > 0 ? target : '--'} kg</span>
                       </div>
                     </div>
 
                     {target > lift.initialWeight && (
                       <div className="flex flex-col gap-2 mt-1">
                         <div className="flex justify-between items-end">
-                          <span className="text-[10px] font-bold text-zinc-500">Progreso de Sobrecarga</span>
-                          <span className="text-[10px] font-bold text-orange-400">{Math.round(percent)}%</span>
+                          <span className="text-[10px] font-bold text-[var(--text-faint)]">Progreso de Sobrecarga</span>
+                          <span className="text-[10px] font-bold text-[var(--accent)]">{Math.round(percent)}%</span>
                         </div>
-                        <div className="w-full bg-black rounded-full h-2 border border-white/10">
-                          <div className="bg-orange-500 h-2 rounded-full transition-all duration-500" style={{ width: `${percent}%` }}></div>
+                        <div className="w-full bg-[var(--canvas)] rounded-full h-2 border border-[var(--border)]">
+                          <div className="bg-[var(--accent)] h-2 rounded-full transition-all duration-500" style={{ width: `${percent}%` }}></div>
                         </div>
                       </div>
                     )}
@@ -282,12 +282,12 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
         <>
           {allExercises.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-12 text-center h-full gap-4 mt-8">
-              <div className="w-16 h-16 rounded-full bg-black border border-white/10 flex items-center justify-center text-zinc-500">
+              <div className="w-16 h-16 rounded-full bg-[var(--canvas)] border border-[var(--border)] flex items-center justify-center text-[var(--text-faint)]">
                 <Dumbbell size={32} />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white mb-2">No hay datos aún</h3>
-                <p className="text-sm text-zinc-500 max-w-xs mx-auto">
+                <h3 className="text-lg font-bold text-[var(--text)] mb-2">No hay datos aún</h3>
+                <p className="text-sm text-[var(--text-faint)] max-w-xs mx-auto">
                   Completa tus entrenamientos para ver tu evolución de PRs aquí.
                 </p>
               </div>
@@ -295,20 +295,20 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
           ) : (
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-2">
-                <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">
+                <label className="text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-wider">
                   Selecciona un Ejercicio
                 </label>
                 <div className="relative">
                   <select
                     value={activeExercise}
                     onChange={(e) => setSelectedExercise(e.target.value)}
-                    className="w-full appearance-none bg-black border border-white/10 text-sm font-semibold text-white px-4 py-3 rounded-sm focus:outline-none focus:border-orange-500 capitalize"
+                    className="w-full appearance-none bg-[var(--canvas)] border border-[var(--border)] text-sm font-semibold text-[var(--text)] px-4 py-3 rounded-sm focus:outline-none focus:border-[var(--accent)] capitalize"
                   >
                     {allExercises.map(ex => (
                       <option key={ex} value={ex} className="capitalize">{ex}</option>
                     ))}
                   </select>
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500">
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--text-faint)]">
                     <Dumbbell size={16} />
                   </div>
                 </div>
@@ -316,46 +316,46 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
 
               {/* Quick Stats */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-black/60 border border-white/10 rounded-none border-b p-4 flex flex-col gap-1">
+                <div className="bg-[var(--canvas)] border border-[var(--border)] rounded-[24px] border-b p-4 flex flex-col gap-1">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">
+                    <span className="text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-wider">
                       PR Actual
                     </span>
-                    <Activity size={14} className="text-orange-400" />
+                    <Activity size={14} className="text-[var(--accent)]" />
                   </div>
                   <div className="flex items-end gap-2">
-                    <span className="text-2xl font-black text-white font-mono">{currentMax}</span>
-                    <span className="text-sm font-bold text-zinc-500 mb-1">kg</span>
+                    <span className="text-2xl font-semibold text-[var(--text)] font-mono">{currentMax}</span>
+                    <span className="text-sm font-bold text-[var(--text-faint)] mb-1">kg</span>
                   </div>
                   
                   {progressPercent !== 0 && (
-                    <span className={`text-[10px] font-bold ${progressPercent > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                    <span className={`text-[10px] font-bold ${progressPercent > 0 ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>
                       {progressPercent > 0 ? '+' : ''}{progressPercent}% vs inicio ({initialMax}kg)
                     </span>
                   )}
                   {progressPercent === 0 && initialMax > 0 && (
-                     <span className="text-[10px] font-bold text-zinc-500">Inicio: {initialMax}kg</span>
+                     <span className="text-[10px] font-bold text-[var(--text-faint)]">Inicio: {initialMax}kg</span>
                   )}
                 </div>
 
-                <div className="bg-black/60 border border-white/10 rounded-none border-b p-4 flex flex-col gap-1">
+                <div className="bg-[var(--canvas)] border border-[var(--border)] rounded-[24px] border-b p-4 flex flex-col gap-1">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">
+                    <span className="text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-wider">
                       Sesiones
                     </span>
-                    <BarChart3 size={14} className="text-amber-400" />
+                    <BarChart3 size={14} className="text-[var(--warning)]" />
                   </div>
                   <div className="flex items-end gap-2">
-                    <span className="text-2xl font-black text-white font-mono">{data.length}</span>
-                    <span className="text-sm font-bold text-zinc-500 mb-1">registros</span>
+                    <span className="text-2xl font-semibold text-[var(--text)] font-mono">{data.length}</span>
+                    <span className="text-sm font-bold text-[var(--text-faint)] mb-1">registros</span>
                   </div>
                 </div>
               </div>
 
               {/* Chart: Max Weight */}
-              <div className="bg-black border border-white/10 rounded-none p-5 flex flex-col gap-4">
+              <div className="bg-[var(--canvas)] border border-[var(--border)] rounded-[24px] p-5 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-bold text-white">Evolución del Peso (kg)</h3>
+                  <h3 className="text-sm font-bold text-[var(--text)]">Evolución del Peso (kg)</h3>
                 </div>
                 
                 <div className="h-64 w-full">
@@ -399,9 +399,9 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
               </div>
 
               {/* Chart: Total Volume */}
-              <div className="bg-black border border-white/10 rounded-none p-5 flex flex-col gap-4">
+              <div className="bg-[var(--canvas)] border border-[var(--border)] rounded-[24px] p-5 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-bold text-white">Volumen Total (kg × reps)</h3>
+                  <h3 className="text-sm font-bold text-[var(--text)]">Volumen Total (kg × reps)</h3>
                 </div>
                 
                 <div className="h-48 w-full">
@@ -449,11 +449,11 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
 
       {activeTab === 'summary' && (
         <div className="flex flex-col gap-4">
-          <div className="flex bg-black border border-white/10 rounded-sm p-1 self-start">
+          <div className="flex bg-[var(--canvas)] border border-[var(--border)] rounded-sm p-1 self-start">
             <button
               onClick={() => setSummaryType('weekly')}
               className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-colors ${
-                summaryType === 'weekly' ? 'bg-slate-800 text-white' : 'text-zinc-500 hover:text-slate-300'
+                summaryType === 'weekly' ? 'bg-[var(--surface-raised)] text-[var(--text)]' : 'text-[var(--text-faint)] hover:text-[var(--text)]'
               }`}
             >
               Semanal
@@ -461,7 +461,7 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
             <button
               onClick={() => setSummaryType('monthly')}
               className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-colors ${
-                summaryType === 'monthly' ? 'bg-slate-800 text-white' : 'text-zinc-500 hover:text-slate-300'
+                summaryType === 'monthly' ? 'bg-[var(--surface-raised)] text-[var(--text)]' : 'text-[var(--text-faint)] hover:text-[var(--text)]'
               }`}
             >
               Mensual
@@ -470,12 +470,12 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
 
           {summaries.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-12 text-center h-full gap-4 mt-4">
-              <div className="w-16 h-16 rounded-full bg-black border border-white/10 flex items-center justify-center text-zinc-500">
+              <div className="w-16 h-16 rounded-full bg-[var(--canvas)] border border-[var(--border)] flex items-center justify-center text-[var(--text-faint)]">
                 <Layers size={32} />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white mb-2">Sin actividad</h3>
-                <p className="text-sm text-zinc-500 max-w-xs mx-auto">
+                <h3 className="text-lg font-bold text-[var(--text)] mb-2">Sin actividad</h3>
+                <p className="text-sm text-[var(--text-faint)] max-w-xs mx-auto">
                   Aquí verás el resumen de todo el volumen levantado semana a semana.
                 </p>
               </div>
@@ -483,23 +483,23 @@ export default function ProgressTracker({ gymLogs, programSettings, onUpdateSett
           ) : (
             <div className="flex flex-col gap-3">
               {summaries.map((sum, i) => (
-                <div key={i} className="bg-black border border-white/10 rounded-none border-b p-5 flex flex-col gap-4">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <div key={i} className="bg-[var(--canvas)] border border-[var(--border)] rounded-[24px] border-b p-5 flex flex-col gap-4">
+                  <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
                     <div>
-                      <h4 className="text-sm font-bold text-white">{sum.name}</h4>
-                      <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">{sum.dateRange}</span>
+                      <h4 className="text-sm font-bold text-[var(--text)]">{sum.name}</h4>
+                      <span className="text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-wider">{sum.dateRange}</span>
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1">
-                      <span className="text-xs font-bold text-zinc-500">Entrenamientos</span>
-                      <span className="text-xl font-black text-white font-mono">{sum.workouts}</span>
+                      <span className="text-xs font-bold text-[var(--text-faint)]">Entrenamientos</span>
+                      <span className="text-xl font-semibold text-[var(--text)] font-mono">{sum.workouts}</span>
                     </div>
                     <div className="flex flex-col gap-1">
-                      <span className="text-xs font-bold text-zinc-500">Volumen Total</span>
-                      <span className="text-xl font-black text-amber-400 font-mono">
-                        {sum.volume >= 1000 ? (sum.volume / 1000).toFixed(1) + 'k' : sum.volume} <span className="text-xs text-zinc-500 font-sans">kg</span>
+                      <span className="text-xs font-bold text-[var(--text-faint)]">Volumen Total</span>
+                      <span className="text-xl font-semibold text-[var(--warning)] font-mono">
+                        {sum.volume >= 1000 ? (sum.volume / 1000).toFixed(1) + 'k' : sum.volume} <span className="text-xs text-[var(--text-faint)] font-sans">kg</span>
                       </span>
                     </div>
                   </div>

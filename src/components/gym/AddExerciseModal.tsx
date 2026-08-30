@@ -78,7 +78,7 @@ export default function AddExerciseModal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-[#050505]/85 backdrop-blur-md"
+            className="absolute inset-0 bg-[color:var(--surface-glass)] backdrop-blur-md"
           />
 
           <motion.div 
@@ -86,19 +86,19 @@ export default function AddExerciseModal({
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-            className="relative bg-[#0E0E0E] border-t sm:border border-slate-800/80 rounded-t-[32px] sm:rounded-3xl p-6 pb-8 w-full max-w-md max-h-[90vh] overflow-y-auto scrollbar-hide flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)]"
+            className="relative bg-[var(--surface)] border-t sm:border border-[var(--border)] rounded-t-[32px] sm:rounded-3xl p-6 pb-8 w-full max-w-md max-h-[90vh] overflow-y-auto scrollbar-hide flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)]"
           >
             <div className="flex items-center justify-between mb-5">
               <div>
-                <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                  <Dumbbell size={18} className="text-orange-400" />
+                <h2 className="text-lg font-semibold text-[var(--text)] flex items-center gap-2">
+                  <Dumbbell size={18} className="text-[var(--accent)]" />
                   Añadir Ejercicio
                 </h2>
-                <p className="text-xs text-slate-500">A {routineName}</p>
+                <p className="text-xs text-[var(--text-faint)]">A {routineName}</p>
               </div>
               <button 
                 onClick={onClose}
-                className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white transition-colors"
+                className="w-8 h-8 rounded-full bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
               >
                 <X size={16} />
               </button>
@@ -107,7 +107,7 @@ export default function AddExerciseModal({
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               {/* Exercise Name */}
               <div>
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
+                <label className="block text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-widest mb-1.5">
                   Nombre del Ejercicio
                 </label>
                 <input 
@@ -116,17 +116,17 @@ export default function AddExerciseModal({
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Ej. Press Militar en Máquina Smith..."
-                  className="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-orange-500/80 transition-colors"
+                  className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-3 text-sm text-[var(--text)] placeholder:text-[var(--text-faint)] focus:outline-none focus:border-[var(--accent)] transition-colors"
                   required
                 />
               </div>
 
               {/* Muscle Group */}
               <div>
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
+                <label className="block text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-widest mb-1.5">
                   Grupo Muscular
                 </label>
-                <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto scrollbar-hide p-1 bg-slate-950/40 border border-slate-800/60 rounded-xl">
+                <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto scrollbar-hide p-1 bg-[var(--canvas)] border border-[var(--border)] rounded-xl">
                   {MUSCLE_GROUPS.map(mg => (
                     <button
                       key={mg}
@@ -134,8 +134,8 @@ export default function AddExerciseModal({
                       onClick={() => setMuscleGroup(mg)}
                       className={`px-2.5 py-1 text-xs rounded-lg border transition-all ${
                         muscleGroup === mg
-                          ? 'bg-orange-500/20 border-orange-500/60 text-orange-300 font-semibold shadow-sm'
-                          : 'bg-slate-900/40 border-slate-800 text-slate-400 hover:border-slate-700'
+                          ? 'bg-[var(--accent-soft)] border-[var(--accent-border)] text-[var(--accent)] font-semibold shadow-sm'
+                          : 'bg-[var(--surface)] border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border-strong)]'
                       }`}
                     >
                       {mg}
@@ -147,7 +147,7 @@ export default function AddExerciseModal({
               {/* Sets & Reps */}
               <div className="grid grid-cols-3 gap-2.5">
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
+                  <label className="block text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-widest mb-1.5">
                     Series
                   </label>
                   <div className="relative">
@@ -157,14 +157,14 @@ export default function AddExerciseModal({
                       max={10}
                       value={setsCount}
                       onChange={(e) => setSetsCount(parseInt(e.target.value) || 1)}
-                      className="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-orange-500/80 text-center font-semibold"
+                      className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-3 py-2.5 text-sm text-[var(--text)] focus:outline-none focus:border-[var(--accent)] text-center font-semibold"
                       required
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
+                  <label className="block text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-widest mb-1.5">
                     Reps / Serie
                   </label>
                   <input 
@@ -172,13 +172,13 @@ export default function AddExerciseModal({
                     value={reps}
                     onChange={(e) => setReps(e.target.value)}
                     placeholder="8-10"
-                    className="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-orange-500/80 text-center font-semibold"
+                    className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-3 py-2.5 text-sm text-[var(--text)] focus:outline-none focus:border-[var(--accent)] text-center font-semibold"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
+                  <label className="block text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-widest mb-1.5">
                     Peso (kg)
                   </label>
                   <input 
@@ -187,14 +187,14 @@ export default function AddExerciseModal({
                     value={weightKg}
                     onChange={(e) => setWeightKg(e.target.value)}
                     placeholder="20"
-                    className="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-orange-500/80 text-center font-semibold"
+                    className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-3 py-2.5 text-sm text-[var(--text)] focus:outline-none focus:border-[var(--accent)] text-center font-semibold"
                   />
                 </div>
               </div>
 
               {/* Rest Seconds */}
               <div>
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
+                <label className="block text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-widest mb-1.5">
                   Descanso entre series
                 </label>
                 <div className="grid grid-cols-4 gap-1.5">
@@ -205,8 +205,8 @@ export default function AddExerciseModal({
                       onClick={() => setRestSeconds(sec)}
                       className={`py-1.5 text-xs rounded-xl border font-medium transition-all ${
                         restSeconds === sec
-                          ? 'bg-slate-800 border-orange-500/50 text-orange-400 font-semibold'
-                          : 'bg-slate-900/40 border-slate-800 text-slate-400 hover:border-slate-700'
+                          ? 'bg-[var(--surface-raised)] border-[var(--accent-border)] text-[var(--accent)] font-semibold'
+                          : 'bg-[var(--surface)] border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border-strong)]'
                       }`}
                     >
                       {sec}s
@@ -217,20 +217,20 @@ export default function AddExerciseModal({
 
               {/* Notes */}
               <div>
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
+                <label className="block text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-widest mb-1.5">
                   Notas / Técnica (Opcional)
                 </label>
                 <textarea 
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Ej. Pausa isométrica de 1s, agarre abierto..."
-                  className="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-orange-500/80 resize-none h-16"
+                  className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-2.5 text-xs text-[var(--text)] placeholder:text-[var(--text-faint)] focus:outline-none focus:border-[var(--accent)] resize-none h-16"
                 />
               </div>
 
               <button
                 type="submit"
-                className="mt-2 w-full py-3.5 bg-orange-500 hover:bg-orange-400 text-slate-950 font-bold text-sm rounded-xl shadow-[0_4px_15px_rgba(249,115,22,0.3)] transition-all"
+                className="mt-2 w-full py-3.5 bg-[var(--accent)] hover:bg-[var(--accent-strong)] text-[var(--accent-ink)] font-bold text-sm rounded-xl shadow-[0_4px_15px_rgba(249,115,22,0.3)] transition-all"
               >
                 Guardar Ejercicio en Rutina
               </button>

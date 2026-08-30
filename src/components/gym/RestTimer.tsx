@@ -68,17 +68,17 @@ export default function RestTimer({ initialSeconds = 90, onClose, isOpen }: Rest
         initial={{ opacity: 0, y: 50, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 50, scale: 0.95 }}
-        className="fixed bottom-24 right-4 sm:right-6 z-40 bg-[#0E0E0E]/95 border border-orange-500/40 rounded-2xl p-3.5 shadow-[0_10px_35px_rgba(0,0,0,0.8)] backdrop-blur-md flex flex-col gap-2.5 w-72"
+        className="fixed bottom-24 right-4 sm:right-6 z-40 bg-[color:var(--surface-glass)] border border-[var(--accent-border)] rounded-2xl p-3.5 shadow-[0_10px_35px_rgba(0,0,0,0.8)] backdrop-blur-md flex flex-col gap-2.5 w-72"
       >
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-orange-400">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-[var(--accent)]">
             <Timer size={14} />
             <span>Descanso entre series</span>
           </div>
           {onClose && (
             <button
               onClick={onClose}
-              className="text-slate-500 hover:text-white transition-colors"
+              className="text-[var(--text-faint)] hover:text-[var(--text)] transition-colors"
             >
               <X size={14} />
             </button>
@@ -86,9 +86,9 @@ export default function RestTimer({ initialSeconds = 90, onClose, isOpen }: Rest
         </div>
 
         {/* Progress Bar */}
-        <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
+        <div className="w-full bg-[var(--surface)] h-1.5 rounded-full overflow-hidden">
           <div 
-            className="bg-orange-500 h-full transition-all duration-300 rounded-full shadow-[0_0_8px_rgba(249,115,22,0.8)]"
+            className="bg-[var(--accent)] h-full transition-all duration-300 rounded-full shadow-[var(--shadow-soft)]"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
@@ -99,17 +99,17 @@ export default function RestTimer({ initialSeconds = 90, onClose, isOpen }: Rest
             <button
               type="button"
               onClick={() => handleAdjust(-15)}
-              className="w-7 h-7 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white"
+              className="w-7 h-7 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)]"
             >
               <Minus size={12} />
             </button>
-            <div className="text-xl font-bold font-mono text-white px-2">
+            <div className="text-xl font-bold font-mono text-[var(--text)] px-2">
               {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
             </div>
             <button
               type="button"
               onClick={() => handleAdjust(15)}
-              className="w-7 h-7 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white"
+              className="w-7 h-7 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)]"
             >
               <Plus size={12} />
             </button>
@@ -119,7 +119,7 @@ export default function RestTimer({ initialSeconds = 90, onClose, isOpen }: Rest
             <button
               type="button"
               onClick={handleReset}
-              className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white"
+              className="w-8 h-8 rounded-xl bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)]"
               title="Reiniciar"
             >
               <RotateCcw size={13} />
@@ -129,8 +129,8 @@ export default function RestTimer({ initialSeconds = 90, onClose, isOpen }: Rest
               onClick={() => setIsRunning(!isRunning)}
               className={`w-9 h-9 rounded-xl flex items-center justify-center font-semibold transition-all ${
                 isRunning
-                  ? 'bg-amber-500 text-slate-950 shadow-sm'
-                  : 'bg-orange-500 text-slate-950 hover:bg-orange-400 shadow-[0_0_12px_rgba(249,115,22,0.4)]'
+                  ? 'bg-[var(--warning)] text-[var(--accent-ink)] shadow-sm'
+                  : 'bg-[var(--accent)] text-[var(--accent-ink)] hover:bg-[var(--accent-strong)] shadow-[var(--shadow-soft)]'
               }`}
             >
               {isRunning ? <Pause size={15} /> : <Play size={15} className="ml-0.5" />}
@@ -139,7 +139,7 @@ export default function RestTimer({ initialSeconds = 90, onClose, isOpen }: Rest
         </div>
 
         {/* Presets */}
-        <div className="grid grid-cols-4 gap-1 pt-1 border-t border-slate-800/60">
+        <div className="grid grid-cols-4 gap-1 pt-1 border-t border-[var(--border)]">
           {[45, 60, 90, 120].map(s => (
             <button
               key={s}
@@ -149,7 +149,7 @@ export default function RestTimer({ initialSeconds = 90, onClose, isOpen }: Rest
                 setRemainingSeconds(s);
                 setIsRunning(true);
               }}
-              className="py-1 text-[10px] font-semibold bg-slate-900/60 hover:bg-slate-800 text-slate-400 hover:text-orange-300 rounded-lg transition-colors text-center"
+              className="py-1 text-[10px] font-semibold bg-[var(--surface)] hover:bg-[var(--surface-muted)] text-[var(--text-muted)] hover:text-[var(--accent-strong)] rounded-lg transition-colors text-center"
             >
               {s}s
             </button>

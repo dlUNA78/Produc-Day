@@ -49,17 +49,17 @@ interface ActiveGuidedWorkoutProps {
 }
 
 const muscleColors: Record<MuscleGroup, string> = {
-  Pecho: 'bg-red-950/40 text-red-400 border-red-800/40',
-  Espalda: 'bg-indigo-950/40 text-indigo-400 border-indigo-800/40',
-  Hombros: 'bg-amber-950/40 text-amber-400 border-amber-800/40',
-  Bíceps: 'bg-purple-950/40 text-purple-400 border-purple-800/40',
-  Tríceps: 'bg-rose-950/40 text-rose-400 border-rose-800/40',
-  Cuádriceps: 'bg-orange-950/40 text-orange-400 border-orange-800/40',
-  Isquios: 'bg-yellow-950/40 text-yellow-400 border-yellow-800/40',
-  Glúteos: 'bg-pink-950/40 text-pink-400 border-pink-800/40',
-  Gemelos: 'bg-teal-950/40 text-teal-400 border-teal-800/40',
-  'Core / Abdomen': 'bg-emerald-950/40 text-emerald-400 border-emerald-800/40',
-  'Cardio / Movilidad': 'bg-cyan-950/40 text-cyan-400 border-cyan-800/40',
+  Pecho: 'bg-[var(--danger-soft)] text-[var(--danger)] border-[var(--danger-border)]',
+  Espalda: 'bg-[var(--plum-soft)] text-[var(--plum)] border-[var(--plum-border)]',
+  Hombros: 'bg-[var(--warning-soft)] text-[var(--warning)] border-[var(--warning-border)]',
+  Bíceps: 'bg-[var(--plum-soft)] text-[var(--plum)] border-[var(--plum-border)]',
+  Tríceps: 'bg-[var(--danger-soft)] text-[var(--danger)] border-[var(--danger-border)]',
+  Cuádriceps: 'bg-[var(--accent-soft)] text-[var(--accent)] border-[var(--accent-border)]',
+  Isquios: 'bg-[var(--warning-soft)] text-[var(--warning)] border-[var(--warning-border)]',
+  Glúteos: 'bg-[var(--danger-soft)] text-[var(--danger)] border-[var(--danger-border)]',
+  Gemelos: 'bg-[var(--success-soft)] text-[var(--success)] border-[var(--success-border)]',
+  'Core / Abdomen': 'bg-[var(--success-soft)] text-[var(--success)] border-[var(--success-border)]',
+  'Cardio / Movilidad': 'bg-[var(--steel-soft)] text-[var(--steel)] border-[var(--steel-border)]',
 };
 
 export default function ActiveGuidedWorkout({
@@ -181,13 +181,13 @@ export default function ActiveGuidedWorkout({
   const restProgress = restTargetSeconds > 0 ? ((restTargetSeconds - restSecondsLeft) / restTargetSeconds) * 100 : 0;
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#070707] text-white flex flex-col justify-between overflow-hidden select-none">
+    <div className="fixed inset-0 z-50 bg-[var(--canvas)] text-[var(--text)] flex flex-col justify-between overflow-hidden select-none">
       {/* Top Header Bar */}
-      <header className="pt-10 pb-3 px-5 border-b border-slate-800/80 bg-[#0B0B0B]/90 backdrop-blur-md flex items-center justify-between z-20">
+      <header className="pt-10 pb-3 px-5 border-b border-[var(--border)] bg-[color:var(--surface-glass)] backdrop-blur-md flex items-center justify-between z-20">
         <button
           type="button"
           onClick={onClose}
-          className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white bg-slate-900/80 border border-slate-800 px-3 py-1.5 rounded-xl transition-colors"
+          className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] hover:text-[var(--text)] bg-[var(--surface)] border border-[var(--border)] px-3 py-1.5 rounded-xl transition-colors"
           title="Minimizar a barra flotante"
         >
           <Minimize2 size={14} />
@@ -198,17 +198,17 @@ export default function ActiveGuidedWorkout({
         <div className="flex items-center gap-2">
           <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-mono font-bold ${
             isWorkoutRunning 
-              ? 'bg-orange-500/15 border-orange-500/30 text-orange-400' 
-              : 'bg-slate-900 border-slate-800 text-slate-400'
+              ? 'bg-[var(--accent-soft)] border-[var(--accent-border)] text-[var(--accent)]' 
+              : 'bg-[var(--surface)] border-[var(--border)] text-[var(--text-muted)]'
           }`}>
-            <Flame size={14} className={isWorkoutRunning ? 'animate-pulse text-orange-400' : 'text-slate-500'} />
+            <Flame size={14} className={isWorkoutRunning ? ' text-[var(--accent)]' : 'text-[var(--text-faint)]'} />
             <span>{formatTime(workoutSeconds)}</span>
           </div>
 
           <button
             type="button"
             onClick={isWorkoutRunning ? onPauseWorkout : onResumeWorkout}
-            className="p-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+            className="p-1.5 rounded-lg bg-[var(--surface)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]"
           >
             {isWorkoutRunning ? <Pause size={13} /> : <Play size={13} fill="currentColor" />}
           </button>
@@ -221,8 +221,8 @@ export default function ActiveGuidedWorkout({
             onClick={() => setShowOverviewDrawer(!showOverviewDrawer)}
             className={`p-2 rounded-xl border transition-colors ${
               showOverviewDrawer
-                ? 'bg-orange-500 text-slate-950 border-orange-500'
-                : 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white'
+                ? 'bg-[var(--accent)] text-[var(--accent-ink)] border-[var(--accent-border)]'
+                : 'bg-[var(--surface)] border-[var(--border)] text-[var(--text)] hover:text-[var(--text)]'
             }`}
             title="Ver lista de ejercicios"
           >
@@ -232,18 +232,18 @@ export default function ActiveGuidedWorkout({
           <button
             type="button"
             onClick={onFinishWorkout}
-            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1"
+            className="px-3 py-1.5 bg-[var(--surface-raised)] hover:bg-[var(--surface-muted)] text-[var(--text)] border border-[var(--border-strong)] rounded-xl text-xs font-semibold flex items-center gap-1"
           >
-            <Square size={11} fill="currentColor" className="text-orange-400" />
+            <Square size={11} fill="currentColor" className="text-[var(--accent)]" />
             <span>Terminar</span>
           </button>
         </div>
       </header>
 
       {/* Routine Overall Progress Bar */}
-      <div className="w-full bg-slate-950 h-1">
+      <div className="w-full bg-[var(--canvas)] h-1">
         <div 
-          className="bg-gradient-to-r from-orange-500 to-amber-400 h-full transition-all duration-300 shadow-[0_0_8px_rgba(249,115,22,0.8)]"
+          className="bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]   h-full transition-all duration-300 shadow-[var(--shadow-soft)]"
           style={{ width: `${progressPercent}%` }}
         />
       </div>
@@ -257,29 +257,29 @@ export default function ActiveGuidedWorkout({
               initial={{ opacity: 0, scale: 0.95, y: -20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
-              className="bg-gradient-to-br from-amber-950/40 via-slate-900 to-slate-950 border-2 border-amber-500/50 rounded-3xl p-5 mb-4 shadow-[0_0_40px_rgba(245,158,11,0.2)] text-center flex flex-col items-center justify-between"
+              className="bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]    border-2 border-[var(--warning-border)] rounded-3xl p-5 mb-4 shadow-[var(--shadow-soft)] text-center flex flex-col items-center justify-between"
             >
               <div className="flex items-center justify-between w-full mb-1">
-                <span className="text-[11px] font-bold text-amber-400 uppercase tracking-widest flex items-center gap-1.5">
-                  <Timer size={14} className="animate-spin text-amber-400" />
+                <span className="text-[11px] font-bold text-[var(--warning)] uppercase tracking-widest flex items-center gap-1.5">
+                  <Timer size={14} className="animate-spin text-[var(--warning)]" />
                   Descanso Entre Series
                 </span>
-                <span className="text-xs font-mono text-slate-400">
+                <span className="text-xs font-mono text-[var(--text-muted)]">
                   {Math.round(restSecondsLeft)}s restantes
                 </span>
               </div>
 
               {/* Huge Rest Counter */}
               <div className="my-2">
-                <span className="text-5xl font-black font-mono text-amber-300 tracking-tight drop-shadow-[0_0_15px_rgba(245,158,11,0.4)]">
+                <span className="text-5xl font-semibold font-mono text-[var(--warning)] tracking-tight drop-shadow-[var(--shadow-soft)]">
                   {String(restMinutes).padStart(2, '0')}:{String(restSecs).padStart(2, '0')}
                 </span>
               </div>
 
               {/* Rest Progress Bar */}
-              <div className="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-amber-500/30 my-2">
+              <div className="w-full bg-[var(--canvas)] h-2 rounded-full overflow-hidden border border-[var(--warning-border)] my-2">
                 <div 
-                  className="bg-amber-400 h-full transition-all duration-300 rounded-full"
+                  className="bg-[var(--warning)] h-full transition-all duration-300 rounded-full"
                   style={{ width: `${restProgress}%` }}
                 />
               </div>
@@ -290,14 +290,14 @@ export default function ActiveGuidedWorkout({
                   <button
                     type="button"
                     onClick={() => onAdjustRest(-15)}
-                    className="px-2.5 py-1.5 text-xs font-semibold font-mono bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-xl border border-slate-700"
+                    className="px-2.5 py-1.5 text-xs font-semibold font-mono bg-[var(--surface)] hover:bg-[var(--surface-muted)] text-[var(--text)] rounded-xl border border-[var(--border-strong)]"
                   >
                     -15s
                   </button>
                   <button
                     type="button"
                     onClick={() => onAdjustRest(30)}
-                    className="px-2.5 py-1.5 text-xs font-semibold font-mono bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-xl border border-slate-700"
+                    className="px-2.5 py-1.5 text-xs font-semibold font-mono bg-[var(--surface)] hover:bg-[var(--surface-muted)] text-[var(--text)] rounded-xl border border-[var(--border-strong)]"
                   >
                     +30s
                   </button>
@@ -306,7 +306,7 @@ export default function ActiveGuidedWorkout({
                 <button
                   type="button"
                   onClick={onSkipRest}
-                  className="px-4 py-1.5 text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl shadow-[0_2px_10px_rgba(245,158,11,0.3)] flex items-center gap-1 transition-transform active:scale-95"
+                  className="px-4 py-1.5 text-xs font-bold bg-[var(--warning)] hover:bg-[var(--warning)] text-[var(--accent-ink)] rounded-xl shadow-[0_2px_10px_rgba(245,158,11,0.3)] flex items-center gap-1 transition-transform active:scale-95"
                 >
                   <FastForward size={13} />
                   <span>Saltar Descanso</span>
@@ -321,11 +321,11 @@ export default function ActiveGuidedWorkout({
           {/* Exercise Index & Muscle */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold font-mono text-orange-400 bg-orange-500/15 border border-orange-500/30 px-2.5 py-0.5 rounded-lg">
+              <span className="text-xs font-bold font-mono text-[var(--accent)] bg-[var(--accent-soft)] border border-[var(--accent-border)] px-2.5 py-0.5 rounded-lg">
                 Ejercicio {safeExIndex + 1} de {routine.exercises.length}
               </span>
               <span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg border ${
-                muscleColors[currentExercise.muscleGroup] || 'bg-slate-800 text-slate-400'
+                muscleColors[currentExercise.muscleGroup] || 'bg-[var(--surface-raised)] text-[var(--text-muted)]'
               }`}>
                 {currentExercise.muscleGroup}
               </span>
@@ -337,7 +337,7 @@ export default function ActiveGuidedWorkout({
                 type="button"
                 disabled={safeExIndex === 0}
                 onClick={() => setCurrentExIndex(prev => Math.max(0, prev - 1))}
-                className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 disabled:opacity-30 flex items-center justify-center text-slate-300 hover:text-white"
+                className="w-8 h-8 rounded-xl bg-[var(--surface)] border border-[var(--border)] disabled:opacity-30 flex items-center justify-center text-[var(--text)] hover:text-[var(--text)]"
                 title="Ejercicio anterior"
               >
                 <ChevronLeft size={16} />
@@ -346,7 +346,7 @@ export default function ActiveGuidedWorkout({
                 type="button"
                 disabled={safeExIndex === routine.exercises.length - 1}
                 onClick={() => setCurrentExIndex(prev => Math.min(routine.exercises.length - 1, prev + 1))}
-                className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 disabled:opacity-30 flex items-center justify-center text-slate-300 hover:text-white"
+                className="w-8 h-8 rounded-xl bg-[var(--surface)] border border-[var(--border)] disabled:opacity-30 flex items-center justify-center text-[var(--text)] hover:text-[var(--text)]"
                 title="Siguiente ejercicio"
               >
                 <ChevronRight size={16} />
@@ -356,11 +356,11 @@ export default function ActiveGuidedWorkout({
 
           {/* Exercise Big Name */}
           <div>
-            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-snug">
+            <h2 className="text-2xl sm:text-3xl font-semibold text-[var(--text)] tracking-tight leading-snug">
               {currentExercise.name}
             </h2>
             {currentExercise.notes && (
-              <p className="text-xs text-slate-400 bg-slate-900/60 border border-slate-800/80 rounded-xl px-3 py-2 mt-2 leading-relaxed">
+              <p className="text-xs text-[var(--text-muted)] bg-[var(--surface)] border border-[var(--border)] rounded-xl px-3 py-2 mt-2 leading-relaxed">
                 💡 {currentExercise.notes}
               </p>
             )}
@@ -379,10 +379,10 @@ export default function ActiveGuidedWorkout({
                   onClick={() => onToggleSet(currentExercise.id, s.setNumber)}
                   className={`flex-1 py-2 px-1 rounded-xl text-xs font-bold font-mono transition-all flex flex-col items-center gap-0.5 border ${
                     isSetDone
-                      ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400'
+                      ? 'bg-[var(--success-soft)] border-[var(--success-border)] text-[var(--success)]'
                       : isCurrent
-                        ? 'bg-orange-500 border-orange-400 text-slate-950 shadow-[0_0_12px_rgba(249,115,22,0.4)] ring-2 ring-orange-400/40'
-                        : 'bg-slate-900/70 border-slate-800 text-slate-400 hover:text-white'
+                        ? 'bg-[var(--accent)] border-[var(--accent-border)] text-[var(--accent-ink)] shadow-[var(--shadow-soft)] ring-2 ring-[var(--accent-border)]'
+                        : 'bg-[var(--surface)] border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]'
                   }`}
                 >
                   <span>Serie #{s.setNumber}</span>
@@ -396,12 +396,12 @@ export default function ActiveGuidedWorkout({
 
           {/* Large Target Control Box for Active Set */}
           {currentSet && (
-            <div className="bg-gradient-to-br from-slate-900/90 via-[#131313] to-slate-900/90 border border-slate-800 rounded-3xl p-5 shadow-2xl flex flex-col gap-4">
+            <div className="bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]  via-[#131313]  border border-[var(--border)] rounded-3xl p-5 shadow-2xl flex flex-col gap-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">
                   Objetivo Serie #{currentSet.setNumber}
                 </span>
-                <span className="text-xs text-orange-400 font-medium">
+                <span className="text-xs text-[var(--accent)] font-medium">
                   Descanso: {currentExercise.restSeconds || 90}s
                 </span>
               </div>
@@ -409,16 +409,16 @@ export default function ActiveGuidedWorkout({
               {/* Controls Grid */}
               <div className="grid grid-cols-2 gap-3">
                 {/* PESO CONTROL */}
-                <div className="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-3.5 flex flex-col items-center text-center">
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">
+                <div className="bg-[var(--canvas)] border border-[var(--border)] rounded-2xl p-3.5 flex flex-col items-center text-center">
+                  <span className="text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-widest mb-1">
                     Peso
                   </span>
                   
                   <div className="flex items-baseline gap-1 my-1">
-                    <span className="text-3xl font-black font-mono text-white tracking-tight">
+                    <span className="text-3xl font-semibold font-mono text-[var(--text)] tracking-tight">
                       {currentSet.weightKg || 0}
                     </span>
-                    <span className="text-sm font-bold text-slate-400">kg</span>
+                    <span className="text-sm font-bold text-[var(--text-muted)]">kg</span>
                   </div>
 
                   {/* One-Tap Adjust Buttons */}
@@ -426,21 +426,21 @@ export default function ActiveGuidedWorkout({
                     <button
                       type="button"
                       onClick={() => handleWeightAdjust(-2.5)}
-                      className="px-2 py-1 bg-slate-900 hover:bg-slate-800 active:bg-slate-700 text-slate-300 font-mono text-xs font-bold rounded-lg border border-slate-800 transition-transform active:scale-95"
+                      className="px-2 py-1 bg-[var(--surface)] hover:bg-[var(--surface-muted)] active:bg-[var(--surface-soft)] text-[var(--text)] font-mono text-xs font-bold rounded-lg border border-[var(--border)] transition-transform active:scale-95"
                     >
                       -2.5
                     </button>
                     <button
                       type="button"
                       onClick={() => handleWeightAdjust(2.5)}
-                      className="px-2 py-1 bg-slate-900 hover:bg-slate-800 active:bg-slate-700 text-orange-400 font-mono text-xs font-bold rounded-lg border border-slate-800 transition-transform active:scale-95"
+                      className="px-2 py-1 bg-[var(--surface)] hover:bg-[var(--surface-muted)] active:bg-[var(--surface-soft)] text-[var(--accent)] font-mono text-xs font-bold rounded-lg border border-[var(--border)] transition-transform active:scale-95"
                     >
                       +2.5
                     </button>
                     <button
                       type="button"
                       onClick={() => handleWeightAdjust(5)}
-                      className="px-2 py-1 bg-slate-900 hover:bg-slate-800 active:bg-slate-700 text-orange-400 font-mono text-xs font-bold rounded-lg border border-slate-800 transition-transform active:scale-95"
+                      className="px-2 py-1 bg-[var(--surface)] hover:bg-[var(--surface-muted)] active:bg-[var(--surface-soft)] text-[var(--accent)] font-mono text-xs font-bold rounded-lg border border-[var(--border)] transition-transform active:scale-95"
                     >
                       +5
                     </button>
@@ -448,16 +448,16 @@ export default function ActiveGuidedWorkout({
                 </div>
 
                 {/* REPETICIONES CONTROL */}
-                <div className="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-3.5 flex flex-col items-center text-center">
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">
+                <div className="bg-[var(--canvas)] border border-[var(--border)] rounded-2xl p-3.5 flex flex-col items-center text-center">
+                  <span className="text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-widest mb-1">
                     Repeticiones
                   </span>
 
                   <div className="flex items-baseline gap-1 my-1">
-                    <span className="text-3xl font-black font-mono text-white tracking-tight">
+                    <span className="text-3xl font-semibold font-mono text-[var(--text)] tracking-tight">
                       {currentSet.reps}
                     </span>
-                    <span className="text-sm font-bold text-slate-400">reps</span>
+                    <span className="text-sm font-bold text-[var(--text-muted)]">reps</span>
                   </div>
 
                   {/* One-Tap Adjust Buttons */}
@@ -465,14 +465,14 @@ export default function ActiveGuidedWorkout({
                     <button
                       type="button"
                       onClick={() => handleRepsAdjust(-1)}
-                      className="w-8 h-7 bg-slate-900 hover:bg-slate-800 active:bg-slate-700 text-slate-300 font-mono text-xs font-bold rounded-lg border border-slate-800 flex items-center justify-center transition-transform active:scale-95"
+                      className="w-8 h-7 bg-[var(--surface)] hover:bg-[var(--surface-muted)] active:bg-[var(--surface-soft)] text-[var(--text)] font-mono text-xs font-bold rounded-lg border border-[var(--border)] flex items-center justify-center transition-transform active:scale-95"
                     >
                       <Minus size={13} />
                     </button>
                     <button
                       type="button"
                       onClick={() => handleRepsAdjust(1)}
-                      className="w-8 h-7 bg-slate-900 hover:bg-slate-800 active:bg-slate-700 text-orange-400 font-mono text-xs font-bold rounded-lg border border-slate-800 flex items-center justify-center transition-transform active:scale-95"
+                      className="w-8 h-7 bg-[var(--surface)] hover:bg-[var(--surface-muted)] active:bg-[var(--surface-soft)] text-[var(--accent)] font-mono text-xs font-bold rounded-lg border border-[var(--border)] flex items-center justify-center transition-transform active:scale-95"
                     >
                       <Plus size={13} />
                     </button>
@@ -484,14 +484,14 @@ export default function ActiveGuidedWorkout({
         </div>
 
         {/* Bottom Giant Action Button & Next Up Preview */}
-        <div className="flex flex-col gap-3 mt-5 pt-3 border-t border-slate-900">
+        <div className="flex flex-col gap-3 mt-5 pt-3 border-t border-[var(--border)]">
           {/* Next up info */}
-          <div className="flex items-center justify-between text-xs px-1 text-slate-400">
+          <div className="flex items-center justify-between text-xs px-1 text-[var(--text-muted)]">
             <span className="flex items-center gap-1 truncate max-w-[260px]">
-              <Zap size={12} className="text-orange-400 shrink-0" />
+              <Zap size={12} className="text-[var(--accent)] shrink-0" />
               <span className="truncate">{nextUpText}</span>
             </span>
-            <span className="font-mono text-slate-300 font-bold">
+            <span className="font-mono text-[var(--text)] font-bold">
               {completedSetsCount}/{totalSetsCount} listos
             </span>
           </div>
@@ -500,7 +500,7 @@ export default function ActiveGuidedWorkout({
           <button
             type="button"
             onClick={handleCompleteCurrentSet}
-            className="w-full py-5 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-400 hover:from-orange-400 hover:to-amber-300 text-slate-950 font-black text-base uppercase tracking-wider rounded-2xl shadow-[0_6px_25px_rgba(249,115,22,0.4)] flex items-center justify-center gap-2.5 transition-transform active:scale-[0.98]"
+            className="w-full py-5 bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]    hover: hover: text-[var(--accent-ink)] font-semibold text-base uppercase tracking-wider rounded-2xl shadow-[0_6px_25px_rgba(249,115,22,0.4)] flex items-center justify-center gap-2.5 transition-transform active:scale-[0.98]"
           >
             <Check size={22} strokeWidth={3} />
             <span>
@@ -519,22 +519,22 @@ export default function ActiveGuidedWorkout({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowOverviewDrawer(false)}
-              className="absolute inset-0 bg-[#050505]/80 backdrop-blur-sm"
+              className="absolute inset-0 bg-[color:var(--surface-glass)] backdrop-blur-sm"
             />
             <motion.div 
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
-              className="relative bg-[#0E0E0E] border-t sm:border border-slate-800 rounded-t-[32px] sm:rounded-3xl p-6 w-full max-w-md max-h-[85vh] overflow-y-auto scrollbar-hide flex flex-col shadow-2xl z-10"
+              className="relative bg-[var(--surface)] border-t sm:border border-[var(--border)] rounded-t-[32px] sm:rounded-3xl p-6 w-full max-w-md max-h-[85vh] overflow-y-auto scrollbar-hide flex flex-col shadow-2xl z-10"
             >
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="text-base font-bold text-white">Todos los Ejercicios</h3>
-                  <p className="text-xs text-slate-500">{routine.name}</p>
+                  <h3 className="text-base font-bold text-[var(--text)]">Todos los Ejercicios</h3>
+                  <p className="text-xs text-[var(--text-faint)]">{routine.name}</p>
                 </div>
                 <button 
                   onClick={() => setShowOverviewDrawer(false)}
-                  className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400"
+                  className="w-8 h-8 rounded-full bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)]"
                 >
                   <X size={15} />
                 </button>
@@ -557,23 +557,23 @@ export default function ActiveGuidedWorkout({
                       }}
                       className={`p-3 rounded-2xl border text-left flex items-center justify-between transition-all ${
                         isCurrent
-                          ? 'bg-orange-500/15 border-orange-500/50 text-white ring-1 ring-orange-500/30'
+                          ? 'bg-[var(--accent-soft)] border-[var(--accent-border)] text-[var(--text)] ring-1 ring-[var(--accent-border)]'
                           : isDone
-                            ? 'bg-emerald-950/20 border-emerald-900/40 text-slate-300'
-                            : 'bg-slate-900/50 border-slate-800/80 text-slate-400 hover:text-white'
+                            ? 'bg-[var(--success-soft)] border-[var(--success-border)] text-[var(--text)]'
+                            : 'bg-[var(--surface)] border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]'
                       }`}
                     >
                       <div className="flex items-center gap-2.5">
-                        <span className="w-6 h-6 rounded-lg bg-slate-800 text-[11px] font-bold flex items-center justify-center font-mono text-slate-300">
+                        <span className="w-6 h-6 rounded-lg bg-[var(--surface-raised)] text-[11px] font-bold flex items-center justify-center font-mono text-[var(--text)]">
                           {isDone ? '✓' : idx + 1}
                         </span>
                         <div>
-                          <p className="text-xs font-semibold text-white">{ex.name}</p>
-                          <span className="text-[10px] text-slate-500">{ex.sets.length} series • {ex.muscleGroup}</span>
+                          <p className="text-xs font-semibold text-[var(--text)]">{ex.name}</p>
+                          <span className="text-[10px] text-[var(--text-faint)]">{ex.sets.length} series • {ex.muscleGroup}</span>
                         </div>
                       </div>
 
-                      <ChevronRight size={14} className="text-slate-500" />
+                      <ChevronRight size={14} className="text-[var(--text-faint)]" />
                     </button>
                   );
                 })}

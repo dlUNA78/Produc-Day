@@ -125,7 +125,7 @@ export default function CreateEntryModal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 w-full bg-[#090907]/80 backdrop-blur-sm"
+            className="absolute inset-0 w-full bg-[color:var(--surface-glass)] backdrop-blur-sm"
           />
 
           <motion.div
@@ -192,7 +192,7 @@ export default function CreateEntryModal({
                   <div className="flex items-center justify-between gap-3 mb-2">
                     <label htmlFor="task-time" className="text-xs font-semibold text-[var(--text-muted)]">Hora específica</label>
                     <button type="button" role="switch" aria-checked={hasTime} onClick={() => setHasTime((value) => !value)} className={`relative w-11 h-6 rounded-full transition-colors ${hasTime ? 'bg-[var(--accent)]' : 'bg-[var(--surface-muted)]'}`}>
-                      <span className={`absolute top-1 w-4 h-4 rounded-full transition-all ${hasTime ? 'left-6 bg-[#17120e]' : 'left-1 bg-[var(--text-muted)]'}`} />
+                      <span className={`absolute top-1 w-4 h-4 rounded-full transition-all ${hasTime ? 'left-6 bg-[var(--accent-ink)]' : 'left-1 bg-[var(--text-muted)]'}`} />
                     </button>
                   </div>
                   <p className="text-xs text-[var(--text-faint)] mb-3">{hasTime ? 'La tarea aparecerá a esta hora.' : 'Puedes completarla en cualquier momento del día.'}</p>
@@ -226,7 +226,7 @@ export default function CreateEntryModal({
                 {editingEntry && onDelete && (
                   <button type="button" onClick={() => { onDelete(editingEntry.item.id, editingEntry.type); onClose(); }} className="min-h-13 px-4 rounded-2xl border border-[var(--clay)]/40 text-[var(--clay)] font-semibold text-sm hover:bg-[var(--clay)]/10 transition-colors">Eliminar</button>
                 )}
-                <button type="submit" className="flex-1 min-h-13 rounded-2xl bg-[var(--accent)] hover:bg-[var(--accent-strong)] text-[#17120e] font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+                <button type="submit" className="flex-1 min-h-13 rounded-2xl bg-[var(--accent)] hover:bg-[var(--accent-strong)] text-[var(--accent-ink)] font-semibold text-sm transition-colors flex items-center justify-center gap-2">
                   <Check size={18} /> {editingEntry ? 'Guardar cambios' : `Guardar ${type === 'task' ? 'tarea' : 'bloque'}`}
                 </button>
               </div>

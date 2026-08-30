@@ -79,7 +79,7 @@ export default function SplitSelectorModal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-[#050505]/85 backdrop-blur-md"
+            className="absolute inset-0 bg-[color:var(--surface-glass)] backdrop-blur-md"
           />
 
           <motion.div 
@@ -87,20 +87,20 @@ export default function SplitSelectorModal({
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-            className="relative bg-[#0E0E0E] border-t sm:border border-slate-800/80 rounded-t-[32px] sm:rounded-3xl p-6 pb-8 w-full max-w-lg max-h-[90vh] overflow-y-auto scrollbar-hide flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)]"
+            className="relative bg-[var(--surface)] border-t sm:border border-[var(--border)] rounded-t-[32px] sm:rounded-3xl p-6 pb-8 w-full max-w-lg max-h-[90vh] overflow-y-auto scrollbar-hide flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)]"
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-5">
               <div>
-                <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                  <Dumbbell size={18} className="text-orange-400" />
+                <h2 className="text-lg font-semibold text-[var(--text)] flex items-center gap-2">
+                  <Dumbbell size={18} className="text-[var(--accent)]" />
                   Estructura de Entrenamiento
                 </h2>
-                <p className="text-xs text-slate-500">Selecciona o personaliza tu división de rutina</p>
+                <p className="text-xs text-[var(--text-faint)]">Selecciona o personaliza tu división de rutina</p>
               </div>
               <button 
                 onClick={onClose}
-                className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white transition-colors"
+                className="w-8 h-8 rounded-full bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
               >
                 <X size={16} />
               </button>
@@ -108,7 +108,7 @@ export default function SplitSelectorModal({
 
             {/* Splits Options */}
             <div className="flex flex-col gap-3 mb-6">
-              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+              <label className="text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-widest">
                 Planes Disponibles
               </label>
 
@@ -123,28 +123,28 @@ export default function SplitSelectorModal({
                       onClick={() => handleSelectSplit(split.id)}
                       className={`p-4 rounded-2xl border transition-all cursor-pointer text-left flex flex-col gap-1.5 ${
                         isChosen
-                          ? 'bg-orange-500/10 border-orange-500/50 shadow-[0_0_20px_rgba(249,115,22,0.1)] ring-1 ring-orange-500/30'
-                          : 'bg-slate-900/40 border-slate-800/80 hover:bg-slate-900/70 hover:border-slate-700'
+                          ? 'bg-[var(--accent-soft)] border-[var(--accent-border)] shadow-[var(--shadow-soft)] ring-1 ring-[var(--accent-border)]'
+                          : 'bg-[var(--surface)] border-[var(--border)] hover:bg-[var(--surface-muted)] hover:border-[var(--border-strong)]'
                       }`}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span className={`text-sm font-semibold ${isChosen ? 'text-white' : 'text-slate-200'}`}>
+                          <span className={`text-sm font-semibold ${isChosen ? 'text-[var(--text)]' : 'text-[var(--text)]'}`}>
                             {split.name}
                           </span>
                           {isActive && (
-                            <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-500/20 text-orange-400 border border-orange-500/30 rounded-full">
+                            <span className="text-[9px] font-bold px-2 py-0.5 bg-[var(--accent-soft)] text-[var(--accent)] border border-[var(--accent-border)] rounded-full">
                               EN USO
                             </span>
                           )}
                         </div>
                         {isChosen && (
-                          <div className="w-5 h-5 rounded-full bg-orange-500 text-slate-950 flex items-center justify-center">
+                          <div className="w-5 h-5 rounded-full bg-[var(--accent)] text-[var(--accent-ink)] flex items-center justify-center">
                             <Check size={12} strokeWidth={3} />
                           </div>
                         )}
                       </div>
-                      <p className="text-xs text-slate-400 leading-relaxed">
+                      <p className="text-xs text-[var(--text-muted)] leading-relaxed">
                         {split.description}
                       </p>
 
@@ -153,7 +153,7 @@ export default function SplitSelectorModal({
                         {split.routines.map(r => (
                           <span
                             key={r.id}
-                            className="text-[9px] px-2 py-0.5 bg-slate-800/80 text-slate-300 rounded-md border border-slate-700/50"
+                            className="text-[9px] px-2 py-0.5 bg-[var(--surface-raised)] text-[var(--text)] rounded-xl border border-[var(--border-strong)]"
                           >
                             {r.shortName} ({r.exercises.length} ejercicios)
                           </span>
@@ -167,16 +167,16 @@ export default function SplitSelectorModal({
 
             {/* Weekly Schedule Breakdown for current selected split */}
             {currentSplit && (
-              <div className="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-4 mb-6">
+              <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-4 mb-6">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-1.5">
-                    <Calendar size={14} className="text-orange-400" />
-                    <span className="text-xs font-semibold text-white">Distribución semanal</span>
+                    <Calendar size={14} className="text-[var(--accent)]" />
+                    <span className="text-xs font-semibold text-[var(--text)]">Distribución semanal</span>
                   </div>
                   <button
                     type="button"
                     onClick={() => setIsEditingSchedule(!isEditingSchedule)}
-                    className="text-[11px] text-orange-400 hover:text-orange-300 flex items-center gap-1 font-medium"
+                    className="text-[11px] text-[var(--accent)] hover:text-[var(--accent-strong)] flex items-center gap-1 font-medium"
                   >
                     <Edit2 size={11} />
                     {isEditingSchedule ? 'Bloquear cambios' : 'Ajustar días'}
@@ -192,20 +192,20 @@ export default function SplitSelectorModal({
                     return (
                       <div
                         key={day}
-                        className="flex items-center justify-between py-1.5 px-2.5 bg-slate-950/40 border border-slate-800/60 rounded-xl text-xs"
+                        className="flex items-center justify-between py-1.5 px-2.5 bg-[var(--canvas)] border border-[var(--border)] rounded-xl text-xs"
                       >
                         <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-bold text-slate-500 uppercase w-8 font-mono">
+                          <span className="text-[10px] font-bold text-[var(--text-faint)] uppercase w-8 font-mono">
                             {short}
                           </span>
-                          <span className="text-slate-300 font-medium">{name}</span>
+                          <span className="text-[var(--text)] font-medium">{name}</span>
                         </div>
 
                         {isEditingSchedule ? (
                           <select
                             value={routineId || 'REST'}
                             onChange={(e) => handleDayRoutineChange(day, e.target.value)}
-                            className="bg-slate-900 border border-slate-700 text-white text-xs rounded-lg px-2 py-1 focus:outline-none focus:border-orange-500"
+                            className="bg-[var(--surface)] border border-[var(--border-strong)] text-[var(--text)] text-xs rounded-lg px-2 py-1 focus:outline-none focus:border-[var(--accent)]"
                           >
                             <option value="REST">Descanso (Rest)</option>
                             {currentSplit.routines.map(r => (
@@ -217,8 +217,8 @@ export default function SplitSelectorModal({
                         ) : (
                           <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-lg ${
                             isRest
-                              ? 'bg-slate-800/60 text-slate-500'
-                              : 'bg-orange-500/15 text-orange-300 border border-orange-500/20'
+                              ? 'bg-[var(--surface-raised)] text-[var(--text-faint)]'
+                              : 'bg-[var(--accent-soft)] text-[var(--accent)] border border-[var(--accent-border)]'
                           }`}>
                             {isRest ? 'Descanso' : assignedRoutine?.shortName || 'Rutina'}
                           </span>
@@ -235,14 +235,14 @@ export default function SplitSelectorModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 py-3 px-4 rounded-xl border border-slate-800 text-slate-400 hover:text-white font-medium text-xs transition-colors"
+                className="flex-1 py-3 px-4 rounded-xl border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] font-medium text-xs transition-colors"
               >
                 Cancelar
               </button>
               <button
                 type="button"
                 onClick={handleApply}
-                className="flex-1 py-3 px-4 rounded-xl bg-orange-500 hover:bg-orange-400 text-slate-950 font-semibold text-xs shadow-[0_4px_15px_rgba(249,115,22,0.3)] transition-all"
+                className="flex-1 py-3 px-4 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-strong)] text-[var(--accent-ink)] font-semibold text-xs shadow-[0_4px_15px_rgba(249,115,22,0.3)] transition-all"
               >
                 Activar este Plan
               </button>

@@ -192,7 +192,7 @@ export default function ExerciseEditorModal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-[#050505]/85 backdrop-blur-md"
+            className="absolute inset-0 bg-[color:var(--surface-glass)] backdrop-blur-md"
           />
 
           <motion.div 
@@ -200,23 +200,23 @@ export default function ExerciseEditorModal({
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-            className="relative bg-[#0E0E0E] border-t sm:border border-slate-800/80 rounded-t-[32px] sm:rounded-3xl p-6 pb-8 w-full max-w-lg max-h-[92vh] overflow-y-auto scrollbar-hide flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)]"
+            className="relative bg-[var(--surface)] border-t sm:border border-[var(--border)] rounded-t-[32px] sm:rounded-3xl p-6 pb-8 w-full max-w-lg max-h-[92vh] overflow-y-auto scrollbar-hide flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)]"
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                  <Dumbbell size={18} className="text-orange-400" />
+                <h2 className="text-lg font-semibold text-[var(--text)] flex items-center gap-2">
+                  <Dumbbell size={18} className="text-[var(--accent)]" />
                   {initialExercise ? 'Editar Ejercicio' : 'Definir Ejercicio'}
                 </h2>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-[var(--text-faint)]">
                   En {routineName}
                 </p>
               </div>
               <button 
                 type="button"
                 onClick={onClose}
-                className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white transition-colors"
+                className="w-8 h-8 rounded-full bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
               >
                 <X size={16} />
               </button>
@@ -224,14 +224,14 @@ export default function ExerciseEditorModal({
 
             {/* Mode Switcher Tabs */}
             {!initialExercise && (
-              <div className="flex bg-slate-950 p-1 rounded-xl border border-slate-800/80 mb-5">
+              <div className="flex bg-[var(--canvas)] p-1 rounded-xl border border-[var(--border)] mb-5">
                 <button
                   type="button"
                   onClick={() => setActiveTab('library')}
                   className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
                     activeTab === 'library'
-                      ? 'bg-orange-500 text-slate-950 font-bold shadow-md'
-                      : 'text-slate-400 hover:text-white'
+                      ? 'bg-[var(--accent)] text-[var(--accent-ink)] font-bold shadow-md'
+                      : 'text-[var(--text-muted)] hover:text-[var(--text)]'
                   }`}
                 >
                   <Sparkles size={13} />
@@ -242,8 +242,8 @@ export default function ExerciseEditorModal({
                   onClick={() => setActiveTab('custom')}
                   className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
                     activeTab === 'custom'
-                      ? 'bg-orange-500 text-slate-950 font-bold shadow-md'
-                      : 'text-slate-400 hover:text-white'
+                      ? 'bg-[var(--accent)] text-[var(--accent-ink)] font-bold shadow-md'
+                      : 'text-[var(--text-muted)] hover:text-[var(--text)]'
                   }`}
                 >
                   <Plus size={13} />
@@ -257,13 +257,13 @@ export default function ExerciseEditorModal({
               <div className="flex flex-col gap-4">
                 {/* Search Bar */}
                 <div className="relative">
-                  <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-faint)]" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Buscar por ejercicio o músculo..."
-                    className="w-full pl-9 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-orange-500 transition-colors"
+                    className="w-full pl-9 pr-4 py-2.5 bg-[var(--canvas)] border border-[var(--border)] rounded-xl text-xs text-[var(--text)] placeholder:text-[var(--text-faint)] focus:outline-none focus:border-[var(--accent)] transition-colors"
                   />
                 </div>
 
@@ -274,8 +274,8 @@ export default function ExerciseEditorModal({
                     onClick={() => setSelectedMuscleFilter('Todos')}
                     className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold shrink-0 transition-colors ${
                       selectedMuscleFilter === 'Todos'
-                        ? 'bg-slate-800 text-orange-400 border border-orange-500/30'
-                        : 'bg-slate-900/60 text-slate-400 border border-slate-800 hover:text-white'
+                        ? 'bg-[var(--surface-raised)] text-[var(--accent)] border border-[var(--accent-border)]'
+                        : 'bg-[var(--surface)] text-[var(--text-muted)] border border-[var(--border)] hover:text-[var(--text)]'
                     }`}
                   >
                     Todos
@@ -287,8 +287,8 @@ export default function ExerciseEditorModal({
                       onClick={() => setSelectedMuscleFilter(m)}
                       className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold shrink-0 transition-colors ${
                         selectedMuscleFilter === m
-                          ? 'bg-orange-500/20 text-orange-400 border border-orange-500/40'
-                          : 'bg-slate-900/60 text-slate-400 border border-slate-800 hover:text-white'
+                          ? 'bg-[var(--accent-soft)] text-[var(--accent)] border border-[var(--accent-border)]'
+                          : 'bg-[var(--surface)] text-[var(--text-muted)] border border-[var(--border)] hover:text-[var(--text)]'
                       }`}
                     >
                       {m}
@@ -299,12 +299,12 @@ export default function ExerciseEditorModal({
                 {/* Library Items List */}
                 <div className="flex flex-col gap-2 max-h-[350px] overflow-y-auto scrollbar-hide pr-1">
                   {filteredPresets.length === 0 ? (
-                    <div className="text-center py-8 text-slate-500 text-xs">
+                    <div className="text-center py-8 text-[var(--text-faint)] text-xs">
                       No se encontraron ejercicios en la biblioteca.
                       <button
                         type="button"
                         onClick={() => setActiveTab('custom')}
-                        className="block mx-auto mt-2 text-orange-400 font-semibold underline"
+                        className="block mx-auto mt-2 text-[var(--accent)] font-semibold underline"
                       >
                         Crear como ejercicio personalizado
                       </button>
@@ -314,25 +314,25 @@ export default function ExerciseEditorModal({
                       <div
                         key={idx}
                         onClick={() => handleSelectPreset(preset)}
-                        className="p-3 bg-slate-950/70 border border-slate-800/80 hover:border-orange-500/50 hover:bg-slate-900/50 rounded-2xl cursor-pointer transition-all flex items-center justify-between group"
+                        className="p-3 bg-[var(--canvas)] border border-[var(--border)] hover:border-[var(--accent)] hover:bg-[var(--surface-muted)] rounded-2xl cursor-pointer transition-all flex items-center justify-between group"
                       >
                         <div className="flex flex-col gap-1 pr-2">
                           <div className="flex items-center gap-2">
-                            <span className="text-xs font-semibold text-white group-hover:text-orange-300 transition-colors">
+                            <span className="text-xs font-semibold text-[var(--text)] group-hover:text-[var(--accent-strong)] transition-colors">
                               {preset.name}
                             </span>
-                            <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-900 border border-slate-700/70 text-slate-400">
+                            <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[var(--surface)] border border-[var(--border-strong)] text-[var(--text-muted)]">
                               {preset.muscleGroup}
                             </span>
                           </div>
-                          <div className="flex items-center gap-3 text-[10px] text-slate-400 font-mono">
+                          <div className="flex items-center gap-3 text-[10px] text-[var(--text-muted)] font-mono">
                             <span>{preset.defaultSets} series x {preset.defaultReps} reps</span>
                             <span>• {preset.defaultWeightKg} kg</span>
                             <span>• ⏱ {preset.defaultRestSeconds}s</span>
                           </div>
                         </div>
 
-                        <div className="w-8 h-8 rounded-xl bg-orange-500/10 group-hover:bg-orange-500 text-orange-400 group-hover:text-slate-950 flex items-center justify-center shrink-0 transition-all">
+                        <div className="w-8 h-8 rounded-xl bg-[var(--accent-soft)] group-hover:bg-[var(--accent-strong)] text-[var(--accent)] group-hover:text-[var(--accent-ink)] flex items-center justify-center shrink-0 transition-all">
                           <ArrowRight size={14} />
                         </div>
                       </div>
@@ -347,7 +347,7 @@ export default function ExerciseEditorModal({
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 {/* Exercise Name */}
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                  <label className="text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
                     Nombre del Ejercicio *
                   </label>
                   <input
@@ -356,22 +356,22 @@ export default function ExerciseEditorModal({
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Ej. Press Militar con Barra"
-                    className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-orange-500 transition-colors"
+                    className="w-full px-3.5 py-2.5 bg-[var(--canvas)] border border-[var(--border)] rounded-xl text-sm text-[var(--text)] focus:outline-none focus:border-[var(--accent)] transition-colors"
                   />
                 </div>
 
                 {/* Muscle Group */}
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                  <label className="text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
                     Grupo Muscular Principal
                   </label>
                   <select
                     value={muscleGroup}
                     onChange={(e) => setMuscleGroup(e.target.value as MuscleGroup)}
-                    className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-orange-500 transition-colors"
+                    className="w-full px-3.5 py-2.5 bg-[var(--canvas)] border border-[var(--border)] rounded-xl text-xs text-[var(--text)] focus:outline-none focus:border-[var(--accent)] transition-colors"
                   >
                     {MUSCLE_GROUPS.map((mg) => (
-                      <option key={mg} value={mg} className="bg-slate-950 text-white">
+                      <option key={mg} value={mg} className="bg-[var(--canvas)] text-[var(--text)]">
                         {mg}
                       </option>
                     ))}
@@ -379,16 +379,16 @@ export default function ExerciseEditorModal({
                 </div>
 
                 {/* Sets Builder Table */}
-                <div className="flex flex-col gap-2 bg-slate-950/60 border border-slate-800/80 rounded-2xl p-3.5">
+                <div className="flex flex-col gap-2 bg-[var(--canvas)] border border-[var(--border)] rounded-2xl p-3.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                      <Layers size={13} className="text-orange-400" />
+                    <span className="text-[11px] font-bold text-[var(--text)] uppercase tracking-wider flex items-center gap-1.5">
+                      <Layers size={13} className="text-[var(--accent)]" />
                       Series Programadas ({sets.length})
                     </span>
                     <button
                       type="button"
                       onClick={handleAddSet}
-                      className="text-[11px] font-semibold text-orange-400 hover:text-orange-300 flex items-center gap-1 bg-orange-500/10 px-2.5 py-1 rounded-lg border border-orange-500/20 transition-colors"
+                      className="text-[11px] font-semibold text-[var(--accent)] hover:text-[var(--accent-strong)] flex items-center gap-1 bg-[var(--accent-soft)] px-2.5 py-1 rounded-lg border border-[var(--accent-border)] transition-colors"
                     >
                       <Plus size={12} />
                       <span>Añadir Serie</span>
@@ -396,7 +396,7 @@ export default function ExerciseEditorModal({
                   </div>
 
                   {/* Header labels */}
-                  <div className="grid grid-cols-12 gap-2 text-[10px] text-slate-500 font-bold uppercase tracking-wider px-1 pt-1">
+                  <div className="grid grid-cols-12 gap-2 text-[10px] text-[var(--text-faint)] font-bold uppercase tracking-wider px-1 pt-1">
                     <div className="col-span-2">Serie</div>
                     <div className="col-span-5">Reps Objetivo</div>
                     <div className="col-span-4 flex items-center justify-between">
@@ -404,7 +404,7 @@ export default function ExerciseEditorModal({
                       <button
                         type="button"
                         onClick={() => setWeightUnit(prev => prev === 'kg' ? 'lbs' : 'kg')}
-                        className="text-[9px] bg-slate-900 border border-slate-700 hover:border-orange-500 px-1.5 py-0.5 rounded text-orange-400 transition-colors"
+                        className="text-[9px] bg-[var(--surface)] border border-[var(--border-strong)] hover:border-[var(--accent)] px-1.5 py-0.5 rounded text-[var(--accent)] transition-colors"
                       >
                         {weightUnit.toUpperCase()}
                       </button>
@@ -422,7 +422,7 @@ export default function ExerciseEditorModal({
                       return (
                         <div key={set.id || idx} className="grid grid-cols-12 gap-2 items-center">
                           <div className="col-span-2">
-                            <span className="w-6 h-6 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 font-mono text-xs flex items-center justify-center">
+                            <span className="w-6 h-6 rounded-lg bg-[var(--surface)] border border-[var(--border)] text-[var(--text-muted)] font-mono text-xs flex items-center justify-center">
                               #{idx + 1}
                             </span>
                           </div>
@@ -433,7 +433,7 @@ export default function ExerciseEditorModal({
                               value={set.reps}
                               onChange={(e) => handleUpdateSetField(idx, 'reps', e.target.value)}
                               placeholder="10 o 8-12"
-                              className="w-full px-2.5 py-1.5 bg-slate-900 border border-slate-800 rounded-lg text-xs text-white font-mono focus:outline-none focus:border-orange-500"
+                              className="w-full px-2.5 py-1.5 bg-[var(--surface)] border border-[var(--border)] rounded-lg text-xs text-[var(--text)] font-mono focus:outline-none focus:border-[var(--accent)]"
                             />
                           </div>
 
@@ -448,9 +448,9 @@ export default function ExerciseEditorModal({
                                 handleUpdateSetField(idx, 'weightKg', Number(newKg.toFixed(2)));
                               }}
                               placeholder={weightUnit}
-                              className="w-full px-2.5 py-1.5 pr-8 bg-slate-900 border border-slate-800 rounded-lg text-xs text-white font-mono focus:outline-none focus:border-orange-500"
+                              className="w-full px-2.5 py-1.5 pr-8 bg-[var(--surface)] border border-[var(--border)] rounded-lg text-xs text-[var(--text)] font-mono focus:outline-none focus:border-[var(--accent)]"
                             />
-                            <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] text-slate-500 font-bold uppercase">
+                            <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] text-[var(--text-faint)] font-bold uppercase">
                               {weightUnit}
                             </span>
                           </div>
@@ -460,7 +460,7 @@ export default function ExerciseEditorModal({
                               type="button"
                               disabled={sets.length <= 1}
                               onClick={() => handleRemoveSet(idx)}
-                              className={`p-1 rounded text-slate-500 hover:text-red-400 transition-colors ${
+                              className={`p-1 rounded text-[var(--text-faint)] hover:text-[var(--danger)] transition-colors ${
                                 sets.length <= 1 ? 'opacity-30 cursor-not-allowed' : ''
                               }`}
                             >
@@ -476,11 +476,11 @@ export default function ExerciseEditorModal({
                 {/* Rest Seconds Selector */}
                 <div className="flex flex-col gap-1.5">
                   <div className="flex items-center justify-between">
-                    <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                      <Clock size={12} className="text-orange-400" />
+                    <label className="text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider flex items-center gap-1.5">
+                      <Clock size={12} className="text-[var(--accent)]" />
                       Descanso Entre Series
                     </label>
-                    <span className="text-xs font-mono font-bold text-orange-400">{restSeconds}s ({Math.floor(restSeconds / 60)}m {restSeconds % 60 ? `${restSeconds % 60}s` : ''})</span>
+                    <span className="text-xs font-mono font-bold text-[var(--accent)]">{restSeconds}s ({Math.floor(restSeconds / 60)}m {restSeconds % 60 ? `${restSeconds % 60}s` : ''})</span>
                   </div>
 
                   <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide py-1">
@@ -491,8 +491,8 @@ export default function ExerciseEditorModal({
                         onClick={() => setRestSeconds(sec)}
                         className={`px-3 py-1.5 rounded-xl text-xs font-mono font-medium transition-colors shrink-0 ${
                           restSeconds === sec
-                            ? 'bg-orange-500 text-slate-950 font-bold shadow-sm'
-                            : 'bg-slate-950 border border-slate-800 text-slate-400 hover:text-white'
+                            ? 'bg-[var(--accent)] text-[var(--accent-ink)] font-bold shadow-sm'
+                            : 'bg-[var(--canvas)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]'
                         }`}
                       >
                         {sec}s
@@ -503,7 +503,7 @@ export default function ExerciseEditorModal({
 
                 {/* Notes & Technique Tips */}
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                  <label className="text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
                     Notas y Consejos de Técnica (Opcional)
                   </label>
                   <textarea
@@ -511,7 +511,7 @@ export default function ExerciseEditorModal({
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     placeholder="Ej. RIR 2, tempo excéntrico 3 segundos, retracción escapular..."
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-orange-500 transition-colors"
+                    className="w-full px-3 py-2 bg-[var(--canvas)] border border-[var(--border)] rounded-xl text-xs text-[var(--text)] placeholder:text-[var(--text-faint)] focus:outline-none focus:border-[var(--accent)] transition-colors"
                   />
                 </div>
 
@@ -520,13 +520,13 @@ export default function ExerciseEditorModal({
                   <button
                     type="button"
                     onClick={onClose}
-                    className="flex-1 py-3 bg-slate-900 border border-slate-800 text-slate-300 text-xs font-semibold rounded-xl hover:bg-slate-800 transition-colors"
+                    className="flex-1 py-3 bg-[var(--surface)] border border-[var(--border)] text-[var(--text)] text-xs font-semibold rounded-xl hover:bg-[var(--surface-muted)] transition-colors"
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-slate-950 text-xs font-bold rounded-xl shadow-[0_4px_15px_rgba(249,115,22,0.3)] transition-transform active:scale-95 flex items-center justify-center gap-1.5"
+                    className="flex-1 py-3 bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]   hover: hover: text-[var(--accent-ink)] text-xs font-bold rounded-xl shadow-[0_4px_15px_rgba(249,115,22,0.3)] transition-transform active:scale-95 flex items-center justify-center gap-1.5"
                   >
                     <Check size={14} />
                     <span>Guardar Ejercicio</span>

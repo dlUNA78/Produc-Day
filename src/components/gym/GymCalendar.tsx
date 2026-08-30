@@ -79,16 +79,16 @@ export default function GymCalendar({
   return (
     <div className="px-6 mb-6">
       {/* Active Split Ribbon */}
-      <div className="flex items-center justify-between bg-gradient-to-r from-orange-950/40 via-amber-950/20 to-slate-900/40 border border-orange-900/30 rounded-2xl p-3 mb-4">
+      <div className="flex items-center justify-between bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]    border border-[var(--accent-border)] rounded-2xl p-3 mb-4">
         <div className="flex items-center gap-2.5 overflow-hidden">
-          <div className="w-8 h-8 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center shrink-0">
-            <Dumbbell size={16} className="text-orange-400" />
+          <div className="w-8 h-8 rounded-xl bg-[var(--accent-soft)] border border-[var(--accent-border)] flex items-center justify-center shrink-0">
+            <Dumbbell size={16} className="text-[var(--accent)]" />
           </div>
           <div className="overflow-hidden">
-            <span className="text-[10px] font-bold text-orange-400 uppercase tracking-widest block">
+            <span className="text-[10px] font-bold text-[var(--accent)] uppercase tracking-widest block">
               Plan Activo
             </span>
-            <p className="text-xs font-semibold text-white truncate">
+            <p className="text-xs font-semibold text-[var(--text)] truncate">
               {activeSplit.name}
             </p>
           </div>
@@ -97,9 +97,9 @@ export default function GymCalendar({
         <button
           type="button"
           onClick={onOpenSplitSelector}
-          className="text-[11px] font-medium text-orange-300 hover:text-white px-3 py-1.5 bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/30 rounded-xl transition-all flex items-center gap-1.5 shrink-0"
+          className="text-[11px] font-medium text-[var(--accent)] hover:text-[var(--text)] px-3 py-1.5 bg-[var(--accent-soft)] hover:bg-[var(--accent-soft)] border border-[var(--accent-border)] rounded-xl transition-all flex items-center gap-1.5 shrink-0"
         >
-          <Sparkles size={12} className="text-orange-400" />
+          <Sparkles size={12} className="text-[var(--accent)]" />
           <span>Cambiar Plan</span>
         </button>
       </div>
@@ -117,16 +117,16 @@ export default function GymCalendar({
           className="flex items-center gap-2 group text-left transition-all"
         >
           <div className="flex items-center gap-1.5">
-            <span className="text-sm font-semibold text-white group-hover:text-orange-400 transition-colors">
+            <span className="text-sm font-semibold text-[var(--text)] group-hover:text-[var(--accent-strong)] transition-colors">
               {monthNames[viewMonth]} {viewYear}
             </span>
             {isMonthView ? (
-              <ChevronUp size={14} className="text-orange-400 transition-transform" />
+              <ChevronUp size={14} className="text-[var(--accent)] transition-transform" />
             ) : (
-              <ChevronDown size={14} className="text-slate-400 group-hover:text-white transition-transform" />
+              <ChevronDown size={14} className="text-[var(--text-muted)] group-hover:text-[var(--text)] transition-transform" />
             )}
           </div>
-          <span className="text-[10px] text-slate-500 font-medium px-2 py-0.5 bg-slate-900 border border-slate-800 rounded-full">
+          <span className="text-[10px] text-[var(--text-faint)] font-medium px-2 py-0.5 bg-[var(--surface)] border border-[var(--border)] rounded-full">
             {isMonthView ? 'Mes completo' : 'Semana'}
           </span>
         </button>
@@ -137,7 +137,7 @@ export default function GymCalendar({
               <button
                 type="button"
                 onClick={handlePrevMonth}
-                className="w-7 h-7 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-slate-700 transition-colors"
+                className="w-7 h-7 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
                 title="Mes anterior"
               >
                 <ChevronLeft size={14} />
@@ -145,14 +145,14 @@ export default function GymCalendar({
               <button
                 type="button"
                 onClick={handleTodayJump}
-                className="px-2 py-1 text-[10px] font-semibold text-orange-400 bg-orange-950/40 border border-orange-800/50 rounded-lg hover:bg-orange-900/50 transition-colors"
+                className="px-2 py-1 text-[10px] font-semibold text-[var(--accent)] bg-[var(--accent-soft)] border border-[var(--accent-border)] rounded-lg hover:bg-[var(--accent-soft)] transition-colors"
               >
                 Hoy
               </button>
               <button
                 type="button"
                 onClick={handleNextMonth}
-                className="w-7 h-7 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-slate-700 transition-colors"
+                className="w-7 h-7 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
                 title="Mes siguiente"
               >
                 <ChevronRight size={14} />
@@ -165,9 +165,9 @@ export default function GymCalendar({
                 setCurrentViewDate(parseDateKey(selectedDate));
                 setIsMonthView(true);
               }}
-              className="flex items-center gap-1 text-[11px] font-medium text-slate-400 hover:text-orange-400 transition-colors px-2.5 py-1 bg-slate-900/60 border border-slate-800/80 rounded-xl"
+              className="flex items-center gap-1 text-[11px] font-medium text-[var(--text-muted)] hover:text-[var(--accent-strong)] transition-colors px-2.5 py-1 bg-[var(--surface)] border border-[var(--border)] rounded-xl"
             >
-              <CalendarDays size={13} className="text-orange-400" />
+              <CalendarDays size={13} className="text-[var(--accent)]" />
               <span>Ver mes</span>
             </button>
           )}
@@ -201,20 +201,20 @@ export default function GymCalendar({
                   onClick={() => onSelectDate(dateKey)}
                   className={`flex-1 relative flex flex-col items-center justify-between py-2 px-1 rounded-2xl transition-all text-center min-h-[74px] ${
                     isSelected
-                      ? 'bg-gradient-to-b from-slate-800 to-slate-850 border border-orange-500/50 shadow-[0_0_15px_rgba(249,115,22,0.15)] ring-1 ring-orange-500/40'
-                      : 'bg-slate-900/30 border border-slate-800/60 hover:bg-slate-900/60'
+                      ? 'bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]   border border-[var(--accent-border)] shadow-[var(--shadow-soft)] ring-1 ring-[var(--accent-border)]'
+                      : 'bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-muted)]'
                   }`}
                 >
                   {/* Day Header */}
                   <span className={`text-[10px] font-bold ${
-                    isSelected ? 'text-slate-200' : 'text-slate-500'
+                    isSelected ? 'text-[var(--text)]' : 'text-[var(--text-faint)]'
                   }`}>
                     {dayNames[index]}
                   </span>
 
                   {/* Day Number */}
                   <span className={`text-sm font-semibold my-0.5 ${
-                    isSelected ? 'text-white font-bold' : isToday ? 'text-orange-400' : 'text-slate-300'
+                    isSelected ? 'text-[var(--text)] font-bold' : isToday ? 'text-[var(--accent)]' : 'text-[var(--text)]'
                   }`}>
                     {date.getDate()}
                   </span>
@@ -223,12 +223,12 @@ export default function GymCalendar({
                   <div className="w-full mt-0.5 flex flex-col items-center">
                     <span className={`text-[8px] font-bold px-1 py-0.5 rounded leading-tight w-full truncate block ${
                       isWorkoutDone
-                        ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                        ? 'bg-[var(--success-soft)] text-[var(--success)] border border-[var(--success-border)]'
                         : isRest
-                          ? 'bg-slate-800/50 text-slate-500'
+                          ? 'bg-[var(--surface-raised)] text-[var(--text-faint)]'
                           : isSelected
-                            ? 'bg-orange-500 text-slate-950 font-black'
-                            : 'bg-orange-500/15 text-orange-400 border border-orange-500/30'
+                            ? 'bg-[var(--accent)] text-[var(--accent-ink)] font-semibold'
+                            : 'bg-[var(--accent-soft)] text-[var(--accent)] border border-[var(--accent-border)]'
                     }`}>
                       {isWorkoutDone ? '✓ Hecho' : label}
                     </span>
@@ -245,12 +245,12 @@ export default function GymCalendar({
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-3.5 shadow-xl backdrop-blur-sm overflow-hidden"
+            className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-3.5 shadow-xl backdrop-blur-sm overflow-hidden"
           >
             {/* Headers */}
-            <div className="grid grid-cols-7 gap-1 text-center mb-2 pb-2 border-b border-slate-800/60">
+            <div className="grid grid-cols-7 gap-1 text-center mb-2 pb-2 border-b border-[var(--border)]">
               {dayNames.map(day => (
-                <span key={day} className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <span key={day} className="text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-wider">
                   {day}
                 </span>
               ))}
@@ -273,12 +273,12 @@ export default function GymCalendar({
                     onClick={() => onSelectDate(dateKey)}
                     className={`relative flex flex-col items-center justify-between p-1 h-12 rounded-xl transition-all ${
                       isSelected
-                        ? 'bg-slate-800 border border-orange-500/50 text-white font-semibold ring-1 ring-orange-500/40'
+                        ? 'bg-[var(--surface-raised)] border border-[var(--accent-border)] text-[var(--text)] font-semibold ring-1 ring-[var(--accent-border)]'
                         : isToday
-                          ? 'bg-orange-950/20 border border-orange-800/40 text-orange-400'
+                          ? 'bg-[var(--accent-soft)] border border-[var(--accent-border)] text-[var(--accent)]'
                           : isCurrentMonth
-                            ? 'text-slate-300 hover:bg-slate-800/50'
-                            : 'text-slate-600 opacity-40 hover:bg-slate-900/30'
+                            ? 'text-[var(--text)] hover:bg-[var(--surface-muted)]'
+                            : 'text-[var(--text-faint)] opacity-40 hover:bg-[var(--surface-muted)]'
                     }`}
                   >
                     <span className="text-xs">{date.getDate()}</span>
@@ -286,12 +286,12 @@ export default function GymCalendar({
                     {/* Tag badge or indicator */}
                     <div className="w-full text-center">
                       {isWorkoutDone ? (
-                        <span className="text-[7px] font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 px-1 py-0.2 rounded block truncate">
+                        <span className="text-[7px] font-bold text-[var(--success)] bg-[var(--success-soft)] border border-[var(--success-border)] px-1 py-0.2 rounded block truncate">
                           ✓ Hecho
                         </span>
                       ) : !isRest && isCurrentMonth ? (
                         <span className={`text-[7px] font-semibold px-0.5 py-0.2 rounded block truncate ${
-                          isSelected ? 'bg-orange-500/20 text-orange-300' : 'text-orange-400/80'
+                          isSelected ? 'bg-[var(--accent-soft)] text-[var(--accent)]' : 'text-[var(--accent)]'
                         }`}>
                           {label}
                         </span>
@@ -304,19 +304,19 @@ export default function GymCalendar({
               })}
             </div>
 
-            <div className="mt-3 pt-2 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-400 px-1">
+            <div className="mt-3 pt-2 border-t border-[var(--border)] flex items-center justify-between text-[11px] text-[var(--text-muted)] px-1">
               <div className="flex items-center gap-3">
-                <span className="flex items-center gap-1 text-[10px] text-orange-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-orange-400 inline-block" /> Rutina
+                <span className="flex items-center gap-1 text-[10px] text-[var(--accent)]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] inline-block" /> Rutina
                 </span>
-                <span className="flex items-center gap-1 text-[10px] text-emerald-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" /> Completado
+                <span className="flex items-center gap-1 text-[10px] text-[var(--success)]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--success)] inline-block" /> Completado
                 </span>
               </div>
               <button
                 type="button"
                 onClick={() => setIsMonthView(false)}
-                className="text-orange-400 hover:text-orange-300 font-medium transition-colors"
+                className="text-[var(--accent)] hover:text-[var(--accent-strong)] font-medium transition-colors"
               >
                 Volver a semana
               </button>
