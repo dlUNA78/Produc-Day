@@ -1,7 +1,17 @@
 import React from 'react';
-import { Bell, ChevronRight, Settings, SlidersHorizontal, Database, LogOut } from 'lucide-react';
+import { Bell, ChevronRight, Settings, SlidersHorizontal, Database, LogOut, User } from 'lucide-react';
+import { UserProfile } from '../types';
 
 export default function ProfileView() {
+  const [profile, setProfile] = React.useState<UserProfile | null>(() => {
+    try {
+      const saved = localStorage.getItem('produc_user_profile_v1');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
   return (
     <div className="px-5 pt-[max(2rem,env(safe-area-inset-top))] pb-6 min-h-full">
       <div className="mb-8">
@@ -9,16 +19,12 @@ export default function ProfileView() {
       </div>
 
       <section className="flex items-center gap-4 mb-10">
-        <div className="w-16 h-16 rounded-full overflow-hidden border border-[var(--border)]">
-          <img 
-            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" 
-            alt="User Avatar"
-            className="w-full h-full object-cover"
-          />
+        <div className="w-16 h-16 rounded-full overflow-hidden border border-[var(--border)] bg-[var(--surface-raised)] flex items-center justify-center text-[var(--text-muted)]">
+          <User size={32} />
         </div>
         <div>
-          <h2 className="text-lg font-semibold text-[var(--text)] leading-tight">David</h2>
-          <p className="text-[14px] text-[var(--text-muted)] mt-0.5">Construyendo constancia</p>
+          <h2 className="text-lg font-semibold text-[var(--text)] leading-tight">{profile?.name || 'Usuario'}</h2>
+          <p className="text-[14px] text-[var(--text-muted)] mt-0.5">{profile?.goal || 'Construyendo constancia'}</p>
         </div>
       </section>
 

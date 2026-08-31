@@ -15,6 +15,8 @@ import HomeView from './views/HomeView';
 import GymView from './views/GymView';
 import StatsView from './views/StatsView';
 import ProfileView from './views/ProfileView';
+import OnboardingView from './views/OnboardingView';
+import { UserProfile } from './types';
 
 type EditableEntry = { type: 'activity'; item: Activity } | { type: 'task'; item: Task };
 type DeletedEntry = EditableEntry;
@@ -31,6 +33,15 @@ const loadEntries = <T,>(key: string, fallback: T[]): T[] => {
 };
 
 export default function App() {
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(() => {
+    try {
+      const saved = localStorage.getItem('produc_user_profile_v1');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+  
   const [activities, setActivities] = useState<Activity[]>(() => loadEntries('produc_day_activities_v1', MOCK_ACTIVITIES));
   const [tasks, setTasks] = useState<Task[]>(() => loadEntries('produc_day_tasks_v1', MOCK_TASKS));
   const [activeTab, setActiveTab] = useState<TabType>('home');
@@ -129,6 +140,17 @@ export default function App() {
   useEffect(() => localStorage.setItem('produc_day_activities_v1', JSON.stringify(activities)), [activities]);
   useEffect(() => localStorage.setItem('produc_day_tasks_v1', JSON.stringify(tasks)), [tasks]);
   useEffect(() => () => { if (toastTimer.current) window.clearTimeout(toastTimer.current); }, []);
+
+  if (!userProfile) {
+    return (
+      <div className="max-w-[430px] mx-auto min-h-dvh bg-[var(--canvas)] border-x border-[var(--border)]/60 relative flex flex-col font-sans shadow-2xl">
+        <OnboardingView onComplete={(profile) => {
+          localStorage.setItem('produc_user_profile_v1', JSON.stringify(profile));
+          setUserProfile(profile);
+        }} />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-[430px] mx-auto min-h-dvh bg-[var(--canvas)] border-x border-[var(--border)]/60 relative overflow-hidden flex flex-col font-sans">

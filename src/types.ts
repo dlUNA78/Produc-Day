@@ -1,5 +1,12 @@
 export type Category = 'Gym' | 'School' | 'Work' | 'Study' | 'Personal' | 'Task';
 
+export interface UserProfile {
+  name: string;
+  weight?: string;
+  height?: string;
+  goal?: string;
+}
+
 export type MuscleGroup = 
   | 'Pecho' 
   | 'Espalda' 
