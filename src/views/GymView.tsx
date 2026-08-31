@@ -24,7 +24,7 @@ import { formatDateKey, parseDateKey, getWeekDays } from '../components/WeeklyCa
 import GymCalendar from '../components/gym/GymCalendar';
 import RoutineDayDetail from '../components/gym/RoutineDayDetail';
 import SplitSelectorModal from '../components/gym/SplitSelectorModal';
-import AddExerciseModal from '../components/gym/AddExerciseModal';
+import ExerciseEditorModal from '../components/gym/ExerciseEditorModal';
 import ActiveGuidedWorkout from '../components/gym/ActiveGuidedWorkout';
 import FloatingWorkoutBar from '../components/gym/FloatingWorkoutBar';
 import WeeklyPlanner from '../components/gym/WeeklyPlanner';
@@ -811,11 +811,11 @@ export default function GymView({ onAddActivity }: GymViewProps) {
         }}
       />
 
-      {/* Add Exercise Modal (Direct Quick Add from Today) */}
-      <AddExerciseModal
+      {/* Add Exercise Modal (Direct Quick Add from Today with Library & Custom Builder) */}
+      <ExerciseEditorModal
         isOpen={isAddExModalOpen}
         onClose={() => setIsAddExModalOpen(false)}
-        onAddExercise={handleAddExercise}
+        onSaveExercise={handleAddExercise}
         routineName={currentRoutine?.name || 'Rutina Actual'}
       />
 

@@ -103,7 +103,7 @@ export default function DynamicWorkoutHUD({
           </span>
         </div>
 
-        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide py-1 px-0.5">
+        <div className="flex items-center gap-2 scroll-x-touch scrollbar-hide py-1 px-0.5">
           {allRoutines.map(r => {
             const isSelected = r.id === selectedRoutineId;
             const isTodayScheduled = r.id === scheduledRoutineId;

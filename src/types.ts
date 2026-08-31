@@ -5,6 +5,7 @@ export interface UserProfile {
   weight?: string;
   height?: string;
   goal?: string;
+  avatarUrl?: string;
 }
 
 export type MuscleGroup = 

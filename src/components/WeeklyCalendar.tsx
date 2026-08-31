@@ -78,8 +78,13 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
   const today = new Date();
   const todayKey = formatDateKey(today);
 
-  // Month navigation state
+  // View date state
   const [currentViewDate, setCurrentViewDate] = useState<Date>(() => selectedParsed);
+
+  // Sync currentViewDate when selectedDate changes from outside
+  React.useEffect(() => {
+    setCurrentViewDate(parseDateKey(selectedDate));
+  }, [selectedDate]);
 
   const viewYear = currentViewDate.getFullYear();
   const viewMonth = currentViewDate.getMonth();
@@ -94,6 +99,20 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
     setCurrentViewDate(new Date(viewYear, viewMonth + 1, 1));
   };
 
+  const handlePrevWeek = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const prev = new Date(currentViewDate);
+    prev.setDate(prev.getDate() - 7);
+    setCurrentViewDate(prev);
+  };
+
+  const handleNextWeek = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const next = new Date(currentViewDate);
+    next.setDate(next.getDate() + 7);
+    setCurrentViewDate(next);
+  };
+
   const handleTodayJump = (e: React.MouseEvent) => {
     e.stopPropagation();
     const now = new Date();
@@ -101,8 +120,8 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
     onSelectDate(formatDateKey(now));
   };
 
-  // Week days centered on selected date
-  const weekDays = getWeekDays(selectedParsed);
+  // Week days centered on current view date
+  const weekDays = getWeekDays(currentViewDate);
   const monthDays = getMonthDays(viewYear, viewMonth);
 
   return (
@@ -140,100 +159,102 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
         </button>
 
         <div className="flex items-center gap-1">
-          {isMonthView ? (
-            <>
-              <button
-                type="button"
-                onClick={handlePrevMonth}
-                className="w-7 h-7 rounded-lg bg-[var(--canvas)] border border-[var(--border)] flex items-center justify-center text-[var(--text-faint)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
-                title="Mes anterior"
-              >
-                <ChevronLeft size={14} />
-              </button>
-              <button
-                type="button"
-                onClick={handleTodayJump}
-                className="px-2 py-1 text-[10px] font-semibold text-[white] bg-[white]/10 border border-[white]/20 rounded-lg hover:bg-[white]/20 transition-colors"
-              >
-                Hoy
-              </button>
-              <button
-                type="button"
-                onClick={handleNextMonth}
-                className="w-7 h-7 rounded-lg bg-[var(--canvas)] border border-[var(--border)] flex items-center justify-center text-[var(--text-faint)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
-                title="Mes siguiente"
-              >
-                <ChevronRight size={14} />
-              </button>
-            </>
-          ) : (
-            <button
-              type="button"
-              onClick={() => {
+          <button
+            type="button"
+            onClick={isMonthView ? handlePrevMonth : handlePrevWeek}
+            className="w-7 h-7 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
+            title={isMonthView ? "Mes anterior" : "Semana anterior"}
+            aria-label={isMonthView ? "Mes anterior" : "Semana anterior"}
+          >
+            <ChevronLeft size={14} />
+          </button>
+          <button
+            type="button"
+            onClick={handleTodayJump}
+            className="px-2 py-1 text-[10px] font-semibold text-[var(--accent)] bg-[var(--accent-soft)] border border-[var(--accent-border)] rounded-lg hover:bg-[var(--accent-soft)] transition-colors"
+          >
+            Hoy
+          </button>
+          <button
+            type="button"
+            onClick={isMonthView ? handleNextMonth : handleNextWeek}
+            className="w-7 h-7 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
+            title={isMonthView ? "Mes siguiente" : "Semana siguiente"}
+            aria-label={isMonthView ? "Mes siguiente" : "Semana siguiente"}
+          >
+            <ChevronRight size={14} />
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (!isMonthView) {
                 setCurrentViewDate(parseDateKey(selectedDate));
-                setIsMonthView(true);
-              }}
-                className="flex items-center gap-1 text-[11px] font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors px-2 py-1 bg-[var(--surface)] border border-[var(--border)] rounded-xl"
-            >
-              <CalendarDays size={13} className="text-[var(--accent)]" />
-              <span>Ver mes</span>
-            </button>
-          )}
+              }
+              setIsMonthView(!isMonthView);
+            }}
+            className="flex items-center gap-1 text-[11px] font-medium text-[var(--text-muted)] hover:text-[var(--text)] transition-colors px-2 py-1 bg-[var(--surface)] border border-[var(--border)] rounded-xl ml-1"
+          >
+            <CalendarDays size={13} className="text-[var(--accent)]" />
+            <span>{isMonthView ? 'Semana' : 'Mes'}</span>
+          </button>
         </div>
       </div>
 
       {/* Calendar Views with Animation */}
       <AnimatePresence mode="wait">
         {!isMonthView ? (
-          /* WEEK VIEW */
+          /* WEEK VIEW - Scrollable & Touch Friendly */
           <motion.div
             key="week-view"
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="flex items-center justify-between"
+            className="w-full overflow-x-auto scroll-x-touch scrollbar-hide py-1"
           >
-            {weekDays.map((date, index) => {
-              const dateKey = formatDateKey(date);
-              const isSelected = dateKey === selectedDate;
-              const isToday = dateKey === todayKey;
-              const hasItems = hasItemsForDate ? hasItemsForDate(dateKey) : false;
+            <div className="flex items-stretch justify-between gap-1.5 min-w-full">
+              {weekDays.map((date, index) => {
+                const dateKey = formatDateKey(date);
+                const isSelected = dateKey === selectedDate;
+                const isToday = dateKey === todayKey;
+                const hasItems = hasItemsForDate ? hasItemsForDate(dateKey) : false;
 
-              return (
-                <button
-                  key={dateKey}
-                  onClick={() => onSelectDate(dateKey)}
-                  aria-label={`Seleccionar ${date.getDate()} de ${monthNames[date.getMonth()]}`}
-                  aria-pressed={isSelected}
-                  className={`relative flex flex-col items-center justify-center w-[46px] h-[60px] rounded-[14px] transition-all ${
-                    isSelected
-                      ? 'bg-[var(--accent)] text-[var(--accent-ink)] shadow-md shadow-[var(--accent-soft)]'
-                      : isToday
-                        ? 'bg-[var(--surface-raised)] border border-[var(--border)]'
-                        : 'bg-transparent border border-transparent hover:bg-[var(--surface-raised)]'
-                  }`}
-                >
-                  <span className={`text-[10px] font-semibold tracking-wider mb-1 ${
-                    isSelected ? 'text-[var(--accent-ink)] opacity-80' : 'text-[var(--text-faint)]'
-                  }`}>
-                    {dayNames[index]}
-                  </span>
-                  <span className={`text-base font-bold ${
-                    isSelected ? 'text-[var(--accent-ink)]' : isToday ? 'text-[var(--accent)]' : 'text-[var(--text)]'
-                  }`}>
-                    {date.getDate()}
-                  </span>
+                return (
+                  <button
+                    key={dateKey}
+                    type="button"
+                    onClick={() => onSelectDate(dateKey)}
+                    aria-label={`Seleccionar ${date.getDate()} de ${monthNames[date.getMonth()]}`}
+                    aria-pressed={isSelected}
+                    className={`shrink-0 flex-1 min-w-[44px] sm:min-w-[48px] relative flex flex-col items-center justify-center h-[62px] rounded-[16px] transition-all ${
+                      isSelected
+                        ? 'bg-[var(--accent)] text-[var(--accent-ink)] shadow-md shadow-[var(--accent-soft)] ring-1 ring-[var(--accent-border)]'
+                        : isToday
+                          ? 'bg-[var(--surface-raised)] border border-[var(--border-strong)] text-[var(--text)]'
+                          : 'bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-raised)] text-[var(--text)]'
+                    }`}
+                  >
+                    <span className={`text-[10px] font-bold tracking-wider mb-1 ${
+                      isSelected ? 'text-[var(--accent-ink)] opacity-85' : 'text-[var(--text-faint)]'
+                    }`}>
+                      {dayNames[index]}
+                    </span>
+                    <span className={`text-base font-bold ${
+                      isSelected ? 'text-[var(--accent-ink)]' : isToday ? 'text-[var(--accent)]' : 'text-[var(--text)]'
+                    }`}>
+                      {date.getDate()}
+                    </span>
 
-                  {/* Indicator dots */}
-                  <div className="absolute bottom-1.5 flex items-center gap-1">
-                    {hasItems && (
-                      <div className={`w-1 h-1 rounded-full ${isSelected ? 'bg-[var(--accent-ink)] opacity-90' : 'bg-[var(--text-muted)]'}`} />
-                    )}
-                  </div>
-                </button>
-              );
-            })}
+                    {/* Indicator dots */}
+                    <div className="absolute bottom-1.5 flex items-center gap-1">
+                      {hasItems && (
+                        <div className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-[var(--accent-ink)]' : 'bg-[var(--accent)]'}`} />
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </motion.div>
         ) : (
           /* FULL MONTH VIEW */

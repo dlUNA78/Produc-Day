@@ -33,6 +33,12 @@ export default function GymCalendar({
   const todayKey = formatDateKey(today);
 
   const [currentViewDate, setCurrentViewDate] = useState<Date>(() => selectedParsed);
+
+  // Sync currentViewDate when selectedDate changes from outside
+  React.useEffect(() => {
+    setCurrentViewDate(parseDateKey(selectedDate));
+  }, [selectedDate]);
+
   const viewYear = currentViewDate.getFullYear();
   const viewMonth = currentViewDate.getMonth();
 
@@ -44,6 +50,20 @@ export default function GymCalendar({
   const handleNextMonth = (e: React.MouseEvent) => {
     e.stopPropagation();
     setCurrentViewDate(new Date(viewYear, viewMonth + 1, 1));
+  };
+
+  const handlePrevWeek = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const prev = new Date(currentViewDate);
+    prev.setDate(prev.getDate() - 7);
+    setCurrentViewDate(prev);
+  };
+
+  const handleNextWeek = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const next = new Date(currentViewDate);
+    next.setDate(next.getDate() + 7);
+    setCurrentViewDate(next);
   };
 
   const handleTodayJump = (e: React.MouseEvent) => {
@@ -73,7 +93,7 @@ export default function GymCalendar({
     };
   };
 
-  const weekDays = getWeekDays(selectedParsed);
+  const weekDays = getWeekDays(currentViewDate);
   const monthDays = getMonthDays(viewYear, viewMonth);
 
   return (
@@ -132,110 +152,111 @@ export default function GymCalendar({
         </button>
 
         <div className="flex items-center gap-1">
-          {isMonthView ? (
-            <>
-              <button
-                type="button"
-                onClick={handlePrevMonth}
-                className="w-7 h-7 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
-                title="Mes anterior"
-              >
-                <ChevronLeft size={14} />
-              </button>
-              <button
-                type="button"
-                onClick={handleTodayJump}
-                className="px-2 py-1 text-[10px] font-semibold text-[var(--accent)] bg-[var(--accent-soft)] border border-[var(--accent-border)] rounded-lg hover:bg-[var(--accent-soft)] transition-colors"
-              >
-                Hoy
-              </button>
-              <button
-                type="button"
-                onClick={handleNextMonth}
-                className="w-7 h-7 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
-                title="Mes siguiente"
-              >
-                <ChevronRight size={14} />
-              </button>
-            </>
-          ) : (
-            <button
-              type="button"
-              onClick={() => {
+          <button
+            type="button"
+            onClick={isMonthView ? handlePrevMonth : handlePrevWeek}
+            className="w-7 h-7 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
+            title={isMonthView ? "Mes anterior" : "Semana anterior"}
+            aria-label={isMonthView ? "Mes anterior" : "Semana anterior"}
+          >
+            <ChevronLeft size={14} />
+          </button>
+          <button
+            type="button"
+            onClick={handleTodayJump}
+            className="px-2 py-1 text-[10px] font-semibold text-[var(--accent)] bg-[var(--accent-soft)] border border-[var(--accent-border)] rounded-lg hover:bg-[var(--accent-soft)] transition-colors"
+          >
+            Hoy
+          </button>
+          <button
+            type="button"
+            onClick={isMonthView ? handleNextMonth : handleNextWeek}
+            className="w-7 h-7 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)] transition-colors"
+            title={isMonthView ? "Mes siguiente" : "Semana siguiente"}
+            aria-label={isMonthView ? "Mes siguiente" : "Semana siguiente"}
+          >
+            <ChevronRight size={14} />
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (!isMonthView) {
                 setCurrentViewDate(parseDateKey(selectedDate));
-                setIsMonthView(true);
-              }}
-              className="flex items-center gap-1 text-[11px] font-medium text-[var(--text-muted)] hover:text-[var(--accent-strong)] transition-colors px-2.5 py-1 bg-[var(--surface)] border border-[var(--border)] rounded-xl"
-            >
-              <CalendarDays size={13} className="text-[var(--accent)]" />
-              <span>Ver mes</span>
-            </button>
-          )}
+              }
+              setIsMonthView(!isMonthView);
+            }}
+            className="flex items-center gap-1 text-[11px] font-medium text-[var(--text-muted)] hover:text-[var(--accent-strong)] transition-colors px-2.5 py-1 bg-[var(--surface)] border border-[var(--border)] rounded-xl ml-1"
+          >
+            <CalendarDays size={13} className="text-[var(--accent)]" />
+            <span>{isMonthView ? 'Semana' : 'Mes'}</span>
+          </button>
         </div>
       </div>
 
       {/* Calendar Views */}
       <AnimatePresence mode="wait">
         {!isMonthView ? (
-          /* WEEK VIEW WITH ROUTINE LABELS */
+          /* WEEK VIEW WITH ROUTINE LABELS - Scrollable & Touch Friendly */
           <motion.div
             key="gym-week-view"
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="flex items-stretch justify-between gap-1.5"
+            className="w-full overflow-x-auto scroll-x-touch scrollbar-hide py-1"
           >
-            {weekDays.map((date, index) => {
-              const dateKey = formatDateKey(date);
-              const isSelected = dateKey === selectedDate;
-              const isToday = dateKey === todayKey;
-              const { routine, isRest, label } = getRoutineForDate(date);
-              const log = gymLogs[dateKey];
-              const isWorkoutDone = log?.isCompleted;
+            <div className="flex items-stretch justify-between gap-1.5 min-w-full">
+              {weekDays.map((date, index) => {
+                const dateKey = formatDateKey(date);
+                const isSelected = dateKey === selectedDate;
+                const isToday = dateKey === todayKey;
+                const { routine, isRest, label } = getRoutineForDate(date);
+                const log = gymLogs[dateKey];
+                const isWorkoutDone = log?.isCompleted;
 
-              return (
-                <button
-                  key={dateKey}
-                  type="button"
-                  onClick={() => onSelectDate(dateKey)}
-                  className={`flex-1 relative flex flex-col items-center justify-between py-2 px-1 rounded-2xl transition-all text-center min-h-[74px] ${
-                    isSelected
-                      ? 'bg-[var(--surface-raised)] border border-[var(--accent-border)] shadow-md ring-1 ring-[var(--accent-border)]'
-                      : 'bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-muted)]'
-                  }`}
-                >
-                  {/* Day Header */}
-                  <span className={`text-[10px] font-bold ${
-                    isSelected ? 'text-[var(--text)]' : 'text-[var(--text-faint)]'
-                  }`}>
-                    {dayNames[index]}
-                  </span>
-
-                  {/* Day Number */}
-                  <span className={`text-sm font-semibold my-0.5 ${
-                    isSelected ? 'text-[var(--text)] font-bold' : isToday ? 'text-[var(--accent)]' : 'text-[var(--text)]'
-                  }`}>
-                    {date.getDate()}
-                  </span>
-
-                  {/* Routine pill badge */}
-                  <div className="w-full mt-0.5 flex flex-col items-center">
-                    <span className={`text-[8px] font-bold px-1 py-0.5 rounded leading-tight w-full truncate block ${
-                      isWorkoutDone
-                        ? 'bg-[var(--success-soft)] text-[var(--success)] border border-[var(--success-border)]'
-                        : isRest
-                          ? 'bg-[var(--surface-raised)] text-[var(--text-faint)]'
-                          : isSelected
-                            ? 'bg-[var(--accent)] text-[var(--accent-ink)] font-semibold'
-                            : 'bg-[var(--accent-soft)] text-[var(--accent)] border border-[var(--accent-border)]'
+                return (
+                  <button
+                    key={dateKey}
+                    type="button"
+                    onClick={() => onSelectDate(dateKey)}
+                    className={`shrink-0 flex-1 min-w-[48px] sm:min-w-[52px] relative flex flex-col items-center justify-between py-2 px-1 rounded-2xl transition-all text-center min-h-[76px] ${
+                      isSelected
+                        ? 'bg-[var(--surface-raised)] border border-[var(--accent-border)] shadow-md ring-1 ring-[var(--accent-border)]'
+                        : 'bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-muted)]'
+                    }`}
+                  >
+                    {/* Day Header */}
+                    <span className={`text-[10px] font-bold ${
+                      isSelected ? 'text-[var(--text)]' : 'text-[var(--text-faint)]'
                     }`}>
-                      {isWorkoutDone ? '✓ Hecho' : label}
+                      {dayNames[index]}
                     </span>
-                  </div>
-                </button>
-              );
-            })}
+
+                    {/* Day Number */}
+                    <span className={`text-sm font-semibold my-0.5 ${
+                      isSelected ? 'text-[var(--text)] font-bold' : isToday ? 'text-[var(--accent)]' : 'text-[var(--text)]'
+                    }`}>
+                      {date.getDate()}
+                    </span>
+
+                    {/* Routine pill badge */}
+                    <div className="w-full mt-0.5 flex flex-col items-center">
+                      <span className={`text-[8px] font-bold px-1 py-0.5 rounded leading-tight w-full truncate block ${
+                        isWorkoutDone
+                          ? 'bg-[var(--success-soft)] text-[var(--success)] border border-[var(--success-border)]'
+                          : isRest
+                            ? 'bg-[var(--surface-raised)] text-[var(--text-faint)]'
+                            : isSelected
+                              ? 'bg-[var(--accent)] text-[var(--accent-ink)] font-semibold'
+                              : 'bg-[var(--accent-soft)] text-[var(--accent)] border border-[var(--accent-border)]'
+                      }`}>
+                        {isWorkoutDone ? '✓ Hecho' : label}
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </motion.div>
         ) : (
           /* FULL MONTH VIEW */

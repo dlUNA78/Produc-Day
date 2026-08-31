@@ -25,12 +25,23 @@
   /* Semantics */
   --success: #7EB08B;
   --success-soft: rgba(126, 176, 139, 0.15);
+  --success-border: rgba(126, 176, 139, 0.3);
   
   --warning: #D9A24A;
   --warning-soft: rgba(217, 162, 74, 0.15);
+  --warning-border: rgba(217, 162, 74, 0.3);
   
   --danger: #C95663;
   --danger-soft: rgba(201, 86, 99, 0.15);
+  --danger-border: rgba(201, 86, 99, 0.3);
+
+  --plum: #A379C9;
+  --plum-soft: rgba(163, 121, 201, 0.15);
+  --plum-border: rgba(163, 121, 201, 0.3);
+
+  --steel: #7EA2B8;
+  --steel-soft: rgba(126, 162, 184, 0.15);
+  --steel-border: rgba(126, 162, 184, 0.3);
 
   --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.3);
   --shadow-raised: 0 12px 40px rgba(0, 0, 0, 0.4);
@@ -154,10 +165,27 @@
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
-    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
   }
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
+  }
+  .touch-scroll {
+    -webkit-overflow-scrolling: touch;
+  }
+  .scroll-x-touch {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+    overscroll-behavior-x: contain;
+  }
+  .scroll-y-touch {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y pan-x;
+    overscroll-behavior-y: contain;
   }
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom, 1rem);

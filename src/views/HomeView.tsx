@@ -14,6 +14,10 @@ interface HomeViewProps {
   onToggleItem: (id: string, type: 'activity' | 'task') => void;
   onOpenCreate: () => void;
   onOpenItem: (id: string, type: 'activity' | 'task') => void;
+  userName?: string;
+  userAvatar?: string;
+  onOpenProfile?: () => void;
+  onNavigateToGym?: () => void;
 }
 
 const longDate = new Intl.DateTimeFormat('es-ES', {
@@ -30,6 +34,10 @@ export default function HomeView({
   onToggleItem,
   onOpenCreate,
   onOpenItem,
+  userName,
+  userAvatar,
+  onOpenProfile,
+  onNavigateToGym,
 }: HomeViewProps) {
   const filteredActivities = activities.filter((activity) => activity.date === selectedDate);
   const filteredTasks = tasks.filter((task) => task.date === selectedDate);
@@ -63,7 +71,13 @@ export default function HomeView({
 
   return (
     <div className="flex-1 flex flex-col pb-6">
-      <Header />
+      <Header 
+        userName={userName}
+        userAvatar={userAvatar}
+        onOpenProfile={onOpenProfile}
+        onNavigateToGym={onNavigateToGym}
+        pendingTasksCount={pendingItems.length}
+      />
 
       <main>
         <div className="px-4">

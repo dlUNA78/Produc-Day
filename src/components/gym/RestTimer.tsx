@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Timer, Play, Pause, RotateCcw, Plus, Minus, X, Volume2 } from 'lucide-react';
+import { notificationService } from '../../utils/notificationService';
 
 interface RestTimerProps {
   initialSeconds?: number;
   onClose?: () => void;
   isOpen: boolean;
+  exerciseName?: string;
 }
 
-export default function RestTimer({ initialSeconds = 90, onClose, isOpen }: RestTimerProps) {
+export default function RestTimer({ initialSeconds = 90, onClose, isOpen, exerciseName }: RestTimerProps) {
   const [targetSeconds, setTargetSeconds] = useState(initialSeconds);
   const [remainingSeconds, setRemainingSeconds] = useState(initialSeconds);
   const [isRunning, setIsRunning] = useState(false);
+  const scheduledNotifIdRef = useRef<number | null>(null);
 
   useEffect(() => {
     setTargetSeconds(initialSeconds);
@@ -26,25 +29,31 @@ export default function RestTimer({ initialSeconds = 90, onClose, isOpen }: Rest
       }, 1000);
     } else if (remainingSeconds === 0 && isRunning) {
       setIsRunning(false);
-      // Play web audio chime if supported
-      try {
-        const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.5);
-      } catch (e) {
-        // audio context suppressed or unsupported in sandboxed env
-      }
+      // Trigger notification, sound and haptic vibration
+      notificationService.sendNotification(
+        '⏱️ ¡Descanso Terminado!',
+        exerciseName ? `Hora de continuar con ${exerciseName}` : '¡Listo para tu siguiente serie!'
+      );
     }
     return () => clearInterval(interval);
-  }, [isRunning, remainingSeconds]);
+  }, [isRunning, remainingSeconds, exerciseName]);
+
+  // Handle start/pause and schedule background notification for Capacitor APK
+  const handleTogglePlay = async () => {
+    if (!isRunning) {
+      setIsRunning(true);
+      if (remainingSeconds > 0) {
+        const notifId = await notificationService.scheduleTimerEnd(remainingSeconds, exerciseName);
+        scheduledNotifIdRef.current = notifId;
+      }
+    } else {
+      setIsRunning(false);
+      if (scheduledNotifIdRef.current) {
+        notificationService.cancelNotification(scheduledNotifIdRef.current);
+        scheduledNotifIdRef.current = null;
+      }
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -126,7 +135,7 @@ export default function RestTimer({ initialSeconds = 90, onClose, isOpen }: Rest
             </button>
             <button
               type="button"
-              onClick={() => setIsRunning(!isRunning)}
+              onClick={handleTogglePlay}
               className={`w-9 h-9 rounded-xl flex items-center justify-center font-semibold transition-all ${
                 isRunning
                   ? 'bg-[var(--warning)] text-[var(--accent-ink)] shadow-sm'

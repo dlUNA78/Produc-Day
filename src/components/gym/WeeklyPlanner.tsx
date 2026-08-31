@@ -380,7 +380,7 @@ export default function WeeklyPlanner({
       {/* 4. Day Routine Picker Bottom Sheet Modal */}
       <AnimatePresence>
         {activeDayPicker !== null && (
-          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -390,13 +390,13 @@ export default function WeeklyPlanner({
             />
 
             <motion.div
-              initial={{ y: '100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              className="relative bg-[var(--surface)] border-t sm:border border-[var(--border)] rounded-t-[32px] sm:rounded-3xl p-6 pb-8 w-full max-w-md max-h-[85vh] overflow-y-auto scrollbar-hide flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)]"
+              initial={{ y: '100%', opacity: 0.8 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: '100%', opacity: 0.8 }}
+              transition={{ type: 'spring', damping: 28, stiffness: 260 }}
+              className="relative bg-[var(--surface)] border-t sm:border border-[var(--border)] rounded-t-[32px] sm:rounded-3xl w-full max-w-md max-h-[90dvh] h-auto flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)] overflow-hidden"
             >
-              <div className="flex items-center justify-between mb-4">
+              <div className="shrink-0 p-5 border-b border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-md flex items-center justify-between">
                 <div>
                   <h3 className="text-base font-bold text-[var(--text)] flex items-center gap-2">
                     <Calendar size={16} className="text-[var(--accent)]" />
@@ -408,26 +408,26 @@ export default function WeeklyPlanner({
                 <button
                   type="button"
                   onClick={() => setActiveDayPicker(null)}
-                  className="px-2.5 py-1 text-xs text-[var(--text-muted)] hover:text-[var(--text)] bg-[var(--surface)] border border-[var(--border)] rounded-lg"
+                  className="w-8 h-8 rounded-full bg-[var(--surface-raised)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
                 >
-                  Cerrar
+                  ✕
                 </button>
               </div>
 
-              <div className="flex flex-col gap-2">
+              <div className="flex-1 min-h-0 overflow-y-auto scroll-y-touch p-5 space-y-2 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
                 {/* Option 1: Rest Day */}
                 <button
                   type="button"
                   onClick={() => handleSetDayRoutine(activeDayPicker, 'REST')}
-                  className={`p-3 rounded-2xl border flex items-center justify-between transition-all ${
+                  className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all ${
                     currentWeekSchedule[activeDayPicker] === 'REST' || !currentWeekSchedule[activeDayPicker]
-                      ? 'bg-[var(--surface-raised)] border-[var(--accent-border)] text-[var(--text)]'
+                      ? 'bg-[var(--surface-raised)] border-[var(--accent-border)] text-[var(--text)] shadow-sm'
                       : 'bg-[var(--canvas)] border-[var(--border)] text-[var(--text)] hover:border-[var(--border-strong)]'
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)]">
-                      <Coffee size={16} />
+                    <div className="w-9 h-9 rounded-xl bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)]">
+                      <Coffee size={17} />
                     </div>
                     <div className="text-left">
                       <div className="text-xs font-bold text-[var(--text)]">Día de Descanso</div>
@@ -451,33 +451,33 @@ export default function WeeklyPlanner({
                       key={rt.id}
                       type="button"
                       onClick={() => handleSetDayRoutine(activeDayPicker, rt.id)}
-                      className={`p-3 rounded-2xl border flex items-center justify-between transition-all ${
+                      className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all ${
                         isSelected
                           ? 'bg-[var(--accent-soft)] border-[var(--accent-border)] text-[var(--text)] shadow-sm'
                           : 'bg-[var(--canvas)] border-[var(--border)] text-[var(--text)] hover:border-[var(--border-strong)]'
                       }`}
                     >
-                      <div className="flex items-center gap-3 text-left">
-                        <div className="w-8 h-8 rounded-xl bg-[var(--accent-soft)] border border-[var(--accent-border)] flex items-center justify-center text-[var(--accent)]">
-                          <Dumbbell size={16} />
+                      <div className="flex items-center gap-3 text-left min-w-0">
+                        <div className="w-9 h-9 rounded-xl bg-[var(--accent-soft)] border border-[var(--accent-border)] flex items-center justify-center text-[var(--accent)] shrink-0">
+                          <Dumbbell size={17} />
                         </div>
-                        <div>
+                        <div className="min-w-0">
                           <div className="flex items-center gap-1.5">
-                            <span className="text-[9px] font-bold text-[var(--accent)] bg-[var(--accent-soft)] px-1.5 py-0.2 rounded font-mono">
+                            <span className="text-[9px] font-bold text-[var(--accent)] bg-[var(--accent-soft)] px-1.5 py-0.2 rounded font-mono shrink-0">
                               {rt.shortName}
                             </span>
-                            <span className="text-xs font-bold text-[var(--text)]">
+                            <span className="text-xs font-bold text-[var(--text)] truncate">
                               {rt.name}
                             </span>
                           </div>
-                          <div className="text-[10px] text-[var(--text-muted)] font-mono mt-0.5">
+                          <div className="text-[10px] text-[var(--text-muted)] font-mono mt-0.5 truncate">
                             {rt.exercises.length} ejercicios • {rt.estimatedMinutes || 60}m • {rt.targetMuscles.slice(0, 3).join(', ')}
                           </div>
                         </div>
                       </div>
 
                       {isSelected && (
-                        <div className="w-5 h-5 rounded-full bg-[var(--accent)] text-[var(--accent-ink)] flex items-center justify-center">
+                        <div className="w-5 h-5 rounded-full bg-[var(--accent)] text-[var(--accent-ink)] flex items-center justify-center shrink-0">
                           <Check size={12} strokeWidth={3} />
                         </div>
                       )}
@@ -493,7 +493,7 @@ export default function WeeklyPlanner({
       {/* 5. Preset Split Template Modal */}
       <AnimatePresence>
         {isPresetModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -503,13 +503,13 @@ export default function WeeklyPlanner({
             />
 
             <motion.div
-              initial={{ y: '100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              className="relative bg-[var(--surface)] border-t sm:border border-[var(--border)] rounded-t-[32px] sm:rounded-3xl p-6 pb-8 w-full max-w-md max-h-[85vh] overflow-y-auto scrollbar-hide flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)]"
+              initial={{ y: '100%', opacity: 0.8 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: '100%', opacity: 0.8 }}
+              transition={{ type: 'spring', damping: 28, stiffness: 260 }}
+              className="relative bg-[var(--surface)] border-t sm:border border-[var(--border)] rounded-t-[32px] sm:rounded-3xl w-full max-w-md max-h-[90dvh] h-auto flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)] overflow-hidden"
             >
-              <div className="flex items-center justify-between mb-4">
+              <div className="shrink-0 p-5 border-b border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-md flex items-center justify-between">
                 <div>
                   <h3 className="text-base font-bold text-[var(--text)] flex items-center gap-2">
                     <Sparkles size={16} className="text-[var(--accent)]" />
@@ -521,13 +521,13 @@ export default function WeeklyPlanner({
                 <button
                   type="button"
                   onClick={() => setIsPresetModalOpen(false)}
-                  className="px-2.5 py-1 text-xs text-[var(--text-muted)] hover:text-[var(--text)] bg-[var(--surface)] border border-[var(--border)] rounded-lg"
+                  className="w-8 h-8 rounded-full bg-[var(--surface-raised)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
                 >
-                  Cerrar
+                  ✕
                 </button>
               </div>
 
-              <div className="flex flex-col gap-3">
+              <div className="flex-1 min-h-0 overflow-y-auto scroll-y-touch p-5 space-y-3 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
                 {allSplits.map((split) => (
                   <div
                     key={split.id}
@@ -544,7 +544,7 @@ export default function WeeklyPlanner({
                       <button
                         type="button"
                         onClick={() => handleApplySplitTemplate(split)}
-                        className="px-3 py-1.5 bg-[var(--accent)] hover:bg-[var(--accent-strong)] text-[var(--accent-ink)] font-bold text-xs rounded-xl transition-colors shrink-0 shadow-sm"
+                        className="px-3 py-1.5 bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--accent-ink)] font-bold text-xs rounded-xl transition-colors shrink-0 shadow-sm"
                       >
                         Aplicar
                       </button>

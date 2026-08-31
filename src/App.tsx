@@ -156,7 +156,7 @@ export default function App() {
     <div className="max-w-[430px] mx-auto h-[100dvh] bg-[var(--canvas)] border-x border-[var(--border)]/60 relative overflow-hidden flex flex-col font-sans">
       
       {/* Active Tab View Rendering */}
-      <div className="flex-1 min-h-0 pb-[140px] overflow-y-auto overscroll-y-contain">
+      <div className="flex-1 min-h-0 pb-[140px] overflow-y-auto scroll-y-touch">
         {activeTab === 'home' && (
           <HomeView 
             activities={activities}
@@ -166,6 +166,10 @@ export default function App() {
             onToggleItem={handleToggleItem}
             onOpenCreate={() => { setEditingEntry(null); setIsModalOpen(true); }}
             onOpenItem={handleOpenItem}
+            userName={userProfile?.name}
+            userAvatar={userProfile?.avatarUrl}
+            onOpenProfile={() => setActiveTab('profile')}
+            onNavigateToGym={() => setActiveTab('gym')}
           />
         )}
         
@@ -174,11 +178,22 @@ export default function App() {
         )}
         
         {activeTab === 'stats' && (
-          <StatsView />
+          <StatsView 
+            activities={activities}
+            tasks={tasks}
+            onNavigateToGym={() => setActiveTab('gym')}
+            onSelectDate={(date) => {
+              setSelectedDate(date);
+              setActiveTab('home');
+            }}
+          />
         )}
 
         {activeTab === 'profile' && (
-          <ProfileView onResetProfile={() => setUserProfile(null)} />
+          <ProfileView 
+            onResetProfile={() => setUserProfile(null)} 
+            onUpdateProfile={(updated) => setUserProfile(updated)}
+          />
         )}
       </div>
 

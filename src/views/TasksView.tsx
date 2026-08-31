@@ -72,7 +72,7 @@ export default function TasksView({ tasks, onAddTask, onToggleTask, onDeleteTask
         </form>
       </div>
 
-      <div className="flex-1 overflow-y-auto scrollbar-hide p-6">
+      <div className="flex-1 overflow-y-auto scroll-y-touch scrollbar-hide p-6">
         {sortedTasks.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center px-4 opacity-60">
             <Check size={48} className="text-[var(--text-faint)] mb-4" strokeWidth={1} />

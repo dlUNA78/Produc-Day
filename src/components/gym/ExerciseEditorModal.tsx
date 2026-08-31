@@ -10,9 +10,9 @@ import {
   Trash2, 
   Search, 
   Check, 
-  HelpCircle,
   Flame,
-  ArrowRight
+  ArrowRight,
+  PlusCircle
 } from 'lucide-react';
 import { Exercise, MuscleGroup, ExerciseSet } from '../../types';
 import { EXERCISE_LIBRARY, PresetExerciseItem } from '../../data/exerciseLibrary';
@@ -98,12 +98,12 @@ export default function ExerciseEditorModal({
     }
   }, [isOpen, initialExercise]);
 
-  // Select from preset library
+  // Select from preset library and configure
   const handleSelectPreset = (preset: PresetExerciseItem) => {
     setName(preset.name);
     setMuscleGroup(preset.muscleGroup);
     setRestSeconds(preset.defaultRestSeconds);
-    setNotes(preset.tips);
+    setNotes(preset.tips || '');
     
     const newSets = [];
     for (let i = 1; i <= preset.defaultSets; i++) {
@@ -115,6 +115,44 @@ export default function ExerciseEditorModal({
       });
     }
     setSets(newSets);
+    setActiveTab('custom');
+  };
+
+  // Direct 1-click add from preset library
+  const handleDirectAddPreset = (preset: PresetExerciseItem, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const newSets: ExerciseSet[] = [];
+    for (let i = 1; i <= preset.defaultSets; i++) {
+      newSets.push({
+        id: `set-${Date.now()}-${i}`,
+        setNumber: i,
+        reps: preset.defaultReps,
+        weightKg: preset.defaultWeightKg,
+        isCompleted: false,
+      });
+    }
+
+    const ex: Exercise = {
+      id: `ex-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      name: preset.name,
+      muscleGroup: preset.muscleGroup,
+      sets: newSets,
+      restSeconds: preset.defaultRestSeconds,
+      notes: preset.tips || undefined,
+    };
+
+    onSaveExercise(ex);
+    onClose();
+  };
+
+  // Quick switch to custom with search query
+  const handleCreateCustomWithName = (customName?: string) => {
+    if (customName && customName.trim()) {
+      setName(customName.trim());
+    }
+    if (selectedMuscleFilter !== 'Todos') {
+      setMuscleGroup(selectedMuscleFilter);
+    }
     setActiveTab('custom');
   };
 
@@ -150,14 +188,17 @@ export default function ExerciseEditorModal({
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim()) return;
+  const handleSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!name.trim()) {
+      setActiveTab('custom');
+      return;
+    }
 
     const exerciseSets: ExerciseSet[] = sets.map((s, idx) => ({
       id: s.id || `set-${Date.now()}-${idx + 1}`,
       setNumber: idx + 1,
-      reps: s.reps.trim() || '10',
+      reps: String(s.reps).trim() || '10',
       weightKg: Number(s.weightKg) || 0,
       isCompleted: initialExercise?.sets[idx]?.isCompleted || false,
     }));
@@ -186,7 +227,8 @@ export default function ExerciseEditorModal({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
+          {/* Backdrop */}
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -195,345 +237,406 @@ export default function ExerciseEditorModal({
             className="absolute inset-0 bg-[color:var(--surface-glass)] backdrop-blur-md"
           />
 
+          {/* Modal Card with fixed flex structure for non-blocking scroll */}
           <motion.div 
-            initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-            className="relative bg-[var(--surface)] border-t sm:border border-[var(--border)] rounded-t-[32px] sm:rounded-3xl p-6 pb-8 w-full max-w-lg max-h-[92vh] overflow-y-auto scrollbar-hide flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)]"
+            initial={{ y: '100%', opacity: 0.8 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: '100%', opacity: 0.8 }}
+            transition={{ type: 'spring', damping: 28, stiffness: 260 }}
+            className="relative bg-[var(--surface)] border-t sm:border border-[var(--border)] rounded-t-[32px] sm:rounded-3xl w-full max-w-lg max-h-[92dvh] h-auto flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)] overflow-hidden"
           >
-            {/* Header */}
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h2 className="text-lg font-semibold text-[var(--text)] flex items-center gap-2">
-                  <Dumbbell size={18} className="text-[var(--accent)]" />
-                  {initialExercise ? 'Editar Ejercicio' : 'Definir Ejercicio'}
-                </h2>
-                <p className="text-xs text-[var(--text-faint)]">
-                  En {routineName}
-                </p>
-              </div>
-              <button 
-                type="button"
-                onClick={onClose}
-                className="w-8 h-8 rounded-full bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
-              >
-                <X size={16} />
-              </button>
-            </div>
-
-            {/* Mode Switcher Tabs */}
-            {!initialExercise && (
-              <div className="flex bg-[var(--canvas)] p-1 rounded-xl border border-[var(--border)] mb-5">
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('library')}
-                  className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                    activeTab === 'library'
-                      ? 'bg-[var(--accent)] text-[var(--accent-ink)] font-bold shadow-md'
-                      : 'text-[var(--text-muted)] hover:text-[var(--text)]'
-                  }`}
-                >
-                  <Sparkles size={13} />
-                  <span>Biblioteca de Ejercicios</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('custom')}
-                  className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                    activeTab === 'custom'
-                      ? 'bg-[var(--accent)] text-[var(--accent-ink)] font-bold shadow-md'
-                      : 'text-[var(--text-muted)] hover:text-[var(--text)]'
-                  }`}
-                >
-                  <Plus size={13} />
-                  <span>Crear Personalizado</span>
-                </button>
-              </div>
-            )}
-
-            {/* TAB 1: LIBRARY SEARCH */}
-            {activeTab === 'library' && !initialExercise && (
-              <div className="flex flex-col gap-4">
-                {/* Search Bar */}
-                <div className="relative">
-                  <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-faint)]" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Buscar por ejercicio o músculo..."
-                    className="w-full pl-9 pr-4 py-2.5 bg-[var(--canvas)] border border-[var(--border)] rounded-xl text-xs text-[var(--text)] placeholder:text-[var(--text-faint)] focus:outline-none focus:border-[var(--accent)] transition-colors"
-                  />
+            {/* 1. STICKY HEADER */}
+            <div className="shrink-0 px-6 pt-5 pb-4 border-b border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-md">
+              <div className="w-10 h-1 rounded-full bg-[var(--border)] mx-auto mb-3 sm:hidden" />
+              
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-base font-bold text-[var(--text)] flex items-center gap-2">
+                    <Dumbbell size={18} className="text-[var(--accent)]" />
+                    {initialExercise ? 'Editar Ejercicio' : 'Añadir Ejercicio'}
+                  </h2>
+                  <p className="text-xs text-[var(--text-faint)] mt-0.5">
+                    En rutina: <span className="text-[var(--text-muted)] font-medium">{routineName}</span>
+                  </p>
                 </div>
+                <button 
+                  type="button"
+                  onClick={onClose}
+                  className="w-8 h-8 rounded-full bg-[var(--surface-raised)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
+                >
+                  <X size={16} />
+                </button>
+              </div>
 
-                {/* Muscle Filter Pills */}
-                <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide py-1">
+              {/* Mode Switcher Tabs */}
+              {!initialExercise && (
+                <div className="flex bg-[var(--canvas)] p-1 rounded-xl border border-[var(--border)] mt-3.5">
                   <button
                     type="button"
-                    onClick={() => setSelectedMuscleFilter('Todos')}
-                    className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold shrink-0 transition-colors ${
-                      selectedMuscleFilter === 'Todos'
-                        ? 'bg-[var(--surface-raised)] text-[var(--accent)] border border-[var(--accent-border)]'
-                        : 'bg-[var(--surface)] text-[var(--text-muted)] border border-[var(--border)] hover:text-[var(--text)]'
+                    onClick={() => setActiveTab('library')}
+                    className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                      activeTab === 'library'
+                        ? 'bg-[var(--accent)] text-[var(--accent-ink)] font-bold shadow-md'
+                        : 'text-[var(--text-muted)] hover:text-[var(--text)]'
                     }`}
                   >
-                    Todos
+                    <Sparkles size={13} />
+                    <span>Biblioteca ({EXERCISE_LIBRARY.length})</span>
                   </button>
-                  {MUSCLE_GROUPS.map(m => (
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('custom')}
+                    className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                      activeTab === 'custom'
+                        ? 'bg-[var(--accent)] text-[var(--accent-ink)] font-bold shadow-md'
+                        : 'text-[var(--text-muted)] hover:text-[var(--text)]'
+                    }`}
+                  >
+                    <Plus size={13} />
+                    <span>Personalizado</span>
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* 2. SCROLLABLE BODY AREA */}
+            <div className="flex-1 min-h-0 overflow-y-auto scroll-y-touch px-6 py-4 space-y-4">
+              {/* TAB 1: LIBRARY SEARCH */}
+              {activeTab === 'library' && !initialExercise && (
+                <div className="flex flex-col gap-3.5">
+                  {/* Search Bar */}
+                  <div className="relative">
+                    <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-faint)]" />
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Buscar por ejercicio o músculo..."
+                      className="w-full pl-9 pr-4 py-2.5 bg-[var(--canvas)] border border-[var(--border)] rounded-xl text-xs text-[var(--text)] placeholder:text-[var(--text-faint)] focus:outline-none focus:border-[var(--accent)] transition-colors"
+                    />
+                  </div>
+
+                  {/* Muscle Filter Pills */}
+                  <div className="flex items-center gap-1.5 scroll-x-touch scrollbar-hide py-1">
                     <button
-                      key={m}
                       type="button"
-                      onClick={() => setSelectedMuscleFilter(m)}
+                      onClick={() => setSelectedMuscleFilter('Todos')}
                       className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold shrink-0 transition-colors ${
-                        selectedMuscleFilter === m
-                          ? 'bg-[var(--accent-soft)] text-[var(--accent)] border border-[var(--accent-border)]'
+                        selectedMuscleFilter === 'Todos'
+                          ? 'bg-[var(--surface-raised)] text-[var(--accent)] border border-[var(--accent-border)]'
                           : 'bg-[var(--surface)] text-[var(--text-muted)] border border-[var(--border)] hover:text-[var(--text)]'
                       }`}
                     >
-                      {m}
+                      Todos
                     </button>
-                  ))}
-                </div>
-
-                {/* Library Items List */}
-                <div className="flex flex-col gap-2 max-h-[350px] overflow-y-auto scrollbar-hide pr-1">
-                  {filteredPresets.length === 0 ? (
-                    <div className="text-center py-8 text-[var(--text-faint)] text-xs">
-                      No se encontraron ejercicios en la biblioteca.
+                    {MUSCLE_GROUPS.map(m => (
                       <button
+                        key={m}
                         type="button"
-                        onClick={() => setActiveTab('custom')}
-                        className="block mx-auto mt-2 text-[var(--accent)] font-semibold underline"
-                      >
-                        Crear como ejercicio personalizado
-                      </button>
-                    </div>
-                  ) : (
-                    filteredPresets.map((preset, idx) => (
-                      <div
-                        key={idx}
-                        onClick={() => handleSelectPreset(preset)}
-                        className="p-3 bg-[var(--canvas)] border border-[var(--border)] hover:border-[var(--accent)] hover:bg-[var(--surface-muted)] rounded-2xl cursor-pointer transition-all flex items-center justify-between group"
-                      >
-                        <div className="flex flex-col gap-1 pr-2">
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs font-semibold text-[var(--text)] group-hover:text-[var(--accent-strong)] transition-colors">
-                              {preset.name}
-                            </span>
-                            <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[var(--surface)] border border-[var(--border-strong)] text-[var(--text-muted)]">
-                              {preset.muscleGroup}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-3 text-[10px] text-[var(--text-muted)] font-mono">
-                            <span>{preset.defaultSets} series x {preset.defaultReps} reps</span>
-                            <span>• {preset.defaultWeightKg} kg</span>
-                            <span>• ⏱ {preset.defaultRestSeconds}s</span>
-                          </div>
-                        </div>
-
-                        <div className="w-8 h-8 rounded-xl bg-[var(--accent-soft)] group-hover:bg-[var(--accent-strong)] text-[var(--accent)] group-hover:text-[var(--accent-ink)] flex items-center justify-center shrink-0 transition-all">
-                          <ArrowRight size={14} />
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* TAB 2: CUSTOM / DETAILED EDITOR */}
-            {(activeTab === 'custom' || initialExercise) && (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                {/* Exercise Name */}
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
-                    Nombre del Ejercicio *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Ej. Press Militar con Barra"
-                    className="w-full px-3.5 py-2.5 bg-[var(--canvas)] border border-[var(--border)] rounded-xl text-sm text-[var(--text)] focus:outline-none focus:border-[var(--accent)] transition-colors"
-                  />
-                </div>
-
-                {/* Muscle Group */}
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
-                    Grupo Muscular Principal
-                  </label>
-                  <select
-                    value={muscleGroup}
-                    onChange={(e) => setMuscleGroup(e.target.value as MuscleGroup)}
-                    className="w-full px-3.5 py-2.5 bg-[var(--canvas)] border border-[var(--border)] rounded-xl text-xs text-[var(--text)] focus:outline-none focus:border-[var(--accent)] transition-colors"
-                  >
-                    {MUSCLE_GROUPS.map((mg) => (
-                      <option key={mg} value={mg} className="bg-[var(--canvas)] text-[var(--text)]">
-                        {mg}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Sets Builder Table */}
-                <div className="flex flex-col gap-2 bg-[var(--canvas)] border border-[var(--border)] rounded-2xl p-3.5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-bold text-[var(--text)] uppercase tracking-wider flex items-center gap-1.5">
-                      <Layers size={13} className="text-[var(--accent)]" />
-                      Series Programadas ({sets.length})
-                    </span>
-                    <button
-                      type="button"
-                      onClick={handleAddSet}
-                      className="text-[11px] font-semibold text-[var(--accent)] hover:text-[var(--accent-strong)] flex items-center gap-1 bg-[var(--accent-soft)] px-2.5 py-1 rounded-lg border border-[var(--accent-border)] transition-colors"
-                    >
-                      <Plus size={12} />
-                      <span>Añadir Serie</span>
-                    </button>
-                  </div>
-
-                  {/* Header labels */}
-                  <div className="grid grid-cols-12 gap-2 text-[10px] text-[var(--text-faint)] font-bold uppercase tracking-wider px-1 pt-1">
-                    <div className="col-span-2">Serie</div>
-                    <div className="col-span-5">Reps Objetivo</div>
-                    <div className="col-span-4 flex items-center justify-between">
-                      <span>Peso</span>
-                      <button
-                        type="button"
-                        onClick={() => setWeightUnit(prev => prev === 'kg' ? 'lbs' : 'kg')}
-                        className="text-[9px] bg-[var(--surface)] border border-[var(--border-strong)] hover:border-[var(--accent)] px-1.5 py-0.5 rounded text-[var(--accent)] transition-colors"
-                      >
-                        {weightUnit.toUpperCase()}
-                      </button>
-                    </div>
-                    <div className="col-span-1"></div>
-                  </div>
-
-                  {/* Sets Rows */}
-                  <div className="flex flex-col gap-2">
-                    {sets.map((set, idx) => {
-                      const displayWeight = weightUnit === 'lbs' 
-                        ? (set.weightKg * 2.20462).toFixed(1).replace(/\.0$/, '') 
-                        : set.weightKg;
-
-                      return (
-                        <div key={set.id || idx} className="grid grid-cols-12 gap-2 items-center">
-                          <div className="col-span-2">
-                            <span className="w-6 h-6 rounded-lg bg-[var(--surface)] border border-[var(--border)] text-[var(--text-muted)] font-mono text-xs flex items-center justify-center">
-                              #{idx + 1}
-                            </span>
-                          </div>
-
-                          <div className="col-span-5">
-                            <input
-                              type="text"
-                              value={set.reps}
-                              onChange={(e) => handleUpdateSetField(idx, 'reps', e.target.value)}
-                              placeholder="10 o 8-12"
-                              className="w-full px-2.5 py-1.5 bg-[var(--surface)] border border-[var(--border)] rounded-lg text-xs text-[var(--text)] font-mono focus:outline-none focus:border-[var(--accent)]"
-                            />
-                          </div>
-
-                          <div className="col-span-4 relative">
-                            <input
-                              type="number"
-                              step="0.5"
-                              value={displayWeight}
-                              onChange={(e) => {
-                                const raw = parseFloat(e.target.value) || 0;
-                                const newKg = weightUnit === 'lbs' ? raw / 2.20462 : raw;
-                                handleUpdateSetField(idx, 'weightKg', Number(newKg.toFixed(2)));
-                              }}
-                              placeholder={weightUnit}
-                              className="w-full px-2.5 py-1.5 pr-8 bg-[var(--surface)] border border-[var(--border)] rounded-lg text-xs text-[var(--text)] font-mono focus:outline-none focus:border-[var(--accent)]"
-                            />
-                            <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] text-[var(--text-faint)] font-bold uppercase">
-                              {weightUnit}
-                            </span>
-                          </div>
-
-                          <div className="col-span-1 flex justify-end">
-                            <button
-                              type="button"
-                              disabled={sets.length <= 1}
-                              onClick={() => handleRemoveSet(idx)}
-                              className={`p-1 rounded text-[var(--text-faint)] hover:text-[var(--danger)] transition-colors ${
-                                sets.length <= 1 ? 'opacity-30 cursor-not-allowed' : ''
-                              }`}
-                            >
-                              <Trash2 size={13} />
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Rest Seconds Selector */}
-                <div className="flex flex-col gap-1.5">
-                  <div className="flex items-center justify-between">
-                    <label className="text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider flex items-center gap-1.5">
-                      <Clock size={12} className="text-[var(--accent)]" />
-                      Descanso Entre Series
-                    </label>
-                    <span className="text-xs font-mono font-bold text-[var(--accent)]">{restSeconds}s ({Math.floor(restSeconds / 60)}m {restSeconds % 60 ? `${restSeconds % 60}s` : ''})</span>
-                  </div>
-
-                  <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide py-1">
-                    {REST_PRESETS.map((sec) => (
-                      <button
-                        key={sec}
-                        type="button"
-                        onClick={() => setRestSeconds(sec)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-mono font-medium transition-colors shrink-0 ${
-                          restSeconds === sec
-                            ? 'bg-[var(--accent)] text-[var(--accent-ink)] font-bold shadow-sm'
-                            : 'bg-[var(--canvas)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]'
+                        onClick={() => setSelectedMuscleFilter(m)}
+                        className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold shrink-0 transition-colors ${
+                          selectedMuscleFilter === m
+                            ? 'bg-[var(--accent-soft)] text-[var(--accent)] border border-[var(--accent-border)]'
+                            : 'bg-[var(--surface)] text-[var(--text-muted)] border border-[var(--border)] hover:text-[var(--text)]'
                         }`}
                       >
-                        {sec}s
+                        {m}
                       </button>
                     ))}
                   </div>
-                </div>
 
-                {/* Notes & Technique Tips */}
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
-                    Notas y Consejos de Técnica (Opcional)
-                  </label>
-                  <textarea
-                    rows={2}
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                    placeholder="Ej. RIR 2, tempo excéntrico 3 segundos, retracción escapular..."
-                    className="w-full px-3 py-2 bg-[var(--canvas)] border border-[var(--border)] rounded-xl text-xs text-[var(--text)] placeholder:text-[var(--text-faint)] focus:outline-none focus:border-[var(--accent)] transition-colors"
-                  />
-                </div>
+                  {/* Quick create custom button if searching */}
+                  {searchQuery.trim().length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => handleCreateCustomWithName(searchQuery)}
+                      className="w-full p-3 rounded-2xl bg-[var(--accent-soft)] border border-[var(--accent-border)] text-left flex items-center justify-between hover:bg-[var(--accent-hover)]/20 transition-all group"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-lg bg-[var(--accent)] text-[var(--accent-ink)] flex items-center justify-center shrink-0">
+                          <Plus size={14} />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-[var(--text)] group-hover:text-[var(--accent)]">
+                            Crear "{searchQuery.trim()}"
+                          </div>
+                          <div className="text-[10px] text-[var(--text-muted)]">
+                            Añadir como nuevo ejercicio personalizado
+                          </div>
+                        </div>
+                      </div>
+                      <ArrowRight size={14} className="text-[var(--accent)]" />
+                    </button>
+                  )}
 
-                {/* Buttons */}
-                <div className="flex items-center gap-3 pt-2">
-                  <button
-                    type="button"
-                    onClick={onClose}
-                    className="flex-1 py-3 bg-[var(--surface)] border border-[var(--border)] text-[var(--text)] text-xs font-semibold rounded-xl hover:bg-[var(--surface-muted)] transition-colors"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    type="submit"
-                    className="flex-1 py-3 bg-[var(--text)] text-[var(--canvas)] hover:opacity-90 text-xs font-bold rounded-xl shadow-md transition-transform active:scale-95 flex items-center justify-center gap-1.5"
-                  >
-                    <Check size={14} />
-                    <span>Guardar Ejercicio</span>
-                  </button>
+                  {/* Library Items List */}
+                  <div className="flex flex-col gap-2">
+                    {filteredPresets.length === 0 ? (
+                      <div className="text-center py-8 bg-[var(--canvas)] border border-dashed border-[var(--border)] rounded-2xl p-5">
+                        <Dumbbell size={28} className="mx-auto text-[var(--text-faint)] mb-2 opacity-60" />
+                        <p className="text-xs text-[var(--text)] font-semibold">No se encontraron coincidencias</p>
+                        <p className="text-[11px] text-[var(--text-muted)] mt-1 mb-3">Puedes crearlo como ejercicio personalizado con un toque.</p>
+                        <button
+                          type="button"
+                          onClick={() => handleCreateCustomWithName(searchQuery)}
+                          className="px-4 py-2 bg-[var(--accent)] text-[var(--accent-ink)] font-bold text-xs rounded-xl shadow-md inline-flex items-center gap-1.5"
+                        >
+                          <Plus size={13} />
+                          <span>Crear "{searchQuery || 'Nuevo Ejercicio'}"</span>
+                        </button>
+                      </div>
+                    ) : (
+                      filteredPresets.map((preset, idx) => (
+                        <div
+                          key={idx}
+                          onClick={() => handleSelectPreset(preset)}
+                          className="p-3.5 bg-[var(--canvas)] border border-[var(--border)] hover:border-[var(--accent)] hover:bg-[var(--surface-raised)] rounded-2xl cursor-pointer transition-all flex items-center justify-between group"
+                        >
+                          <div className="flex flex-col gap-1 pr-2 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-bold text-[var(--text)] group-hover:text-[var(--accent)] transition-colors truncate">
+                                {preset.name}
+                              </span>
+                              <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[var(--surface)] border border-[var(--border)] text-[var(--text-muted)] shrink-0">
+                                {preset.muscleGroup}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-3 text-[10px] text-[var(--text-muted)] font-mono">
+                              <span>{preset.defaultSets} series x {preset.defaultReps}</span>
+                              <span>• {preset.defaultWeightKg} kg</span>
+                              <span>• ⏱ {preset.defaultRestSeconds}s</span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            <button
+                              type="button"
+                              onClick={(e) => handleDirectAddPreset(preset, e)}
+                              className="px-2.5 py-1.5 rounded-xl bg-[var(--accent)] text-[var(--accent-ink)] hover:opacity-90 font-bold text-[11px] flex items-center gap-1 shadow-sm transition-all"
+                              title="Añadir a la rutina directamente"
+                            >
+                              <Plus size={12} strokeWidth={3} />
+                              <span className="hidden xs:inline">Añadir</span>
+                            </button>
+                            <div className="w-8 h-8 rounded-xl bg-[var(--surface-raised)] text-[var(--text-muted)] group-hover:text-[var(--text)] flex items-center justify-center transition-all">
+                              <ArrowRight size={14} />
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
                 </div>
-              </form>
-            )}
+              )}
+
+              {/* TAB 2: CUSTOM / DETAILED EDITOR */}
+              {(activeTab === 'custom' || initialExercise) && (
+                <form id="exercise-form" onSubmit={handleSubmit} className="flex flex-col gap-4">
+                  {/* Exercise Name */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
+                      Nombre del Ejercicio *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Ej. Press Militar con Mancuernas, Sentadillas..."
+                      className="w-full px-3.5 py-2.5 bg-[var(--canvas)] border border-[var(--border)] rounded-xl text-sm text-[var(--text)] placeholder:text-[var(--text-faint)] focus:outline-none focus:border-[var(--accent)] transition-colors"
+                    />
+                  </div>
+
+                  {/* Muscle Group */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
+                      Grupo Muscular Principal
+                    </label>
+                    <select
+                      value={muscleGroup}
+                      onChange={(e) => setMuscleGroup(e.target.value as MuscleGroup)}
+                      className="w-full px-3.5 py-2.5 bg-[var(--canvas)] border border-[var(--border)] rounded-xl text-xs text-[var(--text)] focus:outline-none focus:border-[var(--accent)] transition-colors"
+                    >
+                      {MUSCLE_GROUPS.map((mg) => (
+                        <option key={mg} value={mg} className="bg-[var(--canvas)] text-[var(--text)]">
+                          {mg}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Sets Builder Table */}
+                  <div className="flex flex-col gap-2 bg-[var(--canvas)] border border-[var(--border)] rounded-2xl p-3.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-bold text-[var(--text)] uppercase tracking-wider flex items-center gap-1.5">
+                        <Layers size={13} className="text-[var(--accent)]" />
+                        Series Programadas ({sets.length})
+                      </span>
+                      <button
+                        type="button"
+                        onClick={handleAddSet}
+                        className="text-[11px] font-semibold text-[var(--accent)] hover:text-[var(--accent-strong)] flex items-center gap-1 bg-[var(--accent-soft)] px-2.5 py-1 rounded-lg border border-[var(--accent-border)] transition-colors"
+                      >
+                        <Plus size={12} />
+                        <span>Añadir Serie</span>
+                      </button>
+                    </div>
+
+                    {/* Header labels */}
+                    <div className="grid grid-cols-12 gap-2 text-[10px] text-[var(--text-faint)] font-bold uppercase tracking-wider px-1 pt-1">
+                      <div className="col-span-2">Serie</div>
+                      <div className="col-span-5">Reps</div>
+                      <div className="col-span-4 flex items-center justify-between">
+                        <span>Peso</span>
+                        <button
+                          type="button"
+                          onClick={() => setWeightUnit(prev => prev === 'kg' ? 'lbs' : 'kg')}
+                          className="text-[9px] bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--accent)] px-1.5 py-0.5 rounded text-[var(--accent)] transition-colors font-mono"
+                        >
+                          {weightUnit.toUpperCase()}
+                        </button>
+                      </div>
+                      <div className="col-span-1"></div>
+                    </div>
+
+                    {/* Sets Rows */}
+                    <div className="flex flex-col gap-2">
+                      {sets.map((set, idx) => {
+                        const displayWeight = weightUnit === 'lbs' 
+                          ? (set.weightKg * 2.20462).toFixed(1).replace(/\.0$/, '') 
+                          : set.weightKg;
+
+                        return (
+                          <div key={set.id || idx} className="grid grid-cols-12 gap-2 items-center">
+                            <div className="col-span-2">
+                              <span className="w-7 h-7 rounded-lg bg-[var(--surface)] border border-[var(--border)] text-[var(--text-muted)] font-mono text-xs flex items-center justify-center font-bold">
+                                #{idx + 1}
+                              </span>
+                            </div>
+
+                            <div className="col-span-5">
+                              <input
+                                type="text"
+                                value={set.reps}
+                                onChange={(e) => handleUpdateSetField(idx, 'reps', e.target.value)}
+                                placeholder="10 o 8-12"
+                                className="w-full px-2.5 py-1.5 bg-[var(--surface)] border border-[var(--border)] rounded-lg text-xs text-[var(--text)] font-mono focus:outline-none focus:border-[var(--accent)]"
+                              />
+                            </div>
+
+                            <div className="col-span-4 relative">
+                              <input
+                                type="number"
+                                step="0.5"
+                                value={displayWeight}
+                                onChange={(e) => {
+                                  const raw = parseFloat(e.target.value) || 0;
+                                  const newKg = weightUnit === 'lbs' ? raw / 2.20462 : raw;
+                                  handleUpdateSetField(idx, 'weightKg', Number(newKg.toFixed(2)));
+                                }}
+                                placeholder="0"
+                                className="w-full px-2.5 py-1.5 pr-8 bg-[var(--surface)] border border-[var(--border)] rounded-lg text-xs text-[var(--text)] font-mono focus:outline-none focus:border-[var(--accent)]"
+                              />
+                              <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] text-[var(--text-faint)] font-bold uppercase">
+                                {weightUnit}
+                              </span>
+                            </div>
+
+                            <div className="col-span-1 flex justify-end">
+                              <button
+                                type="button"
+                                disabled={sets.length <= 1}
+                                onClick={() => handleRemoveSet(idx)}
+                                className={`p-1.5 rounded text-[var(--text-faint)] hover:text-[var(--danger)] transition-colors ${
+                                  sets.length <= 1 ? 'opacity-25 cursor-not-allowed' : ''
+                                }`}
+                              >
+                                <Trash2 size={13} />
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Rest Seconds Selector */}
+                  <div className="flex flex-col gap-1.5">
+                    <div className="flex items-center justify-between">
+                      <label className="text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider flex items-center gap-1.5">
+                        <Clock size={12} className="text-[var(--accent)]" />
+                        Descanso Entre Series
+                      </label>
+                      <span className="text-xs font-mono font-bold text-[var(--accent)]">
+                        {restSeconds}s ({Math.floor(restSeconds / 60)}m {restSeconds % 60 ? `${restSeconds % 60}s` : ''})
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 scroll-x-touch scrollbar-hide py-1">
+                      {REST_PRESETS.map((sec) => (
+                        <button
+                          key={sec}
+                          type="button"
+                          onClick={() => setRestSeconds(sec)}
+                          className={`px-3 py-1.5 rounded-xl text-xs font-mono font-medium transition-colors shrink-0 ${
+                            restSeconds === sec
+                              ? 'bg-[var(--accent)] text-[var(--accent-ink)] font-bold shadow-sm'
+                              : 'bg-[var(--canvas)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]'
+                          }`}
+                        >
+                          {sec}s
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Notes & Technique Tips */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
+                      Notas y Consejos de Técnica (Opcional)
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={notes}
+                      onChange={(e) => setNotes(e.target.value)}
+                      placeholder="Ej. RIR 2, tempo excéntrico 3s, buen rango articular..."
+                      className="w-full px-3 py-2 bg-[var(--canvas)] border border-[var(--border)] rounded-xl text-xs text-[var(--text)] placeholder:text-[var(--text-faint)] focus:outline-none focus:border-[var(--accent)] transition-colors"
+                    />
+                  </div>
+                </form>
+              )}
+            </div>
+
+            {/* 3. STICKY FOOTER ACTION BAR (ALWAYS VISIBLE, NEVER HIDDEN) */}
+            <div className="shrink-0 p-4 border-t border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-md pb-[max(1rem,env(safe-area-inset-bottom))] flex items-center gap-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="py-3 px-4 bg-[var(--surface-raised)] border border-[var(--border)] text-[var(--text)] text-xs font-semibold rounded-xl hover:bg-[var(--surface-muted)] transition-colors"
+              >
+                Cancelar
+              </button>
+
+              {activeTab === 'library' && !initialExercise ? (
+                <button
+                  type="button"
+                  onClick={() => handleCreateCustomWithName(searchQuery)}
+                  className="flex-1 py-3 px-4 bg-[var(--accent)] text-[var(--accent-ink)] hover:opacity-90 text-xs font-bold rounded-xl shadow-md transition-transform active:scale-[0.98] flex items-center justify-center gap-1.5"
+                >
+                  <Plus size={15} strokeWidth={3} />
+                  <span>Crear Personalizado</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => handleSubmit()}
+                  className="flex-1 py-3 px-4 bg-[var(--accent)] text-[var(--accent-ink)] hover:opacity-90 text-xs font-bold rounded-xl shadow-md transition-transform active:scale-[0.98] flex items-center justify-center gap-1.5"
+                >
+                  <Check size={15} strokeWidth={3} />
+                  <span>{initialExercise ? 'Guardar Cambios' : 'Añadir a la Rutina'}</span>
+                </button>
+              )}
+            </div>
           </motion.div>
         </div>
       )}

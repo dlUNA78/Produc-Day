@@ -75,9 +75,9 @@ export default function ProgramSettingsModal({ isOpen, onClose, currentSettings,
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 20 }}
-            className="relative bg-[var(--surface)] border border-[var(--border)] rounded-3xl p-6 w-full max-w-sm flex flex-col shadow-2xl z-10 max-h-[90vh] overflow-y-auto custom-scrollbar"
+            className="relative bg-[var(--surface)] border border-[var(--border)] rounded-3xl w-full max-w-sm flex flex-col shadow-2xl z-10 max-h-[90dvh] h-auto overflow-hidden"
           >
-            <div className="flex items-center justify-between mb-6">
+            <div className="shrink-0 flex items-center justify-between p-6 pb-4 border-b border-[var(--border)] bg-[var(--surface)]">
               <div>
                 <h3 className="text-lg font-bold text-[var(--text)] flex items-center gap-2">
                   <Target size={18} className="text-[var(--accent)]" />
@@ -94,7 +94,8 @@ export default function ProgramSettingsModal({ isOpen, onClose, currentSettings,
               </button>
             </div>
 
-            <form onSubmit={handleSave} className="flex flex-col gap-5">
+            <form onSubmit={handleSave} className="flex-1 min-h-0 flex flex-col overflow-hidden">
+              <div className="flex-1 min-h-0 overflow-y-auto scroll-y-touch p-6 space-y-5">
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">
@@ -237,8 +238,9 @@ export default function ProgramSettingsModal({ isOpen, onClose, currentSettings,
                   </div>
                 )}
               </div>
+              </div>
 
-              <div className="flex gap-2 mt-4 pt-4 border-t border-[var(--border)]">
+              <div className="shrink-0 p-4 border-t border-[var(--border)] bg-[var(--surface)] flex gap-2 pb-[max(1rem,env(safe-area-inset-bottom))]">
                 {currentSettings && (
                   <button
                     type="button"

@@ -86,9 +86,9 @@ export default function AddExerciseModal({
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-            className="relative bg-[var(--surface)] border-t sm:border border-[var(--border)] rounded-t-[32px] sm:rounded-3xl p-6 pb-8 w-full max-w-md max-h-[90vh] overflow-y-auto scrollbar-hide flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)]"
+            className="relative bg-[var(--surface)] border-t sm:border border-[var(--border)] rounded-t-[32px] sm:rounded-3xl w-full max-w-md max-h-[92dvh] h-auto flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)] overflow-hidden"
           >
-            <div className="flex items-center justify-between mb-5">
+            <div className="shrink-0 flex items-center justify-between px-6 pt-5 pb-4 border-b border-[var(--border)] bg-[var(--surface)]">
               <div>
                 <h2 className="text-lg font-semibold text-[var(--text)] flex items-center gap-2">
                   <Dumbbell size={18} className="text-[var(--accent)]" />
@@ -97,6 +97,7 @@ export default function AddExerciseModal({
                 <p className="text-xs text-[var(--text-faint)]">A {routineName}</p>
               </div>
               <button 
+                type="button"
                 onClick={onClose}
                 className="w-8 h-8 rounded-full bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
               >
@@ -104,7 +105,8 @@ export default function AddExerciseModal({
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit} className="flex-1 min-h-0 flex flex-col overflow-hidden">
+              <div className="flex-1 min-h-0 overflow-y-auto scroll-y-touch p-6 space-y-4">
               {/* Exercise Name */}
               <div>
                 <label className="block text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-widest mb-1.5">
@@ -126,7 +128,7 @@ export default function AddExerciseModal({
                 <label className="block text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-widest mb-1.5">
                   Grupo Muscular
                 </label>
-                <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto scrollbar-hide p-1 bg-[var(--canvas)] border border-[var(--border)] rounded-xl">
+                <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto scroll-y-touch p-1 bg-[var(--canvas)] border border-[var(--border)] rounded-xl">
                   {MUSCLE_GROUPS.map(mg => (
                     <button
                       key={mg}
@@ -227,13 +229,17 @@ export default function AddExerciseModal({
                   className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-2.5 text-xs text-[var(--text)] placeholder:text-[var(--text-faint)] focus:outline-none focus:border-[var(--accent)] resize-none h-16"
                 />
               </div>
+              </div>
 
-              <button
-                type="submit"
-                className="mt-2 w-full py-3.5 bg-[var(--accent)] hover:bg-[var(--accent-strong)] text-[var(--accent-ink)] font-bold text-sm rounded-xl shadow-md transition-all"
-              >
-                Guardar Ejercicio en Rutina
-              </button>
+              {/* Sticky Footer */}
+              <div className="shrink-0 p-4 border-t border-[var(--border)] bg-[var(--surface)] pb-[max(1rem,env(safe-area-inset-bottom))]">
+                <button
+                  type="submit"
+                  className="w-full py-3.5 bg-[var(--accent)] hover:bg-[var(--accent-strong)] text-[var(--accent-ink)] font-bold text-sm rounded-xl shadow-md transition-all"
+                >
+                  Guardar Ejercicio en Rutina
+                </button>
+              </div>
             </form>
           </motion.div>
         </div>

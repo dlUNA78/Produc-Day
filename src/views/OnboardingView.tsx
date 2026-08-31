@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { UserProfile } from '../types';
-import { ArrowRight, Activity, Target, User } from 'lucide-react';
+import { ArrowRight, Activity, Target, User, Camera, Check, Upload, Sparkles } from 'lucide-react';
+import { AVATAR_PRESETS, compressImageFile } from '../utils/imageUtils';
 
 interface OnboardingViewProps {
   onComplete: (profile: UserProfile) => void;
@@ -12,6 +13,20 @@ export default function OnboardingView({ onComplete }: OnboardingViewProps) {
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
   const [goal, setGoal] = useState('Ganar masa muscular');
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      try {
+        const compressed = await compressImageFile(file, 320, 0.88);
+        setAvatarUrl(compressed);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,11 +37,12 @@ export default function OnboardingView({ onComplete }: OnboardingViewProps) {
       weight: weight.trim(),
       height: height.trim(),
       goal,
+      avatarUrl: avatarUrl || undefined,
     });
   };
 
   return (
-    <div className="flex-1 min-h-0 flex flex-col h-full bg-[var(--canvas)] overflow-y-auto overscroll-y-contain">
+    <div className="flex-1 min-h-0 flex flex-col h-full bg-[var(--canvas)] overflow-y-auto scroll-y-touch">
       <div className="px-6 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -40,11 +56,47 @@ export default function OnboardingView({ onComplete }: OnboardingViewProps) {
           <h1 className="text-3xl font-bold tracking-tight text-[var(--text)] mb-3">
             Bienvenido
           </h1>
-          <p className="text-[var(--text-muted)] mb-10 leading-relaxed text-sm">
+          <p className="text-[var(--text-muted)] mb-8 leading-relaxed text-sm">
             Para personalizar tu experiencia y seguir tu progreso, cuéntanos un poco sobre ti.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Avatar Selection in Onboarding */}
+            <div className="flex flex-col items-center justify-center mb-2">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+              <div 
+                onClick={() => fileInputRef.current?.click()}
+                className="relative cursor-pointer group"
+                role="button"
+                tabIndex={0}
+              >
+                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[var(--accent)] bg-[var(--surface)] flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                  <img
+                    src={avatarUrl || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"}
+                    alt="Avatar"
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+                <div className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-[var(--accent)] text-[var(--accent-ink)] flex items-center justify-center border-2 border-[var(--canvas)] shadow-md">
+                  <Camera size={14} />
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="text-xs font-semibold text-[var(--accent)] hover:underline mt-2 flex items-center gap-1"
+              >
+                <Upload size={13} /> Subir tu foto de perfil
+              </button>
+            </div>
+
             <div className="space-y-2">
               <label className="text-xs font-semibold uppercase tracking-wider text-[var(--text-faint)]">
                 Tu Nombre

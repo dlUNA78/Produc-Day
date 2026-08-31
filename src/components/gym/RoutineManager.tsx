@@ -471,7 +471,7 @@ export default function RoutineManager({
       {/* Routine Metadata Editor Modal */}
       <AnimatePresence>
         {isMetaModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -481,30 +481,39 @@ export default function RoutineManager({
             />
 
             <motion.div 
-              initial={{ y: '100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              className="relative bg-[var(--surface)] border-t sm:border border-[var(--border)] rounded-t-[32px] sm:rounded-3xl p-6 pb-8 w-full max-w-md flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)]"
+              initial={{ y: '100%', opacity: 0.8 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: '100%', opacity: 0.8 }}
+              transition={{ type: 'spring', damping: 28, stiffness: 260 }}
+              className="relative bg-[var(--surface)] border-t sm:border border-[var(--border)] rounded-t-[32px] sm:rounded-3xl w-full max-w-md max-h-[92dvh] h-auto flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.9)] overflow-hidden"
             >
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-base font-bold text-[var(--text)] flex items-center gap-2">
-                  <Dumbbell size={16} className="text-[var(--accent)]" />
-                  {editingRoutineMeta ? 'Editar Rutina' : 'Crear Nueva Rutina'}
-                </h3>
+              {/* Sticky Header */}
+              <div className="shrink-0 p-5 border-b border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-md flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-xl bg-[var(--accent-soft)] text-[var(--accent)] flex items-center justify-center">
+                    <Dumbbell size={16} />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-[var(--text)]">
+                      {editingRoutineMeta ? 'Editar Rutina' : 'Crear Nueva Rutina'}
+                    </h3>
+                    <p className="text-[11px] text-[var(--text-muted)]">Configura nombre y objetivos</p>
+                  </div>
+                </div>
                 <button
                   type="button"
                   onClick={() => setIsMetaModalOpen(false)}
-                  className="p-1.5 text-[var(--text-muted)] hover:text-[var(--text)] rounded-lg bg-[var(--surface)] border border-[var(--border)]"
+                  className="w-8 h-8 rounded-full bg-[var(--surface-raised)] border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
                 >
-                  <X size={14} />
+                  <X size={15} />
                 </button>
               </div>
 
-              <form onSubmit={handleSaveRoutineMeta} className="flex flex-col gap-4">
+              {/* Scrollable Form Body */}
+              <form id="routine-meta-form" onSubmit={handleSaveRoutineMeta} className="flex-1 min-h-0 overflow-y-auto scroll-y-touch p-5 space-y-4">
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
-                    Nombre Completo *
+                    Nombre Completo de la Rutina *
                   </label>
                   <input
                     type="text"
@@ -512,21 +521,21 @@ export default function RoutineManager({
                     value={formName}
                     onChange={(e) => setFormName(e.target.value)}
                     placeholder="Ej. Push A — Pecho Pesado & Hombro"
-                    className="w-full px-3.5 py-2.5 bg-[var(--canvas)] border border-[var(--border)] rounded-xl text-xs text-[var(--text)] focus:outline-none focus:border-[var(--accent)]"
+                    className="w-full px-3.5 py-2.5 bg-[var(--canvas)] border border-[var(--border)] rounded-xl text-xs text-[var(--text)] placeholder:text-[var(--text-faint)] focus:outline-none focus:border-[var(--accent)]"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div className="flex flex-col gap-1.5">
                     <label className="text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
-                      Nombre Corto (Etiqueta)
+                      Nombre Corto
                     </label>
                     <input
                       type="text"
                       value={formShortName}
                       onChange={(e) => setFormShortName(e.target.value)}
                       placeholder="Ej. Push A"
-                      className="w-full px-3.5 py-2.5 bg-[var(--canvas)] border border-[var(--border)] rounded-xl text-xs text-[var(--text)] focus:outline-none focus:border-[var(--accent)]"
+                      className="w-full px-3.5 py-2.5 bg-[var(--canvas)] border border-[var(--border)] rounded-xl text-xs text-[var(--text)] placeholder:text-[var(--text-faint)] focus:outline-none focus:border-[var(--accent)]"
                     />
                   </div>
 
@@ -546,9 +555,9 @@ export default function RoutineManager({
 
                 <div className="flex flex-col gap-2">
                   <label className="text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
-                    Músculos Trabajados
+                    Músculos Principales ({formMuscles.length})
                   </label>
-                  <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto scrollbar-hide p-1 bg-[var(--canvas)] rounded-xl border border-[var(--border)]">
+                  <div className="flex flex-wrap gap-1.5 p-2 bg-[var(--canvas)] rounded-2xl border border-[var(--border)] max-h-40 overflow-y-auto scroll-y-touch">
                     {MUSCLE_GROUPS.map(m => {
                       const isSelected = formMuscles.includes(m);
                       return (
@@ -556,7 +565,7 @@ export default function RoutineManager({
                           key={m}
                           type="button"
                           onClick={() => handleToggleMuscle(m)}
-                          className={`text-[10px] font-bold px-2.5 py-1 rounded-lg border transition-colors ${
+                          className={`text-[10px] font-bold px-2.5 py-1 rounded-xl border transition-colors ${
                             isSelected
                               ? 'bg-[var(--accent)] text-[var(--accent-ink)] border-[var(--accent-border)] shadow-sm'
                               : 'bg-[var(--surface)] border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]'
@@ -568,23 +577,26 @@ export default function RoutineManager({
                     })}
                   </div>
                 </div>
-
-                <div className="flex items-center gap-3 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setIsMetaModalOpen(false)}
-                    className="flex-1 py-2.5 bg-[var(--surface)] border border-[var(--border)] text-[var(--text)] text-xs font-semibold rounded-xl"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    type="submit"
-                    className="flex-1 py-2.5 bg-[var(--text)] text-[var(--canvas)] text-xs font-bold rounded-xl shadow-md"
-                  >
-                    Guardar Rutina
-                  </button>
-                </div>
               </form>
+
+              {/* Sticky Footer Action Bar */}
+              <div className="shrink-0 p-4 border-t border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-md pb-[max(1rem,env(safe-area-inset-bottom))] flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsMetaModalOpen(false)}
+                  className="py-3 px-4 bg-[var(--surface-raised)] border border-[var(--border)] text-[var(--text)] text-xs font-semibold rounded-xl hover:bg-[var(--surface-muted)] transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  form="routine-meta-form"
+                  className="flex-1 py-3 px-4 bg-[var(--accent)] text-[var(--accent-ink)] hover:opacity-90 text-xs font-bold rounded-xl shadow-md transition-transform active:scale-[0.98] flex items-center justify-center gap-1.5"
+                >
+                  <Check size={15} strokeWidth={3} />
+                  <span>{editingRoutineMeta ? 'Guardar Cambios' : 'Crear Rutina'}</span>
+                </button>
+              </div>
             </motion.div>
           </div>
         )}

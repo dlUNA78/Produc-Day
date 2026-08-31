@@ -133,9 +133,9 @@ export default function CreateEntryModal({
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: '100%', opacity: 0.8 }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="relative w-full max-w-md max-h-[94dvh] overflow-y-auto scrollbar-hide rounded-t-[28px] border border-b-0 border-[var(--border)] bg-[var(--surface)] shadow-[0_-24px_64px_rgba(0,0,0,0.45)]"
+            className="relative w-full max-w-md max-h-[92dvh] h-auto flex flex-col overflow-hidden rounded-t-[28px] border border-b-0 border-[var(--border)] bg-[var(--surface)] shadow-[0_-24px_64px_rgba(0,0,0,0.45)]"
           >
-            <div className="sticky top-0 z-10 bg-[var(--surface)]/95 backdrop-blur-md px-5 pt-3 pb-4 border-b border-[var(--border)]">
+            <div className="shrink-0 bg-[var(--surface)]/95 backdrop-blur-md px-5 pt-3 pb-4 border-b border-[var(--border)]">
               <div className="w-10 h-1 rounded-full bg-[var(--border)] mx-auto mb-4" />
               <div className="flex items-center justify-between gap-4">
                 <div>
@@ -148,7 +148,7 @@ export default function CreateEntryModal({
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-5 pb-[max(2rem,env(safe-area-inset-bottom))] space-y-5">
+            <form onSubmit={handleSubmit} className="flex-1 min-h-0 overflow-y-auto scroll-y-touch p-5 pb-[max(2rem,env(safe-area-inset-bottom))] space-y-5">
               <fieldset disabled={Boolean(editingEntry)} className={editingEntry ? 'opacity-70' : ''}>
                 <legend className={labelClass}>¿Qué quieres añadir?</legend>
                 <div className="grid grid-cols-2 gap-2 p-1.5 rounded-[18px] bg-[var(--canvas)] border border-[var(--border)]">

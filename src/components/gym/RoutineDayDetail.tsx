@@ -138,7 +138,7 @@ export default function RoutineDayDetail({
           </span>
         </div>
 
-        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide py-0.5">
+        <div className="flex items-center gap-2 scroll-x-touch scrollbar-hide py-1">
           {allRoutines.map(r => {
             const isSelected = r.id === selectedRoutineId;
             const isToday = r.id === scheduledRoutineId;
@@ -248,124 +248,151 @@ export default function RoutineDayDetail({
         </div>
 
         <div className="flex flex-col gap-2.5">
-          {routine.exercises.map((exercise, idx) => {
-            const isAllDone = exercise.sets.every(
-              s => dayLog?.completedSets?.[`${exercise.id}_${s.setNumber}`] || s.isCompleted
-            );
-            const isExpanded = expandedExerciseId === exercise.id;
-
-            return (
-              <div
-                key={exercise.id}
-                className={`bg-[var(--surface)] border rounded-2xl transition-all overflow-hidden ${
-                  isAllDone
-                    ? 'border-[var(--success-border)] bg-[var(--success-soft)]'
-                    : 'border-[var(--border)] hover:border-[var(--border-strong)]'
-                }`}
+          {routine.exercises.length === 0 ? (
+            <div className="text-center py-8 bg-[var(--canvas)] border border-dashed border-[var(--border)] rounded-2xl p-5">
+              <Dumbbell size={28} className="mx-auto text-[var(--text-faint)] mb-2 opacity-60" />
+              <p className="text-xs text-[var(--text)] font-semibold">Esta rutina aún no tiene ejercicios</p>
+              <p className="text-[11px] text-[var(--text-muted)] mt-1 mb-3">Añade ejercicios de la biblioteca o personalizados.</p>
+              <button
+                type="button"
+                onClick={onAddExerciseClick}
+                className="px-4 py-2 bg-[var(--accent)] text-[var(--accent-ink)] font-bold text-xs rounded-xl shadow-md inline-flex items-center gap-1.5"
               >
-                {/* Exercise Summary Row */}
-                <div 
-                  onClick={() => setExpandedExerciseId(isExpanded ? null : exercise.id)}
-                  className="p-3.5 flex items-center justify-between cursor-pointer hover:bg-[var(--surface-muted)]"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className={`w-6 h-6 rounded-lg text-xs font-bold font-mono flex items-center justify-center border ${
-                      isAllDone
-                        ? 'bg-[var(--success-soft)] border-[var(--success-border)] text-[var(--success)]'
-                        : 'bg-[var(--surface-raised)] border-[var(--border-strong)] text-[var(--text-muted)]'
-                    }`}>
-                      {isAllDone ? '✓' : idx + 1}
-                    </span>
+                <Plus size={13} />
+                <span>Añadir Primer Ejercicio</span>
+              </button>
+            </div>
+          ) : (
+            routine.exercises.map((exercise, idx) => {
+              const isAllDone = exercise.sets.every(
+                s => dayLog?.completedSets?.[`${exercise.id}_${s.setNumber}`] || s.isCompleted
+              );
+              const isExpanded = expandedExerciseId === exercise.id;
 
-                    <div>
-                      <h4 className="text-sm font-semibold text-[var(--text)] leading-snug">
-                        {exercise.name}
-                      </h4>
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-[10px] text-[var(--text-muted)] font-mono">
-                          {exercise.sets.length} series • {exercise.sets[0]?.reps} reps {exercise.sets[0]?.weightKg ? `(${exercise.sets[0].weightKg}kg)` : ''}
-                        </span>
-                        <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded border ${
-                          muscleColors[exercise.muscleGroup] || 'bg-[var(--surface-raised)] text-[var(--text-muted)]'
-                        }`}>
-                          {exercise.muscleGroup}
-                        </span>
+              return (
+                <div
+                  key={exercise.id}
+                  className={`bg-[var(--surface)] border rounded-2xl transition-all overflow-hidden ${
+                    isAllDone
+                      ? 'border-[var(--success-border)] bg-[var(--success-soft)]'
+                      : 'border-[var(--border)] hover:border-[var(--border-strong)]'
+                  }`}
+                >
+                  {/* Exercise Summary Row */}
+                  <div 
+                    onClick={() => setExpandedExerciseId(isExpanded ? null : exercise.id)}
+                    className="p-3.5 flex items-center justify-between cursor-pointer hover:bg-[var(--surface-muted)]"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className={`w-6 h-6 rounded-lg text-xs font-bold font-mono flex items-center justify-center border ${
+                        isAllDone
+                          ? 'bg-[var(--success-soft)] border-[var(--success-border)] text-[var(--success)]'
+                          : 'bg-[var(--surface-raised)] border-[var(--border-strong)] text-[var(--text-muted)]'
+                      }`}>
+                        {isAllDone ? '✓' : idx + 1}
+                      </span>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-[var(--text)] leading-snug">
+                          {exercise.name}
+                        </h4>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <span className="text-[10px] text-[var(--text-muted)] font-mono">
+                            {exercise.sets.length} series • {exercise.sets[0]?.reps} reps {exercise.sets[0]?.weightKg ? `(${exercise.sets[0].weightKg}kg)` : ''}
+                          </span>
+                          <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded border ${
+                            muscleColors[exercise.muscleGroup] || 'bg-[var(--surface-raised)] text-[var(--text-muted)]'
+                          }`}>
+                            {exercise.muscleGroup}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onDeleteExercise(exercise.id);
-                      }}
-                      className="text-[var(--text-faint)] hover:text-[var(--danger)] p-1.5 rounded-lg hover:bg-[var(--danger-soft)] transition-colors"
-                      title="Eliminar ejercicio"
-                    >
-                      <Trash2 size={13} />
-                    </button>
-                    {isExpanded ? <ChevronUp size={16} className="text-[var(--text-muted)]" /> : <ChevronDown size={16} className="text-[var(--text-muted)]" />}
-                  </div>
-                </div>
-
-                {/* Expanded Sets Details & Quick Adjusters */}
-                {isExpanded && (
-                  <div className="px-3.5 pb-3.5 pt-1 border-t border-[var(--border)] bg-[var(--canvas)] flex flex-col gap-2">
-                    {exercise.notes && (
-                      <p className="text-[11px] text-[var(--text-muted)] italic">
-                        💡 {exercise.notes}
-                      </p>
-                    )}
-
-                    <div className="flex flex-col gap-1.5 mt-1">
-                      {exercise.sets.map(set => {
-                        const setKey = `${exercise.id}_${set.setNumber}`;
-                        const isSetChecked = dayLog?.completedSets?.[setKey] ?? set.isCompleted ?? false;
-
-                        return (
-                          <div
-                            key={set.id || set.setNumber}
-                            className={`flex items-center justify-between p-2 rounded-xl border text-xs ${
-                              isSetChecked 
-                                ? 'bg-[var(--success-soft)] border-[var(--success-border)] text-[var(--success)]' 
-                                : 'bg-[var(--surface)] border-[var(--border)] text-[var(--text)]'
-                            }`}
-                          >
-                            <span className="font-mono font-bold text-[var(--text-muted)]">
-                              Serie #{set.setNumber}
-                            </span>
-
-                            <div className="flex items-center gap-2">
-                              <span className="font-mono text-[var(--text)]">
-                                {set.reps} reps
-                              </span>
-                              <span className="font-mono text-[var(--text-muted)]">
-                                • {set.weightKg || 0} kg
-                              </span>
-                            </div>
-
-                            <button
-                              type="button"
-                              onClick={() => onToggleSet(exercise.id, set.setNumber)}
-                              className={`w-7 h-7 rounded-xl flex items-center justify-center transition-all ${
-                                isSetChecked
-                                  ? 'bg-[var(--success)] text-[var(--accent-ink)] font-bold'
-                                  : 'bg-[var(--surface-raised)] border border-[var(--border-strong)] hover:border-[var(--accent)] text-[var(--text-faint)]'
-                              }`}
-                            >
-                              <Check size={14} strokeWidth={isSetChecked ? 3 : 2} />
-                            </button>
-                          </div>
-                        );
-                      })}
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDeleteExercise(exercise.id);
+                        }}
+                        className="text-[var(--text-faint)] hover:text-[var(--danger)] p-1.5 rounded-lg hover:bg-[var(--danger-soft)] transition-colors"
+                        title="Eliminar ejercicio"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                      {isExpanded ? <ChevronUp size={16} className="text-[var(--text-muted)]" /> : <ChevronDown size={16} className="text-[var(--text-muted)]" />}
                     </div>
                   </div>
-                )}
-              </div>
-            );
-          })}
+
+                  {/* Expanded Sets Details & Quick Adjusters */}
+                  {isExpanded && (
+                    <div className="px-3.5 pb-3.5 pt-1 border-t border-[var(--border)] bg-[var(--canvas)] flex flex-col gap-2">
+                      {exercise.notes && (
+                        <p className="text-[11px] text-[var(--text-muted)] italic">
+                          💡 {exercise.notes}
+                        </p>
+                      )}
+
+                      <div className="flex flex-col gap-1.5 mt-1">
+                        {exercise.sets.map(set => {
+                          const setKey = `${exercise.id}_${set.setNumber}`;
+                          const isSetChecked = dayLog?.completedSets?.[setKey] ?? set.isCompleted ?? false;
+
+                          return (
+                            <div
+                              key={set.id || set.setNumber}
+                              className={`flex items-center justify-between p-2 rounded-xl border text-xs ${
+                                isSetChecked 
+                                  ? 'bg-[var(--success-soft)] border-[var(--success-border)] text-[var(--success)]' 
+                                  : 'bg-[var(--surface)] border-[var(--border)] text-[var(--text)]'
+                              }`}
+                            >
+                              <span className="font-mono font-bold text-[var(--text-muted)]">
+                                Serie #{set.setNumber}
+                              </span>
+
+                              <div className="flex items-center gap-2">
+                                <span className="font-mono text-[var(--text)]">
+                                  {set.reps} reps
+                                </span>
+                                <span className="font-mono text-[var(--text-muted)]">
+                                  • {set.weightKg || 0} kg
+                                </span>
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={() => onToggleSet(exercise.id, set.setNumber)}
+                                className={`w-7 h-7 rounded-xl flex items-center justify-center transition-all ${
+                                  isSetChecked
+                                    ? 'bg-[var(--success)] text-[var(--accent-ink)] font-bold'
+                                    : 'bg-[var(--surface-raised)] border border-[var(--border-strong)] hover:border-[var(--accent)] text-[var(--text-faint)]'
+                                }`}
+                              >
+                                <Check size={14} strokeWidth={isSetChecked ? 3 : 2} />
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })
+          )}
+
+          {routine.exercises.length > 0 && (
+            <button
+              type="button"
+              onClick={onAddExerciseClick}
+              className="w-full py-3 px-4 border border-dashed border-[var(--border-strong)] hover:border-[var(--accent)] rounded-2xl bg-[var(--canvas)] hover:bg-[var(--surface-raised)] text-xs font-bold text-[var(--text-muted)] hover:text-[var(--accent)] flex items-center justify-center gap-2 transition-all"
+            >
+              <Plus size={14} />
+              <span>Añadir otro ejercicio a {routine.shortName || routine.name}</span>
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -249,7 +249,7 @@ export default function ActiveGuidedWorkout({
       </div>
 
       {/* Main Focus Area (Step by Step) */}
-      <main className="flex-1 min-h-0 flex flex-col justify-between p-5 max-w-md w-full mx-auto overflow-y-auto overscroll-y-contain relative">
+      <main className="flex-1 min-h-0 flex flex-col justify-between p-5 max-w-md w-full mx-auto overflow-y-auto scroll-y-touch relative">
         {/* REST COUNTDOWN OVERLAY / BANNER IF RESTING */}
         <AnimatePresence>
           {isRestRunning && (
@@ -367,7 +367,7 @@ export default function ActiveGuidedWorkout({
           </div>
 
           {/* Series Pills Navigation */}
-          <div className="flex items-center gap-2 overflow-x-auto py-1 scrollbar-hide">
+          <div className="flex items-center gap-2 scroll-x-touch py-1 scrollbar-hide">
             {currentExercise.sets.map(s => {
               const isSetDone = dayLog?.completedSets?.[`${currentExercise.id}_${s.setNumber}`] || s.isCompleted;
               const isCurrent = currentSet?.setNumber === s.setNumber;
