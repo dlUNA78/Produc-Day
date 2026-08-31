@@ -4,7 +4,6 @@ const config: CapacitorConfig = {
   appId: 'com.daniel.agenda.gym',
   appName: 'Agenda & Gym',
   webDir: 'dist',
-  bundledWebRuntime: false
 };
 
 export default config;
