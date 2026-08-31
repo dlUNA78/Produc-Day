@@ -1,0 +1,6 @@
+{
+	"appId": "com.daniel.agenda.gym",
+	"appName": "Agenda & Gym",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}
