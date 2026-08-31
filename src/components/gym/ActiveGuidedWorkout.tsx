@@ -249,7 +249,7 @@ export default function ActiveGuidedWorkout({
       </div>
 
       {/* Main Focus Area (Step by Step) */}
-      <main className="flex-1 flex flex-col justify-between p-5 max-w-md w-full mx-auto overflow-y-auto scrollbar-hide relative">
+      <main className="flex-1 min-h-0 flex flex-col justify-between p-5 max-w-md w-full mx-auto overflow-y-auto overscroll-y-contain relative">
         {/* REST COUNTDOWN OVERLAY / BANNER IF RESTING */}
         <AnimatePresence>
           {isRestRunning && (

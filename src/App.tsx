@@ -143,7 +143,7 @@ export default function App() {
 
   if (!userProfile) {
     return (
-      <div className="max-w-[430px] mx-auto min-h-dvh bg-[var(--canvas)] border-x border-[var(--border)]/60 relative flex flex-col font-sans shadow-2xl">
+      <div className="max-w-[430px] mx-auto h-[100dvh] bg-[var(--canvas)] border-x border-[var(--border)]/60 relative flex flex-col font-sans shadow-2xl overflow-hidden">
         <OnboardingView onComplete={(profile) => {
           localStorage.setItem('produc_user_profile_v1', JSON.stringify(profile));
           setUserProfile(profile);
@@ -153,10 +153,10 @@ export default function App() {
   }
 
   return (
-    <div className="max-w-[430px] mx-auto min-h-dvh bg-[var(--canvas)] border-x border-[var(--border)]/60 relative overflow-hidden flex flex-col font-sans">
+    <div className="max-w-[430px] mx-auto h-[100dvh] bg-[var(--canvas)] border-x border-[var(--border)]/60 relative overflow-hidden flex flex-col font-sans">
       
       {/* Active Tab View Rendering */}
-      <div className="flex-1 pb-[140px] overflow-y-auto overscroll-y-contain">
+      <div className="flex-1 min-h-0 pb-[140px] overflow-y-auto overscroll-y-contain">
         {activeTab === 'home' && (
           <HomeView 
             activities={activities}
@@ -178,7 +178,7 @@ export default function App() {
         )}
 
         {activeTab === 'profile' && (
-          <ProfileView />
+          <ProfileView onResetProfile={() => setUserProfile(null)} />
         )}
       </div>
 
@@ -186,13 +186,15 @@ export default function App() {
       <div className="fixed bottom-0 left-0 right-0 z-[60] max-w-[430px] mx-auto flex flex-col pointer-events-none">
         
         {activeTab === 'home' && (
-          <button
-            onClick={() => { setEditingEntry(null); setIsModalOpen(true); }}
-            aria-label="Crear una tarea o actividad"
-            className="mb-4 mr-2 w-[52px] h-[52px] bg-[var(--accent)] text-[var(--accent-ink)] rounded-full flex items-center justify-center shadow-lg shadow-[var(--accent-soft)] hover:bg-[var(--accent-strong)] active:scale-95 transition-transform pointer-events-auto"
-          >
-            <Plus size={25} strokeWidth={2.4} />
-          </button>
+          <div className="flex justify-end px-4 mb-3">
+            <button
+              onClick={() => { setEditingEntry(null); setIsModalOpen(true); }}
+              aria-label="Crear una tarea o actividad"
+              className="w-[52px] h-[52px] bg-[var(--accent)] text-[var(--accent-ink)] rounded-full flex items-center justify-center shadow-lg shadow-[var(--accent-soft)] hover:bg-[var(--accent-strong)] active:scale-95 transition-transform pointer-events-auto"
+            >
+              <Plus size={25} strokeWidth={2.4} />
+            </button>
+          </div>
         )}
 
         <div className="w-full pointer-events-auto">

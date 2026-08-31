@@ -590,7 +590,7 @@ export default function GymView({ onAddActivity }: GymViewProps) {
   };
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden relative">
+    <div className="min-h-full pb-6 flex flex-col relative">
       {/* Gym command header */}
       <header className="px-5 pt-[max(2rem,env(safe-area-inset-top))] pb-4">
         <div className="flex items-start justify-between gap-4">
@@ -653,7 +653,7 @@ export default function GymView({ onAddActivity }: GymViewProps) {
       </header>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto scrollbar-hide flex flex-col pt-4">
+      <div className="flex flex-col pt-2">
         {/* SUBTAB 1: TODAY / ACTIVE WORKOUT */}
         {gymSubTab === 'today' && (
           <>

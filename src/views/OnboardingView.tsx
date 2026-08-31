@@ -26,8 +26,8 @@ export default function OnboardingView({ onComplete }: OnboardingViewProps) {
   };
 
   return (
-    <div className="flex-1 flex flex-col min-h-[100dvh] bg-[var(--canvas)]">
-      <div className="flex-1 overflow-y-auto px-6 py-12">
+    <div className="flex-1 min-h-0 flex flex-col h-full bg-[var(--canvas)] overflow-y-auto overscroll-y-contain">
+      <div className="px-6 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
