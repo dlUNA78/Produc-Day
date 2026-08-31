@@ -150,7 +150,7 @@ export default function RoutineDayDetail({
                 onClick={() => onSelectRoutine(r.id)}
                 className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 ${
                   isSelected
-                    ? 'bg-[var(--accent)]   text-[var(--accent-ink)] font-bold shadow-[var(--shadow-soft)]'
+                    ? 'bg-[var(--text)] text-[var(--canvas)] font-bold shadow-md'
                     : isToday
                       ? 'bg-[var(--accent-soft)] border border-[var(--accent-border)] text-[var(--accent)]'
                       : 'bg-[var(--surface)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]'
@@ -167,7 +167,7 @@ export default function RoutineDayDetail({
       </div>
 
       {/* 2. Hero Card: Focus & "Empezar Modo Guiado" Big Button */}
-      <div className="relative overflow-hidden bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]  border border-[var(--border)] rounded-3xl p-5 shadow-xl">
+      <div className="relative overflow-hidden bg-[var(--surface)] border border-[var(--border)] rounded-3xl p-5 shadow-xl">
         <div className="relative z-10 flex flex-col gap-4">
           <div className="flex items-start justify-between">
             <div>
@@ -203,7 +203,7 @@ export default function RoutineDayDetail({
           <div className="flex flex-col gap-1.5">
             <div className="w-full bg-[var(--canvas)] h-2 rounded-full overflow-hidden border border-[var(--border)]">
               <div 
-                className="bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]   h-full transition-all duration-300 rounded-full"
+                className="bg-[var(--text)] h-full transition-all duration-300 rounded-full"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -213,7 +213,7 @@ export default function RoutineDayDetail({
           <button
             type="button"
             onClick={onOpenGuidedWorkout}
-            className="w-full py-4 bg-[var(--accent)] text-[var(--accent-ink)] font-semibold text-sm uppercase tracking-wider rounded-2xl shadow-[var(--shadow-soft)] flex items-center justify-center gap-2 transition-transform active:scale-[0.98]"
+            className="w-full py-4 bg-[var(--text)] text-[var(--canvas)] hover:opacity-90 font-semibold text-sm uppercase tracking-wider rounded-2xl shadow-md flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
           >
             {workoutSeconds > 0 ? (
               <>

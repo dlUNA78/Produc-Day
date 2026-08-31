@@ -57,52 +57,44 @@ export default function Timeline({ activities, tasks, currentActivityId, onToggl
 
   return (
     <motion.section 
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
-      className="flex-1 overflow-hidden mb-8"
+      transition={{ duration: 0.3, delay: 0.1, ease: 'easeOut' }}
+      className="bg-[var(--surface)] border border-[var(--border)] rounded-[24px] p-6"
     >
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-sm font-semibold text-[var(--text)]">
-          Tu agenda
+      <div className="flex items-center justify-between mb-5">
+        <h2 className="text-[11px] font-bold text-[var(--text-faint)] uppercase tracking-widest">
+          Agenda de hoy
         </h2>
         {totalCount > 0 && (
-          <span className="text-xs text-[var(--text-muted)] px-2.5 py-1 bg-[var(--surface)] border border-[var(--border)] rounded-full">
-            {completedCount}/{totalCount} listas
-          </span>
+          <button className="text-[13px] font-medium text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors">
+            Ver todo
+          </button>
         )}
       </div>
       
       {agendaItems.length === 0 ? (
-        <div className="border border-dashed border-[var(--border)] rounded-[20px] p-6 text-center mt-2 flex flex-col items-center">
-          <CalendarCheck size={30} className="text-[var(--text-faint)] mb-3" strokeWidth={1.5} />
-          <p className="text-[var(--text)] text-sm font-medium">Tu agenda está despejada</p>
-          <p className="text-[var(--text-muted)] text-xs leading-5 mt-1 max-w-[240px]">
-            Agrega una tarea o actividad con el botón <span className="text-[var(--text)] font-semibold">(+)</span> para verla en tu agenda.
-          </p>
-          {onOpenCreate && (
-            <button
-              onClick={onOpenCreate}
-              className="mt-4 flex items-center gap-1.5 px-3 py-2 bg-[var(--surface-raised)] border border-[var(--border)] text-[var(--text)] rounded-xl text-xs font-medium hover:border-[var(--accent)] transition-colors"
-            >
-              <PlusCircle size={14} />
-              <span>Añadir entrada</span>
-            </button>
-          )}
+        <div className="py-6 text-center">
+          <CalendarCheck size={28} className="text-[var(--text-faint)] mb-3 mx-auto" strokeWidth={1.5} />
+          <p className="text-[var(--text)] text-[15px] font-medium">Tu agenda está despejada</p>
         </div>
       ) : (
-        <div className="space-y-0 relative pt-1">
-          <div className="absolute left-[7px] top-3 bottom-4 w-px bg-[var(--border)]"></div>
-          {agendaItems.map((item, index) => (
-            <TimelineItem 
-              key={`${item.type}-${item.id}`} 
-              item={item} 
-              isLast={index === agendaItems.length - 1}
-              isActive={item.id === currentActivityId && !item.isCompleted}
-              onToggle={onToggleItem}
-              onOpen={onOpenItem}
-            />
-          ))}
+        <div className="relative">
+          {/* Timeline Vertical Line */}
+          <div className="absolute left-[64px] top-4 bottom-4 w-[1px] bg-[var(--border-strong)]" />
+          
+          <div className="space-y-1">
+            {agendaItems.map((item, index) => (
+              <TimelineItem 
+                key={`${item.type}-${item.id}`} 
+                item={item} 
+                isLast={index === agendaItems.length - 1}
+                isActive={item.id === currentActivityId && !item.isCompleted}
+                onToggle={onToggleItem}
+                onOpen={onOpenItem}
+              />
+            ))}
+          </div>
         </div>
       )}
     </motion.section>

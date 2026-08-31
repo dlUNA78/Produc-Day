@@ -153,7 +153,7 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
               <button
                 type="button"
                 onClick={handleTodayJump}
-                className="px-2 py-1 text-[10px] font-semibold text-[var(--text)] bg-[var(--accent-soft)] border border-[white]/20 rounded-lg hover:bg-[var(--accent)]/20 transition-colors"
+                className="px-2 py-1 text-[10px] font-semibold text-[white] bg-[white]/10 border border-[white]/20 rounded-lg hover:bg-[white]/20 transition-colors"
               >
                 Hoy
               </button>
@@ -206,30 +206,29 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
                   onClick={() => onSelectDate(dateKey)}
                   aria-label={`Seleccionar ${date.getDate()} de ${monthNames[date.getMonth()]}`}
                   aria-pressed={isSelected}
-                  className={`relative flex flex-col items-center justify-center w-11 h-14 rounded-[16px] border transition-all ${
+                  className={`relative flex flex-col items-center justify-center w-[46px] h-[60px] rounded-[14px] transition-all ${
                     isSelected
-                      ? 'bg-[var(--accent)] border-[var(--accent)] text-[var(--accent-ink)]'
-                      : 'bg-transparent border-transparent hover:bg-[var(--surface)]'
+                      ? 'bg-[var(--accent)] text-[var(--accent-ink)] shadow-md shadow-[var(--accent-soft)]'
+                      : isToday
+                        ? 'bg-[var(--surface-raised)] border border-[var(--border)]'
+                        : 'bg-transparent border border-transparent hover:bg-[var(--surface-raised)]'
                   }`}
                 >
-                  <span className={`text-[10px] font-bold mb-1 ${
-                    isSelected ? 'text-[var(--accent-ink)] opacity-70' : 'text-[var(--text-faint)]'
+                  <span className={`text-[10px] font-semibold tracking-wider mb-1 ${
+                    isSelected ? 'text-[var(--accent-ink)] opacity-80' : 'text-[var(--text-faint)]'
                   }`}>
                     {dayNames[index]}
                   </span>
-                  <span className={`text-sm font-semibold ${
-                    isSelected ? 'text-[var(--accent-ink)]' : isToday ? 'text-[var(--text)]' : 'text-[var(--text-muted)]'
+                  <span className={`text-base font-bold ${
+                    isSelected ? 'text-[var(--accent-ink)]' : isToday ? 'text-[var(--accent)]' : 'text-[var(--text)]'
                   }`}>
                     {date.getDate()}
                   </span>
 
                   {/* Indicator dots */}
-                  <div className="flex items-center gap-1 mt-0.5 h-1">
+                  <div className="absolute bottom-1.5 flex items-center gap-1">
                     {hasItems && (
-                      <div className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-[var(--accent-ink)]' : 'bg-[var(--accent)]'}`} />
-                    )}
-                    {isToday && !hasItems && (
-                      <div className={`w-1 h-1 rounded-full ${isSelected ? 'bg-[var(--canvas)]' : 'bg-[var(--surface-soft)]'}`} />
+                      <div className={`w-1 h-1 rounded-full ${isSelected ? 'bg-[var(--accent-ink)] opacity-90' : 'bg-[var(--text-muted)]'}`} />
                     )}
                   </div>
                 </button>
@@ -244,7 +243,7 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="bg-[var(--surface)] border border-[var(--border)] rounded-[18px] p-3.5 shadow-[var(--shadow-soft)] overflow-hidden"
+            className="bg-[var(--canvas)] border border-[var(--border)]/80 rounded-md p-3.5 shadow-xl backdrop-blur-sm overflow-hidden"
           >
             {/* Day name headers */}
             <div className="grid grid-cols-7 gap-1 text-center mb-2 pb-2 border-b border-[var(--border)]/60">
@@ -270,22 +269,22 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
                     onClick={() => {
                       onSelectDate(dateKey);
                     }}
-                    className={`relative flex flex-col items-center justify-center h-10 rounded-xl transition-all ${
+                    className={`relative flex flex-col items-center justify-center h-11 rounded-[12px] transition-all ${
                       isSelected
-                        ? 'bg-[var(--accent)] text-[var(--accent-ink)] font-semibold shadow-sm shadow-[var(--shadow-soft)]'
+                        ? 'bg-[var(--accent)] text-[var(--accent-ink)] font-bold shadow-md shadow-[var(--accent-soft)]'
                         : isToday
-                          ? 'bg-[var(--accent-soft)] text-[var(--text)]'
+                          ? 'bg-[var(--surface-raised)] border border-[var(--border)] text-[var(--accent)] font-semibold'
                           : isCurrentMonth
-                            ? 'text-[var(--text)] hover:bg-[var(--surface)]'
+                            ? 'text-[var(--text)] hover:bg-[var(--surface-raised)] font-medium'
                             : 'text-[var(--text-faint)] hover:bg-[var(--surface)]'
                     }`}
                   >
-                    <span className="text-xs">{date.getDate()}</span>
+                    <span className="text-[13px]">{date.getDate()}</span>
 
                     {/* Event Dot */}
-                    <div className="h-1 flex items-center justify-center mt-0.5">
+                    <div className="absolute bottom-1.5 flex items-center gap-1">
                       {hasItems && (
-                        <div className={`w-1 h-1 rounded-full ${isSelected ? 'bg-[var(--canvas)]' : 'bg-[var(--accent)]'}`} />
+                        <div className={`w-1 h-1 rounded-full ${isSelected ? 'bg-[var(--accent-ink)] opacity-90' : 'bg-[var(--text-muted)]'}`} />
                       )}
                     </div>
                   </button>
@@ -296,13 +295,13 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate, hasItemsFor
             <div className="mt-3 pt-2 border-t border-[var(--border)]/60 flex items-center justify-between text-[11px] text-[var(--text-faint)] px-1">
               <div className="flex items-center gap-2">
                 <span className="flex items-center gap-1 text-[10px] text-[var(--text-faint)]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] inline-block" /> Con actividades
+                  <span className="w-1.5 h-1.5 rounded-full bg-[white] inline-block" /> Con actividades
                 </span>
               </div>
               <button
                 type="button"
                 onClick={() => setIsMonthView(false)}
-                className="text-[var(--text)] hover:text-[var(--text)]/80 font-medium transition-colors"
+                className="text-[white] hover:text-[white]/80 font-medium transition-colors"
               >
                 Volver a vista semanal
               </button>

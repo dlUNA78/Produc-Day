@@ -134,7 +134,7 @@ export default function App() {
     <div className="max-w-[430px] mx-auto min-h-dvh bg-[var(--canvas)] border-x border-[var(--border)]/60 relative overflow-hidden flex flex-col font-sans">
       
       {/* Active Tab View Rendering */}
-      <div className="flex-1 pb-20 overflow-y-auto">
+      <div className="flex-1 pb-[140px] overflow-y-auto overscroll-y-contain">
         {activeTab === 'home' && (
           <HomeView 
             activities={activities}
@@ -161,13 +161,13 @@ export default function App() {
       </div>
 
       {/* Floating Add Button & Nav */}
-      <div className="fixed bottom-6 left-0 right-0 z-[60] max-w-md mx-auto flex flex-col items-end px-4 pb-safe pointer-events-none">
+      <div className="fixed bottom-0 left-0 right-0 z-[60] max-w-[430px] mx-auto flex flex-col pointer-events-none">
         
         {activeTab === 'home' && (
           <button
             onClick={() => { setEditingEntry(null); setIsModalOpen(true); }}
             aria-label="Crear una tarea o actividad"
-            className="mb-3 mr-1 w-14 h-14 bg-[var(--accent)] text-[var(--accent-ink)] rounded-[18px] border border-[var(--accent)] flex items-center justify-center shadow-[var(--shadow-soft)] hover:bg-[var(--accent-strong)] active:scale-95 transition-all pointer-events-auto"
+            className="mb-4 mr-2 w-[52px] h-[52px] bg-[var(--accent)] text-[var(--accent-ink)] rounded-full flex items-center justify-center shadow-lg shadow-[var(--accent-soft)] hover:bg-[var(--accent-strong)] active:scale-95 transition-transform pointer-events-auto"
           >
             <Plus size={25} strokeWidth={2.4} />
           </button>
@@ -203,7 +203,7 @@ export default function App() {
             role="status"
             className="fixed z-[120] left-1/2 -translate-x-1/2 bottom-28 w-[calc(100%-2rem)] max-w-sm rounded-2xl bg-[var(--surface-raised)] border border-[var(--border)] shadow-2xl px-4 py-3 flex items-center gap-3"
           >
-            <span className="w-8 h-8 shrink-0 rounded-xl bg-[var(--sage)]/15 text-[var(--sage)] flex items-center justify-center"><Check size={17} /></span>
+            <span className="w-8 h-8 shrink-0 rounded-xl bg-[var(--success-soft)] text-[var(--success)] flex items-center justify-center"><Check size={17} /></span>
             <span className="text-sm font-medium text-[var(--text)]">{confirmation}</span>
             {deletedEntry && <button type="button" onClick={handleUndoDelete} className="ml-auto text-sm font-semibold text-[var(--accent)] hover:text-[var(--accent-strong)]">Deshacer</button>}
           </motion.div>

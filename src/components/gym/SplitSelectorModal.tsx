@@ -242,7 +242,7 @@ export default function SplitSelectorModal({
               <button
                 type="button"
                 onClick={handleApply}
-                className="flex-1 py-3 px-4 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-strong)] text-[var(--accent-ink)] font-semibold text-xs shadow-[var(--shadow-soft)] transition-all"
+                className="flex-1 py-3 px-4 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-strong)] text-[var(--accent-ink)] font-semibold text-xs shadow-md transition-all"
               >
                 Activar este Plan
               </button>

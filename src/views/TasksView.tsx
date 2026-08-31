@@ -47,7 +47,7 @@ export default function TasksView({ tasks, onAddTask, onToggleTask, onDeleteTask
   });
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden pb-24">
+    <div className="flex-1 flex flex-col overflow-hidden">
       <header className="pt-12 pb-6 px-6 border-b border-[var(--border)]">
         <h1 className="text-2xl font-semibold tracking-tight text-[var(--text)] mb-2">Mis Tareas</h1>
         <p className="text-[var(--text-faint)] text-xs font-medium uppercase tracking-widest">Gestión general</p>

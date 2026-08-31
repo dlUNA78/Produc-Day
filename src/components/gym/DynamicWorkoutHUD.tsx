@@ -115,7 +115,7 @@ export default function DynamicWorkoutHUD({
                 onClick={() => onSelectRoutine(r.id)}
                 className={`px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 ${
                   isSelected
-                    ? 'bg-[var(--accent)]   text-[var(--accent-ink)] font-bold shadow-[var(--shadow-soft)]'
+                    ? 'bg-[var(--text)] text-[var(--canvas)] font-bold shadow-md'
                     : isTodayScheduled
                       ? 'bg-[var(--accent-soft)] border border-[var(--accent-border)] text-[var(--accent)] hover:bg-[var(--accent-soft)]'
                       : 'bg-[var(--surface)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)]'
@@ -126,7 +126,7 @@ export default function DynamicWorkoutHUD({
                   <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] " />
                 )}
                 <span className={`text-[10px] px-1.5 py-0.2 rounded-xl ${
-                  isSelected ? 'bg-[var(--accent-strong)] text-[var(--accent-ink)]' : 'bg-[var(--surface-raised)] text-[var(--text-faint)]'
+                  isSelected ? 'bg-[var(--canvas)] text-[var(--accent-ink)]' : 'bg-[var(--surface-raised)] text-[var(--text-faint)]'
                 }`}>
                   {r.exercises.length} ex
                 </span>
@@ -137,7 +137,7 @@ export default function DynamicWorkoutHUD({
       </div>
 
       {/* Dynamic Session Live HUD Banner */}
-      <div className="relative overflow-hidden bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]  border border-[var(--border)] rounded-3xl p-5 shadow-xl">
+      <div className="relative overflow-hidden bg-[var(--surface)] border border-[var(--border)] rounded-3xl p-5 shadow-xl">
         {/* Ambient Glow */}
         <div className={`absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl pointer-events-none transition-opacity duration-700 ${
           isRestRunning 
@@ -174,7 +174,7 @@ export default function DynamicWorkoutHUD({
               <button
                 type="button"
                 onClick={onStartWorkout}
-                className="px-4 py-2.5 bg-[var(--accent)] text-[var(--accent-ink)] font-bold text-xs rounded-xl shadow-[var(--shadow-soft)] flex items-center gap-1.5 transition-transform active:scale-95"
+                className="px-4 py-2.5 bg-[var(--text)] text-[var(--canvas)] hover:opacity-90 font-bold text-xs rounded-xl shadow-md flex items-center gap-1.5 transition-transform active:scale-95"
               >
                 <Play size={14} fill="currentColor" />
                 <span>Iniciar Sesión</span>
@@ -364,7 +364,7 @@ export default function DynamicWorkoutHUD({
           </div>
           <div className="w-full bg-[var(--canvas)] h-1.5 rounded-full overflow-hidden border border-[var(--border)]">
             <div 
-              className="bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]   h-full transition-all duration-300 rounded-full shadow-[var(--shadow-soft)]"
+              className="bg-[var(--text)] h-full transition-all duration-300 rounded-full shadow-[var(--shadow-soft)]"
               style={{ width: `${overallProgress}%` }}
             />
           </div>

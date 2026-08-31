@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import WeeklyCalendar, { formatDateKey, parseDateKey } from '../components/WeeklyCalendar';
 import Timeline from '../components/Timeline';
 import { Activity, Task } from '../types';
-import { ArrowUpRight, Check, Clock3, ListTodo, Plus } from 'lucide-react';
+import { Check, Plus, CircleDashed, Clock3, ListTodo, ArrowUpRight } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface HomeViewProps {
@@ -42,14 +42,14 @@ export default function HomeView({
       type: 'activity' as const,
       title: item.title,
       time: item.startTime,
-      label: `${item.startTime} · ${item.category}`,
+      label: item.category,
     })),
     ...filteredTasks.filter((item) => !item.isCompleted).map((item) => ({
       id: item.id,
       type: 'task' as const,
       title: item.title,
-      time: item.time || '23:59',
-      label: item.time ? `${item.time} · Tarea` : 'Sin hora · Tarea',
+      time: item.time || '',
+      label: 'Tarea',
     })),
   ].sort((a, b) => a.time.localeCompare(b.time));
 
@@ -62,79 +62,110 @@ export default function HomeView({
     activities.some((item) => item.date === dateKey) || tasks.some((item) => item.date === dateKey);
 
   return (
-    <div className="flex-1 flex flex-col pb-24">
+    <div className="flex-1 flex flex-col pb-6">
       <Header />
 
       <main>
-        <div className="px-5 mb-4">
-          <p className="text-[13px] capitalize text-[var(--text-muted)]">
-            {isToday ? 'Hoy' : longDate.format(parseDateKey(selectedDate))}
-          </p>
-          <h2 className="mt-1 text-[28px] leading-tight font-semibold tracking-[-0.03em] text-[var(--text)]">
-            {isToday ? 'Haz que hoy cuente.' : 'Planifica con intención.'}
-          </h2>
+        <div className="px-4">
+          <WeeklyCalendar
+            selectedDate={selectedDate}
+            onSelectDate={onSelectDate}
+            hasItemsForDate={hasItemsForDate}
+          />
         </div>
 
-        <WeeklyCalendar
-          selectedDate={selectedDate}
-          onSelectDate={onSelectDate}
-          hasItemsForDate={hasItemsForDate}
-        />
-
-        <div className="px-5 space-y-5">
+        <div className="px-4 mt-7 space-y-7">
           {nextItem ? (
             <motion.section
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="relative overflow-hidden rounded-[20px] bg-[var(--surface-raised)] border border-[var(--border)] p-5"
+              className="relative overflow-hidden rounded-[24px] border border-[var(--border)] p-6 bg-gradient-to-br from-[var(--surface-soft)] to-[var(--accent-soft)]"
             >
-              <div className="absolute left-0 top-5 bottom-5 w-1 rounded-r-full bg-[var(--accent)]" />
-              <div className="flex items-start justify-between gap-4 pl-1">
+              <h3 className="text-[11px] font-bold text-[var(--accent)] uppercase tracking-widest mb-3">Lo siguiente</h3>
+              
+              <div className="flex items-center justify-between gap-4">
                 <div className="min-w-0">
-                  <div className="flex items-center gap-2 text-[var(--accent)]">
-                    <Clock3 size={15} />
-                    <span className="text-xs font-semibold uppercase tracking-[0.12em]">Lo siguiente</span>
+                  <p className="text-[22px] font-bold text-[var(--text)] truncate leading-tight tracking-tight">{nextItem.title}</p>
+                  
+                  <div className="flex items-center gap-3 mt-2.5 text-[13px] font-medium text-[var(--text-muted)]">
+                    {nextItem.time && (
+                      <span className="flex items-center gap-1.5"><Clock3 size={14} /> {nextItem.time}</span>
+                    )}
+                    <span className="flex items-center gap-1.5"><ListTodo size={14} /> {nextItem.label}</span>
                   </div>
-                  <h3 className="mt-3 text-xl font-semibold text-[var(--text)] truncate">{nextItem.title}</h3>
-                  <p className="mt-1 text-sm text-[var(--text-muted)]">{nextItem.label}</p>
                 </div>
+                
                 <button
                   onClick={() => onToggleItem(nextItem.id, nextItem.type)}
                   aria-label={`Completar ${nextItem.title}`}
-                  className="shrink-0 w-11 h-11 rounded-2xl bg-[var(--accent)] text-[var(--accent-ink)] flex items-center justify-center hover:bg-[var(--accent-strong)] transition-colors"
+                  className="shrink-0 w-[52px] h-[52px] rounded-full bg-[var(--surface-raised)] border border-[var(--border)] text-[var(--text)] flex items-center justify-center hover:bg-[var(--surface-soft)] transition-colors"
                 >
-                  <Check size={20} strokeWidth={2.5} />
+                  <ArrowUpRight size={24} strokeWidth={2.5} />
                 </button>
               </div>
             </motion.section>
           ) : totalItems === 0 ? (
-            <section className="rounded-[20px] bg-[var(--surface)] border border-[var(--border)] p-5">
-              <div className="w-10 h-10 rounded-2xl bg-[var(--surface-raised)] text-[var(--accent)] flex items-center justify-center mb-4">
-                <Plus size={19} />
-              </div>
-              <h3 className="text-lg font-semibold text-[var(--text)]">Un día con espacio.</h3>
-              <p className="mt-1.5 text-sm leading-6 text-[var(--text-muted)]">Añade una prioridad o reserva tiempo para lo que importa.</p>
-              <button onClick={onOpenCreate} className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)]">
-                Crear primera entrada <ArrowUpRight size={16} />
+            <section className="rounded-[24px] bg-[var(--surface)] border border-[var(--border)] p-8 text-center flex flex-col items-center">
+              <h3 className="text-[18px] font-bold text-[var(--text)]">Tu día está libre</h3>
+              <p className="mt-2 text-[14px] text-[var(--text-muted)] max-w-[240px]">
+                No tienes tareas ni actividades todavía.
+              </p>
+              <button onClick={onOpenCreate} className="mt-6 font-semibold text-[var(--accent)] text-[15px] hover:text-[var(--accent-hover)] transition-colors">
+                + Crear primera entrada
               </button>
             </section>
           ) : (
-            <section className="rounded-[20px] bg-[var(--surface)] border border-[var(--border)] p-5 flex items-center gap-4">
-              <div className="w-11 h-11 rounded-2xl bg-[var(--sage)]/15 text-[var(--sage)] flex items-center justify-center"><Check size={21} /></div>
-              <div><h3 className="font-semibold text-[var(--text)]">Todo listo por hoy</h3><p className="text-sm text-[var(--text-muted)]">Completaste tu agenda.</p></div>
+            <section className="rounded-[24px] bg-[var(--surface)] border border-[var(--border)] p-6 flex flex-col justify-center">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-[18px] bg-[var(--success-soft)] text-[var(--success)] flex items-center justify-center">
+                  <Check size={26} strokeWidth={2.5} />
+                </div>
+                <div>
+                  <h3 className="text-[18px] font-bold text-[var(--text)]">Todo listo</h3>
+                  <p className="mt-1 text-[14px] text-[var(--text-muted)]">
+                    Completaste tu agenda.
+                  </p>
+                </div>
+              </div>
             </section>
           )}
 
-          <section aria-label="Resumen del día" className="grid grid-cols-[1fr_auto] gap-4 items-center rounded-[20px] bg-[var(--surface)] border border-[var(--border)] p-5">
-            <div>
-              <div className="flex items-center gap-2 text-[var(--text-muted)]"><ListTodo size={16} /><span className="text-sm font-medium">Ritmo del día</span></div>
-              <p className="mt-3 text-2xl font-semibold text-[var(--text)]">{completedItems}<span className="text-base text-[var(--text-faint)]">/{totalItems}</span></p>
-              <div className="mt-3 h-1.5 bg-[var(--surface-muted)] rounded-full overflow-hidden"><div className="h-full bg-[var(--sage)] rounded-full transition-all" style={{ width: `${progress}%` }} /></div>
-            </div>
-            <span className="text-sm font-semibold text-[var(--sage)]">{progress}%</span>
-          </section>
-
           <Timeline activities={filteredActivities} tasks={filteredTasks} onToggleItem={onToggleItem} onOpenCreate={onOpenCreate} onOpenItem={onOpenItem} />
+
+          {totalItems > 0 && (
+            <section aria-label="Resumen del día" className="rounded-[24px] bg-[var(--surface)] border border-[var(--border)] p-6">
+              <h3 className="text-[11px] font-bold text-[var(--text-faint)] uppercase tracking-widest mb-5">Progreso de hoy</h3>
+              
+              <div className="flex items-center gap-6">
+                <div className="relative w-20 h-20 shrink-0">
+                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="var(--surface-raised)" strokeWidth="12" />
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="var(--accent)" strokeWidth="12" strokeDasharray="264" strokeDashoffset={264 - (264 * progress) / 100} className="transition-all duration-700 ease-out" strokeLinecap="round" />
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className="text-[20px] font-bold text-[var(--text)] leading-none">{progress}%</span>
+                  </div>
+                </div>
+
+                <div className="flex-1 grid grid-cols-2 gap-y-4 gap-x-2">
+                  <div>
+                    <div className="flex items-center gap-1.5 text-[var(--text-faint)] mb-1">
+                      <Check size={14} />
+                      <span className="text-[11px] font-semibold uppercase tracking-wider">Completas</span>
+                    </div>
+                    <span className="text-[18px] font-bold text-[var(--text)]">{completedItems}</span>
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1.5 text-[var(--text-faint)] mb-1">
+                      <ListTodo size={14} />
+                      <span className="text-[11px] font-semibold uppercase tracking-wider">Total</span>
+                    </div>
+                    <span className="text-[18px] font-bold text-[var(--text)]">{totalItems}</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
         </div>
       </main>
     </div>

@@ -10,7 +10,7 @@ const settings = [
 
 export default function SettingsView() {
   return (
-    <div className="min-h-full px-5 pt-[max(2rem,env(safe-area-inset-top))] pb-28">
+    <div className="min-h-full px-5 pt-[max(2rem,env(safe-area-inset-top))] pb-6">
       <p className="text-sm text-[var(--text-muted)]">Preferencias</p>
       <h1 className="mt-1 text-[28px] font-semibold tracking-[-0.03em] text-[var(--text)]">Configuración</h1>
       <div className="ui-card mt-7 overflow-hidden divide-y divide-[var(--border)]">

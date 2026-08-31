@@ -243,7 +243,7 @@ export default function ActiveGuidedWorkout({
       {/* Routine Overall Progress Bar */}
       <div className="w-full bg-[var(--canvas)] h-1">
         <div 
-          className="bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]   h-full transition-all duration-300 shadow-[var(--shadow-soft)]"
+          className="bg-[var(--text)] h-full transition-all duration-300 shadow-[var(--shadow-soft)]"
           style={{ width: `${progressPercent}%` }}
         />
       </div>
@@ -257,7 +257,7 @@ export default function ActiveGuidedWorkout({
               initial={{ opacity: 0, scale: 0.95, y: -20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
-              className="bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]    border-2 border-[var(--warning-border)] rounded-3xl p-5 mb-4 shadow-[var(--shadow-soft)] text-center flex flex-col items-center justify-between"
+              className="bg-[var(--surface-raised)] border-2 border-[var(--warning-border)] rounded-3xl p-5 mb-4 shadow-[var(--shadow-soft)] text-center flex flex-col items-center justify-between"
             >
               <div className="flex items-center justify-between w-full mb-1">
                 <span className="text-[11px] font-bold text-[var(--warning)] uppercase tracking-widest flex items-center gap-1.5">
@@ -306,7 +306,7 @@ export default function ActiveGuidedWorkout({
                 <button
                   type="button"
                   onClick={onSkipRest}
-                  className="px-4 py-1.5 text-xs font-bold bg-[var(--warning)] hover:bg-[var(--warning)] text-[var(--accent-ink)] rounded-xl shadow-[var(--shadow-soft)] flex items-center gap-1 transition-transform active:scale-95"
+                  className="px-4 py-1.5 text-xs font-bold bg-[var(--warning)] hover:bg-[var(--warning)] text-[var(--accent-ink)] rounded-xl shadow-md flex items-center gap-1 transition-transform active:scale-95"
                 >
                   <FastForward size={13} />
                   <span>Saltar Descanso</span>
@@ -396,7 +396,7 @@ export default function ActiveGuidedWorkout({
 
           {/* Large Target Control Box for Active Set */}
           {currentSet && (
-            <div className="bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]  border border-[var(--border)] rounded-3xl p-5 shadow-2xl flex flex-col gap-4">
+            <div className="bg-[var(--surface)] border border-[var(--border)] rounded-3xl p-5 shadow-2xl flex flex-col gap-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">
                   Objetivo Serie #{currentSet.setNumber}
@@ -500,7 +500,7 @@ export default function ActiveGuidedWorkout({
           <button
             type="button"
             onClick={handleCompleteCurrentSet}
-            className="w-full py-5 bg-[var(--accent)] text-[var(--accent-ink)] font-semibold text-base uppercase tracking-wider rounded-2xl shadow-[var(--shadow-soft)] flex items-center justify-center gap-2.5 transition-transform active:scale-[0.98]"
+            className="w-full py-5 bg-[var(--text)] text-[var(--canvas)] hover:opacity-90 font-semibold text-base uppercase tracking-wider rounded-2xl shadow-md flex items-center justify-center gap-2.5 transition-transform active:scale-[0.98]"
           >
             <Check size={22} strokeWidth={3} />
             <span>

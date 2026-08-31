@@ -1,6 +1,5 @@
 import React from 'react';
 import { CalendarDays, Dumbbell, ChartNoAxesColumnIncreasing, User } from 'lucide-react';
-import { motion } from 'motion/react';
 
 export type TabType = 'home' | 'gym' | 'stats' | 'profile';
 
@@ -20,7 +19,7 @@ export default function BottomNav({ activeTab, onChangeTab }: BottomNavProps) {
   return (
     <nav
       aria-label="Navegación principal"
-      className="grid grid-cols-4 items-center p-1.5 mx-1 rounded-[24px] border border-[var(--border)] bg-[color:var(--surface-glass)] backdrop-blur-2xl shadow-[var(--shadow-raised)]"
+      className="grid grid-cols-4 items-start pt-2 pb-safe px-4 border-t border-[var(--border)] bg-[var(--canvas)]/95 backdrop-blur-xl w-full"
     >
       {tabs.map(({ id, label, icon: Icon }) => {
         const isActive = activeTab === id;
@@ -30,17 +29,12 @@ export default function BottomNav({ activeTab, onChangeTab }: BottomNavProps) {
             type="button"
             onClick={() => onChangeTab(id)}
             aria-current={isActive ? 'page' : undefined}
-            className={`relative min-h-14 rounded-[18px] flex flex-col items-center justify-center gap-1 transition-colors ${isActive ? 'text-[var(--text)]' : 'text-[var(--text-faint)] hover:text-[var(--text-muted)]'}`}
+            className={`relative min-h-[64px] flex flex-col items-center justify-center gap-1 transition-colors group`}
           >
-            {isActive && (
-              <motion.span
-                layoutId="bottom-nav-selection"
-                className="absolute inset-0 rounded-[18px] border border-[var(--accent-border)] bg-[var(--accent-soft)]"
-                transition={{ type: 'spring', bounce: 0.08, duration: 0.35 }}
-              />
-            )}
-            <Icon className={`relative z-10 ${isActive ? 'text-[var(--accent)]' : ''}`} size={19} strokeWidth={isActive ? 2.4 : 2} />
-            <span className={`relative z-10 text-[10px] leading-none ${isActive ? 'font-semibold' : 'font-medium'}`}>{label}</span>
+            <div className={`flex flex-col items-center justify-center w-16 h-[52px] rounded-2xl transition-all ${isActive ? 'bg-[var(--accent-soft)]' : ''}`}>
+               <Icon className={`mb-1 ${isActive ? 'text-[var(--accent)]' : 'text-[var(--text-faint)] group-hover:text-[var(--text-muted)]'}`} size={22} strokeWidth={isActive ? 2.5 : 2} />
+               <span className={`text-[10px] leading-none ${isActive ? 'font-semibold text-[var(--accent)]' : 'font-medium text-[var(--text-faint)] group-hover:text-[var(--text-muted)]'}`}>{label}</span>
+            </div>
           </button>
         );
       })}

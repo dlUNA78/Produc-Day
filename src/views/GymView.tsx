@@ -590,7 +590,7 @@ export default function GymView({ onAddActivity }: GymViewProps) {
   };
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden pb-24 relative">
+    <div className="flex-1 flex flex-col overflow-hidden relative">
       {/* Gym command header */}
       <header className="px-5 pt-[max(2rem,env(safe-area-inset-top))] pb-4">
         <div className="flex items-start justify-between gap-4">

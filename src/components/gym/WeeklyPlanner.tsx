@@ -237,7 +237,7 @@ export default function WeeklyPlanner({
       </div>
 
       {/* 2. Summary stats for this week */}
-      <div className="grid grid-cols-3 gap-2 bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))] border border-[var(--border)] rounded-2xl p-3">
+      <div className="grid grid-cols-3 gap-2 bg-[var(--surface-raised)] border border-[var(--border)] rounded-2xl p-3">
         <div className="flex flex-col">
           <span className="text-[9px] font-bold text-[var(--text-faint)] uppercase tracking-wider">Entrenamientos</span>
           <span className="text-lg font-semibold text-[var(--text)]">{totalWorkouts} / 7 días</span>
@@ -275,7 +275,7 @@ export default function WeeklyPlanner({
               key={day}
               className={`bg-[var(--surface)] border rounded-2xl p-3.5 transition-all flex flex-col gap-2.5 ${
                 isToday
-                  ? 'border-[var(--accent-border)] bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]   shadow-[var(--shadow-soft)]'
+                  ? 'border-[var(--accent-border)] bg-[var(--surface-raised)] shadow-md'
                   : isRest
                     ? 'border-[var(--border)] opacity-80'
                     : 'border-[var(--border)] hover:border-[var(--border-strong)]'

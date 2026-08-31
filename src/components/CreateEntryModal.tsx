@@ -220,15 +220,18 @@ export default function CreateEntryModal({
                 <div className="relative"><FileText size={17} className="absolute left-4 top-4 text-[var(--text-faint)] pointer-events-none" /><textarea id="entry-notes" value={description} onChange={(event) => setDescription(event.target.value)} placeholder="Añade contexto o detalles..." className={`${fieldClass} min-h-24 py-3 pl-11 resize-none`} /></div>
               </div>
 
-              {error && <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} role="alert" className="text-sm leading-5 text-[var(--clay)] bg-[var(--clay)]/10 border border-[var(--clay)]/30 rounded-xl px-3 py-2.5">{error}</motion.p>}
+              {error && <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} role="alert" className="text-sm leading-5 text-[var(--danger)] bg-[var(--danger)]/10 border border-[var(--danger)]/30 rounded-xl px-3 py-2.5">{error}</motion.p>}
 
-              <div className="flex gap-3">
-                {editingEntry && onDelete && (
-                  <button type="button" onClick={() => { onDelete(editingEntry.item.id, editingEntry.type); onClose(); }} className="min-h-13 px-4 rounded-2xl border border-[var(--clay)]/40 text-[var(--clay)] font-semibold text-sm hover:bg-[var(--clay)]/10 transition-colors">Eliminar</button>
-                )}
-                <button type="submit" className="flex-1 min-h-13 rounded-2xl bg-[var(--accent)] hover:bg-[var(--accent-strong)] text-[var(--accent-ink)] font-semibold text-sm transition-colors flex items-center justify-center gap-2">
-                  <Check size={18} /> {editingEntry ? 'Guardar cambios' : `Guardar ${type === 'task' ? 'tarea' : 'bloque'}`}
+              <div className="flex flex-col gap-3 mt-6">
+                <button type="submit" className="w-full ui-button-primary min-h-[52px] rounded-[16px]">
+                  <Check size={20} className="mr-1" />
+                  {editingEntry ? 'Guardar cambios' : `Guardar ${type === 'task' ? 'tarea' : 'bloque'}`}
                 </button>
+                {editingEntry && onDelete && (
+                  <button type="button" onClick={() => { onDelete(editingEntry.item.id, editingEntry.type); onClose(); }} className="w-full ui-button-danger min-h-[52px] rounded-[16px]">
+                    Eliminar {type === 'task' ? 'tarea' : 'bloque'}
+                  </button>
+                )}
               </div>
             </form>
           </motion.div>

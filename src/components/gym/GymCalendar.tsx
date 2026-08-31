@@ -79,7 +79,7 @@ export default function GymCalendar({
   return (
     <div className="px-6 mb-6">
       {/* Active Split Ribbon */}
-      <div className="flex items-center justify-between bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]    border border-[var(--accent-border)] rounded-2xl p-3 mb-4">
+      <div className="flex items-center justify-between bg-[var(--surface-raised)] border border-[var(--accent-border)] rounded-2xl p-3 mb-4">
         <div className="flex items-center gap-2.5 overflow-hidden">
           <div className="w-8 h-8 rounded-xl bg-[var(--accent-soft)] border border-[var(--accent-border)] flex items-center justify-center shrink-0">
             <Dumbbell size={16} className="text-[var(--accent)]" />
@@ -201,7 +201,7 @@ export default function GymCalendar({
                   onClick={() => onSelectDate(dateKey)}
                   className={`flex-1 relative flex flex-col items-center justify-between py-2 px-1 rounded-2xl transition-all text-center min-h-[74px] ${
                     isSelected
-                      ? 'bg-[linear-gradient(135deg,var(--surface-raised),var(--surface))]   border border-[var(--accent-border)] shadow-[var(--shadow-soft)] ring-1 ring-[var(--accent-border)]'
+                      ? 'bg-[var(--surface-raised)] border border-[var(--accent-border)] shadow-md ring-1 ring-[var(--accent-border)]'
                       : 'bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-muted)]'
                   }`}
                 >

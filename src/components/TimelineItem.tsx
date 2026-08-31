@@ -1,6 +1,6 @@
 import React from 'react';
 import { Category } from '../types';
-import { Check } from 'lucide-react';
+import { Check, Dumbbell, Briefcase, BookOpen, User, CheckSquare } from 'lucide-react';
 
 export interface UnifiedAgendaItem {
   id: string;
@@ -23,18 +23,27 @@ interface TimelineItemProps {
   onOpen?: (id: string, type: 'activity' | 'task') => void;
 }
 
-const categoryDotColors: Record<string, string> = {
-  Gym: 'border-[var(--accent)]',
-  School: 'border-[var(--amber)]',
-  Work: 'border-[var(--accent)]',
-  Study: 'border-[var(--amber)]',
-  Personal: 'border-[var(--sage)]',
-  Task: 'border-[var(--text-faint)]',
+const categoryIcons: Record<string, React.ElementType> = {
+  Gym: Dumbbell,
+  School: BookOpen,
+  Work: Briefcase,
+  Study: BookOpen,
+  Personal: User,
+  Task: CheckSquare,
+};
+
+const categoryColors: Record<string, string> = {
+  Gym: 'text-[var(--accent)] bg-[var(--accent-soft)]',
+  School: 'text-[var(--warning)] bg-[var(--warning-soft)]',
+  Work: 'text-[#F472B6] bg-[#F472B6]/15', // Pinkish
+  Study: 'text-[var(--warning)] bg-[var(--warning-soft)]',
+  Personal: 'text-[#818CF8] bg-[#818CF8]/15', // Indigo
+  Task: 'text-[var(--text-muted)] bg-[var(--surface-raised)]',
 };
 
 const categoryLabels: Record<string, string> = {
-  Gym: 'Entrenamiento',
-  School: 'Clases',
+  Gym: 'Gym',
+  School: 'Escuela',
   Work: 'Trabajo',
   Study: 'Estudio',
   Personal: 'Personal',
@@ -43,52 +52,58 @@ const categoryLabels: Record<string, string> = {
 
 export default function TimelineItem({ item, isLast, isActive, onToggle, onOpen }: TimelineItemProps) {
   const isDone = item.isCompleted;
-  const colorClass = categoryDotColors[item.category] || categoryDotColors.Personal;
-  const [borderColor] = colorClass.split(' ');
+  const Icon = categoryIcons[item.category] || CheckSquare;
+  const colorClass = categoryColors[item.category] || categoryColors.Task;
 
   return (
-    <div className={`relative pl-8 mb-5 group transition-all duration-200 ${isDone ? 'opacity-50' : ''}`}>
-      {/* Node / Checkbox button on timeline */}
-      <button
-        type="button"
-        onClick={() => onToggle(item.id, item.type)}
-        className={`absolute left-0 top-1 w-4 h-4 rounded-full border-2 bg-[var(--canvas)] flex items-center justify-center transition-all ${
-          isDone
-            ? 'bg-[var(--sage)] border-[var(--sage)] text-[var(--canvas)]'
-            : isActive
-              ? `${borderColor}`
-              : 'border-[var(--border)] hover:border-[var(--text-muted)]'
-        }`}
-        title={isDone ? 'Marcar como pendiente' : 'Marcar como completado'}
+    <div className={`relative flex items-center py-3 group transition-all duration-300 ${isDone ? 'opacity-60' : ''}`}>
+      
+      {/* Time column */}
+      <div className="w-[52px] shrink-0 text-right pr-4">
+        <span className={`text-[13px] font-semibold ${isDone ? 'text-[var(--text-faint)] line-through' : 'text-[var(--text)]'}`}>
+          {item.timeDisplay.split(' - ')[0]}
+        </span>
+      </div>
+
+      {/* Connection Dot */}
+      <div className={`absolute left-[64px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full -ml-1 border-2 border-[var(--surface)] ${isDone ? 'bg-[var(--text-faint)]' : 'bg-[var(--accent)]'}`} />
+
+      {/* Main Content Area */}
+      <button 
+        type="button" 
+        onClick={() => onOpen?.(item.id, item.type)} 
+        className="flex-1 flex items-center gap-3 pl-6 pr-2 text-left"
       >
-        {isDone && <Check size={10} strokeWidth={4} />}
+        <div className={`w-11 h-11 rounded-[14px] flex items-center justify-center shrink-0 ${isDone ? 'bg-[var(--surface-raised)] text-[var(--text-faint)]' : colorClass}`}>
+          <Icon size={20} strokeWidth={2} />
+        </div>
+        
+        <div className="flex-1 min-w-0">
+          <p className={`text-[16px] font-semibold truncate ${isDone ? 'text-[var(--text-faint)] line-through' : 'text-[var(--text)]'}`}>
+            {item.title}
+          </p>
+          <p className="text-[13px] text-[var(--text-muted)] mt-0.5 font-medium truncate">
+            {categoryLabels[item.category] || item.category} {item.type === 'activity' && item.timeDisplay.includes('-') ? `· ${item.timeDisplay}` : ''}
+          </p>
+        </div>
       </button>
 
-      {/* Content */}
-      <button type="button" onClick={() => onOpen?.(item.id, item.type)} className="w-full flex justify-between items-start gap-3 text-left rounded-xl focus-visible:outline-offset-4">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md border border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)]">
-              {categoryLabels[item.category] || item.category}
-            </span>
-            <p className={`text-sm font-medium transition-all ${
-              isActive && !isDone
-                ? 'text-[var(--text)] font-semibold'
-                : isDone
-                  ? 'text-[var(--text-faint)] line-through'
-                  : 'text-[var(--text)]'
-            }`}>
-              {item.title}
-            </p>
-          </div>
-          {item.description && (
-            <p className="text-xs text-[var(--text-muted)] mt-1 leading-relaxed">{item.description}</p>
-          )}
-        </div>
-        <span className="text-[11px] text-[var(--text-muted)] flex-shrink-0 whitespace-nowrap bg-[var(--surface)] border border-[var(--border)] px-2 py-1 rounded-lg">
-          {item.timeDisplay}
-        </span>
+      {/* Checkbox */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggle(item.id, item.type);
+        }}
+        className={`shrink-0 w-7 h-7 rounded-lg border-2 flex items-center justify-center transition-all ml-2 ${
+          isDone
+            ? 'bg-[var(--accent)] border-[var(--accent)] text-[var(--accent-ink)]'
+            : 'border-[var(--text-faint)] hover:border-[var(--text-muted)] bg-[var(--surface)]'
+        }`}
+      >
+        {isDone && <Check size={16} strokeWidth={3} />}
       </button>
+
     </div>
   );
 }
